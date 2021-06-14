@@ -75,4 +75,4 @@ $ npm run start
 * `/.sequelizerc`: Configuración del ORM para postgres
 
 
-**## Integrantes
+## Integrantes
