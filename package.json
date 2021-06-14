@@ -2,10 +2,19 @@
   "name": "e-sport-project",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PieroNarciso/e-sports.git"
+  },
+  "homepage": "https://github.com/PieroNarciso/e-sports#readme",
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "start": "node ./src/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/PieroNarciso/e-sports/issues"
   },
   "keywords": [],
   "author": "",
