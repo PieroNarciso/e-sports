@@ -17,6 +17,7 @@ DB_USERNAME=<username>
 DB_PASSWORD=<password>
 DB_DATABASE=<database>
 DB_HOST=<host>
+DB_MONGODB_URI=<mongodb-uri>
 ```
 
 Compilar tailwindcss y se genera un archivo en el path `./src/public/css/index.css`
@@ -53,6 +54,7 @@ DB_USERNAME=<username>
 DB_PASSWORD=<password>
 DB_DATABASE=<database>
 DB_HOST=<host>
+DB_MONGODB_URI=<mongodb-uri>
 NODE_ENV=production
 ```
 
