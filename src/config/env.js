@@ -6,6 +6,7 @@ const {
   DB_PASSWORD = null,
   DB_DATABASE = 'db-dev',
   DB_HOST = '127.0.0.1',
+  DB_MONGODB_URI = '',
 } = process.env;
 
 
@@ -15,4 +16,5 @@ module.exports = {
   DB_PASSWORD,
   DB_DATABASE,
   DB_HOST,
+  DB_MONGODB_URI,
 }
