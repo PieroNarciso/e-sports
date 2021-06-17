@@ -20,6 +20,13 @@ DB_HOST=<host>
 DB_MONGODB_URI=<mongodb-uri>
 ```
 
+Compilar tailwindcss y se genera un archivo en el path `./src/public/css/index.css`
+> Esto se realizará cada vez que se cambie alguna configuración de tailwindcss
+
+```bash
+$ npm run dev:tailwind
+```
+
 Correr el script de desarrollo
 
 ```bash
@@ -32,6 +39,12 @@ Instalar las dependencias de `npm`
 
 ```bash
 $ npm install
+```
+
+Compilar tailwindcss en modo produccion
+
+```bash
+$ npm run build:tailwind
 ```
 
 Crear un arhico `.env` en el root del proyecto teniendo como ejemplo el archivo `.env.sample` que contengan las variables de producción de la base de datos.
