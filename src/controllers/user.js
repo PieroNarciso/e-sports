@@ -15,10 +15,7 @@ module.exports = {
         res.render("registro");
     },
     registroPostUser:(req,res) => {
-        setTimeout(() => {
-            res.render("registro")
-        }, 2000);
-
+      res.render("registro")
     },
     perfilUser:(req,res)=>{
         res.render("perfilLider")
