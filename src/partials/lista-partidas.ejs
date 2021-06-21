@@ -1,0 +1,21 @@
+<div class="space-y-2">
+  <% if (partidas.length > 0) { %>
+  <% partidas.forEach(function(partida) { %>
+  <div class="flex flex-col border-2 border-gray-300 px-2 py-2">
+    <div class="grid grid-cols-12">
+      <span class="col-span-5 text-gray-800 font-medium">Equipo <%= partida.equipoA.nombre %></span>
+      <span class="col-span-2 justify-self-center text-gray-700">VS</span>
+      <span class="col-span-5 justify-self-end text-gray-800 font-medium">Equipo <%= partida.equipoB.nombre %></span>
+    </div>
+    <div class="flex justify-between items-center mt-2">
+      <span class="text-gray-700">Fecha: <%= partida.fecha %></span>
+      <select class="rounded-md text-gray-700 focus:border-0 focus:ring-indigo-500 focus:ring-1">
+        <option value="0" selected disabled>Seleccionar ganador</option>
+        <option value="1">Equipo <%= partida.equipoA.nombre %></option>
+        <option value="2">Equipo <%= partida.equipoB.nombre %></option>
+      </select>
+    </div>
+  </div>
+  <% }) %>
+  <% } %>
+</div>
