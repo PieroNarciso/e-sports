@@ -11,6 +11,6 @@ module.exports = {
         if (user)
             res.render('principal');
         else
-            res.render('login', {msg: 'Usuario incorreccto'})
+         res.render('login', {msg: 'Usuario incorreccto'})
     }
 }
