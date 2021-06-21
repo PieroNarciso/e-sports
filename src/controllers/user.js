@@ -15,11 +15,11 @@ module.exports = {
         res.render("registro");
     },
     registroPostUser:(req,res) => {
-      res.render("registro")
+        
     },
     perfilUser:(req,res)=>{
-        res.render("perfilLider")
-
+        res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
+    })
     },
     perfilPostUser:(req,res) =>{
 
@@ -27,5 +27,20 @@ module.exports = {
     perfilActualizarUser:(req,res)=>{
         res.render("perfilLiderActualizar")
     },
-    perfilActualizarPostUser:(req,res)=>{}
+    perfilActualizarPostUser:(req,res)=>{
+
+    },
+    equipoUser:(req,res)=>{
+        res.render("perfilEquipo",{equipo: "Gatos", integrantes:"Pepe,Juan,Pikachu"})
+
+    },
+    equipoPostUser:(req,res) =>{
+
+    },
+    equipoActualizarUser:(req,res)=>{
+        res.render("perfilEquipoActualizar")
+    },
+    equipoActualizarPostUser:(req,res)=>{
+        
+    }
 }
