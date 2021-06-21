@@ -60,7 +60,7 @@ sequelize.sync({ force: false }).then(() => {
 
     // FORMA 1 DE AGREGAR
     
-    var equipo2 = Equipo.create( // id 2
+    var equipox = Equipo.create( // id 2
     {
         nombre: 'Equipo 2', lista_integrantes: 'I1, I2, I3, I4',
         lider_id: 3
@@ -71,7 +71,7 @@ sequelize.sync({ force: false }).then(() => {
         tipo: 'Todos contra todos', puntaje_perdedor: 1, puntaje_ganador: 3, puntaje_empate: 2,
         organizador_id: 2
     })
-    torneo2.addEquipo(equipo2).catch(error => {
+    torneo2.addEquipo(equipox).catch(error => {
         console.log('error: ', error)
     })
 

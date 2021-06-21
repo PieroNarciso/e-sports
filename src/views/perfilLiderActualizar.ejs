@@ -1,0 +1,44 @@
+
+<div class="h-screen flex items-center justify-center bg-gray-400">
+    <div class="bg-white p-10 rounded-lg w-2/3">
+        <div class="grid justify-items-center">
+            <svg class="w-40 h-40" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 3C14.21 3 16 4.79 16 7S14.21 11 12 11 8 9.21 8 7 9.79 3 12 3M16 13.54C16 14.6 15.72 17.07 13.81 19.83L13 15L13.94 13.12C13.32 13.05 12.67 13 12 13S10.68 13.05 10.06 13.12L11 15L10.19 19.83C8.28 17.07 8 14.6 8 13.54C5.61 14.24 4 15.5 4 17V21H20V17C20 15.5 18.4 14.24 16 13.54Z" />
+            </svg>
+        </div> 
+        <form method="POST" name="formulario" action="/user/perfil/actualizar">
+      
+        <div class="mb-3">
+            <label htmlFor="text">Nombre</label>
+            <div>
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text">
+            </div>
+        
+        </div>
+        <div class="mb-3">
+            <label>Correo Electronico</label>
+            <div>
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label>Nombre Equipo</label>
+            <div>
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="equipo" name="equipo"type="text">
+            </div>
+        </div>
+        <div class="mb-5 bg-red-500 rounded flex items-center hidden" id="error" >
+            <svg class="w-6 h-6 ml-5" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z" />
+            </svg> 
+                <p class="grid-cols-2 ml-5"> <b>Error</b> El nombre de equipo ya esta en el torneo o el correo esta registrado </p>
+        </div>
+        <div class="mb-3 mt-5">
+                <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Actualizar" type="submit"> Actualizar </button>
+                <p class=" ml-28 hidden" id="exitoso" > Se actualizo Correctamente !! </p>
+        </div>
+        </form>
+   </div>
+</div>
+<script src="/js/registro.js"></script>
+

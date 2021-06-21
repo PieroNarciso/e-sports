@@ -1,11 +1,10 @@
-const express = require('express');
-const router = express.Router()
+const { Router } = require('express');
+
 const { getTorneos } = require('../controllers/torneo');
 
+const router = Router();
 
-const models = require("../models")
-const Torneo = models.Torneo
 
-router.get('/', getTorneos)
+router.get('/', getTorneos);
 
 module.exports = router;
