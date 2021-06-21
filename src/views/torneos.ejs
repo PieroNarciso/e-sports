@@ -20,18 +20,18 @@
         <% } %>
         <span class="ml-2 text-gray-800 font-medium"><%= torneo.nombre %></span>
       </div>
-      <div class="grid grid-cols-12 flex items-center justify-between">
+      <div class="grid grid-cols-12 items-center">
         <p class="col-span-8 pr-2 text-gray-700">¡Modalidad todos contra todos, donde 6 equipos competirán por ganarse el premio de...</p>
         <!-- Inscripcion por estado del torneo -->
         <% if (!torneo.inscrito) { %>
-        <a href="#" class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400">Inscribirse</a>
+        <a href="#" class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirse</a>
         <% } else { %>
-        <a href="#" class="col-span-4 justify-self-center px-2 w-24 py-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500">Ver</a>
+        <a href="#" class="col-span-4 justify-self-center px-2 w-24 py-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500 text-center">Ver</a>
         <% } %>
       </div>
       <div class="flex flex-col mt-2 text-sm text-gray-600">
-        <span>Equipos registrados: <%= torneo.registrados %>/<%= torneo.max %></span> 
-        <span>Estado: Activo</span> 
+        <span>Equipos registrados: <%= torneo.registrados %>/<%= torneo.max %></span>
+        <span>Estado: Activo</span>
       </div>
      </div> 
     <% }) %>
