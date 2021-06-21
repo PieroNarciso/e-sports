@@ -12,23 +12,39 @@ module.exports = {
 
     },
     registroUser: (req,res) => {
-        res.render("registro");
+        const estado = true;
+        res.render("registro",{estado});
     },
     registroPostUser:(req,res) => {
-        
+        try{
+
+        }
+        catch{
+            estado=false;
+            res.render("registro",{estado})
+        }
+        res.redirect("/")
     },
     perfilUser:(req,res)=>{
         res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
     })
     },
     perfilPostUser:(req,res) =>{
-
+        
     },
     perfilActualizarUser:(req,res)=>{
-        res.render("perfilLiderActualizar")
+        const estado=true;
+        res.render("perfilLiderActualizar",{estado})
     },
     perfilActualizarPostUser:(req,res)=>{
+        try{
 
+        }
+        catch{
+            estado=false;
+            res.render("registro",{estado})
+        }
+        res.redirect("/")
     },
     equipoUser:(req,res)=>{
         res.render("perfilEquipo",{equipo: "Gatos", integrantes:"Pepe,Juan,Pikachu"})
@@ -38,9 +54,17 @@ module.exports = {
 
     },
     equipoActualizarUser:(req,res)=>{
-        res.render("perfilEquipoActualizar")
+        const estado=true;
+        res.render("perfilEquipoActualizar",{estado})
     },
     equipoActualizarPostUser:(req,res)=>{
-        
+        try{
+
+        }
+        catch{
+            estado=false;
+            res.render("registro",{estado})
+        }
+        res.redirect("/")
     }
 }
