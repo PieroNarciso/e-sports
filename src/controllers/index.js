@@ -1,13 +1,11 @@
-const express = require('express');
-
 module.exports = {
   /**
    * Renderiza la pagina principal de la aplicacion
    *
-   * @param {express.Request} req
-   * @param {express.Response} res
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
    */
-  mainPage: (_, res) => {
+  mainPage: (req, res) => {
     const equipos = [
       {
         nombre: 'Leon',
