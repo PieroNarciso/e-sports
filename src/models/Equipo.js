@@ -1,5 +1,4 @@
 const { Model } = require('sequelize');
-const user = require('../controllers/user');
 module.exports = (sequelize, DataTypes) => {
 
     class Equipo extends Model { }
@@ -11,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         modelName: "Equipo"
     })
 
-    Equipo.associate = models => {
-        Equipo.belongsToMany(models.Torneo, { through: "torneo_equipo"})
+    Equipo.associate = (models) => {
+        Equipo.belongsToMany(models.Torneo, { foreignKey: TorneoId, through: models.torneo_equipo, as: 'torneo'})
     }
     Equipo.associate = models => {
         Equipo.belongsTo(models.Usuario, { as: "lider", foreignKey: "lider_id" })

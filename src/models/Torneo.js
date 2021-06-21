@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         modelName: "Torneo"
     })
 
-    Torneo.associate = models => {
-        Torneo.belongsToMany(models.Equipo, { through: "torneo_equipo" })
+    Torneo.associate = (models) => {
+        Torneo.belongsToMany(models.Equipo, { foreignKey: EquipoId, through: models.torneo_equipo, as: 'equipo' })
     }
     Torneo.associate = models => {
         Torneo.hasMany(models.Ronda, { as: "rondas", foreignKey: "torneo_id" })

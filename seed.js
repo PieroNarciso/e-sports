@@ -71,7 +71,9 @@ sequelize.sync({ force: false }).then(() => {
         tipo: 'Todos contra todos', puntaje_perdedor: 1, puntaje_ganador: 3, puntaje_empate: 2,
         organizador_id: 2
     })
-    
+    torneo2.addEquipo(equipo2).catch(error => {
+        console.log('error: ', error)
+    })
 
     // FORMA 2 DE AGREGAR
     var torneo3 = Torneo.create({ // id 3
@@ -87,9 +89,7 @@ sequelize.sync({ force: false }).then(() => {
     })
 }).then(() => {
     console.log(equipo2)
-    torneo2.addEquipo(equipo2).catch(error => {
-        console.log('error: ', error)
-    })
+    
     equipo3.setTorneo([torneo2, torneo3])
 }).catch(error => {
     console.log('error: ', error)
