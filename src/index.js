@@ -4,7 +4,7 @@ const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 
 const { routerConnection } = require('./routes');
-const { PORT, SECRET_KEY } = require('./config/env');
+const { PORT, SECRET_KEY, SESSION_NAME } = require('./config/env');
 
 const app = express();
 
@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(session({
+  name: SESSION_NAME,
   secret: SECRET_KEY,
   resave: false,
   saveUninitialized: true,
