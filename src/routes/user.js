@@ -1,26 +1,34 @@
 const { Router } = require('express');
 
-const { getUser, loginUser, loginPostUser, registroUser,registroPostUser, perfilUser, perfilPostUser, perfilActualizarPostUser, perfilActualizarUser } = require('../controllers/user');
+const {
+  getUser,
+  loginUser,
+  loginPostUser,
+  registroUser,
+  registroPostUser,
+  perfilUser,
+  perfilPostUser,
+  perfilActualizarPostUser,
+  perfilActualizarUser,
+} = require('../controllers/user');
 const router = Router();
-
 
 router.get('/1', getUser);
 
 router.get('/login', loginUser);
-router.post('/login', loginPostUser)
+router.post('/login', loginPostUser);
 
 router.get('/registro', registroUser);
-router.post('/registro',registroPostUser)
+router.post('/registro', registroPostUser);
 
-router.get('/perfilLider', perfilUser);
-router.post('/perfilLider', perfilPostUser);
-    
-router.get('/perfilLider/perfilLiderActualizar', perfilActualizarUser);
-router.post('/perfilLider/perfilLiderActualizar', perfilActualizarPostUser);
+router.get('/perfil', perfilUser);
+router.post('/perfil', perfilPostUser);
+
+router.get('/perfil/actualizar', perfilActualizarUser);
+router.post('/perfil/actualizar', perfilActualizarPostUser);
 
 router.get('/user1', (req, res) => {
-    res.send('User 1');
+  res.send('User 1');
 });
-
 
 module.exports = router;

@@ -28,9 +28,7 @@ module.exports = {
 
     },
     perfilActualizarUser:(req,res)=>{
-        res.render("perfilLiderActualizar.ejs")
+        res.render("perfilLiderActualizar")
     },
-    perfilActualizarPostUser:(req,res)=>{
-        
-    }
+    perfilActualizarPostUser:(req,res)=>{}
 }
