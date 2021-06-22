@@ -16,14 +16,21 @@ module.exports = {
         res.render("registro",{estado});
     },
     registroPostUser:(req,res) => {
+        estado=true;
         try{
-
+            nombre=req.body.nombre;
+            correo=req.body.correo;
+            contrasena=req.body.contrasena;
+            nombreequipo=req.body.equipo;
+            console.log("nombre"+nombre+"correo"+correo+"contraseña: "+contrasena+"nombre equipo"+nombreequipo)
+            res.redirect("/")
         }
-        catch{
+        catch(e){
+            console.log(e)
             estado=false;
             res.render("registro",{estado})
         }
-        res.redirect("/")
+
     },
     perfilUser:(req,res)=>{
         res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
@@ -43,6 +50,7 @@ module.exports = {
         catch{
             estado=false;
             res.render("registro",{estado})
+
         }
         res.redirect("/")
     },

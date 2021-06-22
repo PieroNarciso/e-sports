@@ -24,27 +24,15 @@ function validarcomun( e){
         alert("Completa con tu equipo")
         e.preventDefault()
     }
-    if(formulario.integrantes.value ==0){
+    /*if(formulario.integrantes.value ==0){
         alert("Ingresa los integrantes")
         e.preventDefault()
-    }
+    }*/
 }
 
 validar= function( e ){
     validarcomun(e);
-    validardatos();
 }
 
-function validardatos(){
-    
-    if(!nombre || !correo){
-        error.classList.toggle("hidden")
-    }
-    //En el caso error
 
-    //En el caso Correcto
-    if(nombre == true && correo== true){
-        correcto.classList.toggle("hidden")
-    }
-}
 formulario.addEventListener("submit",validar);
