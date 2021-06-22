@@ -1,22 +1,30 @@
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+const { Model, DataTypes } = require('sequelize');
+module.exports = (sequelize) => {
 
-    class Ronda extends Model { }
+    class Ronda extends Model {
+
+      static associate({ Torneo, Partida }) {
+        this.belongsTo(Torneo, { as: 'torneo', foreignKey: 'torneo_id' });
+        this.hasMany(Partida, { as: "partidas", foreignKey: "ronda_id" });
+      }
+    }
     Ronda.init({
-        nro_correlativo: DataTypes.INTEGER,
-        fecha: DataTypes.DATE,
-        ordinal: DataTypes.INTEGER
+        nro_correlativo: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        fecha: {
+          type: DataTypes.DATE,
+          allowNull: false,
+        },
+        ordinal: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
     }, {
         sequelize,
         modelName: "Ronda"
     })
-
-    Ronda.associate = models => {
-        Ronda.belongsTo(models.Torneo, { as: "torneo", foreignKey: "torneo_id" })
-    }
-    Ronda.associate = models => {
-        Ronda.hasMany(models.Partida, { as: "partidas", foreignKey: "ronda_id" })
-    }
 
     return Ronda
 }
