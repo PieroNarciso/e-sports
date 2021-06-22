@@ -43,24 +43,37 @@ const equipos = [
 
 
 // CREANDO REGISTROS
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: true }).then(() => {
     // Conexión establecida
     console.log("Conexión establecida...");
-}).then(() => {
+//}).then(() => {
     usuarios.forEach(usuario => Usuario.create(usuario));
-}).then(() => {
+//}).then(() => {
     // Rellenar direcciones
     torneos.forEach(torneo => Torneo.create(torneo));
-}).then(() => {
+//}).then(() => {
     // Rellenar posts
     equipos.forEach(equipo => Equipo.create(equipo));
+    // FORMA 1 DE AGREGAR (los CREATE se pueden reemplazar por findAll con un where como filtro)
+    var torneoId = 1
+    Equipo.findAll({
+        where: { id : 1}
+    }).then((oEquipo) => {
+        oEquipo.setTorneo(Torneo.findAll({
+            where: { id: 1 }
+        }))
+    }).catch(error => {
+        console.log('+++++++++++ ERROR +++++++++++++++', error)
+    })
 
-}).then(() => {
+})//.then(() => {
     // RELACIÓN TORNEO-EQUIPO
 
-    // FORMA 1 DE AGREGAR
+
+
+
     
-    var equipox = Equipo.create( // id 2
+   /* var equipox = Equipo.create( // id 2
     {
         nombre: 'Equipo 2', lista_integrantes: 'I1, I2, I3, I4',
         lider_id: 3
@@ -87,11 +100,11 @@ sequelize.sync({ force: false }).then(() => {
         nombre: 'Equipo 3', lista_integrantes: 'I1, I2, I3, I4',
         lider_id: 3
     })
-}).then(() => {
+//}).then(() => {
     console.log(equipo2)
     
     equipo3.setTorneo([torneo2, torneo3])
-}).catch(error => {
+/*}).catch(error => {
     console.log('error: ', error)
-})
+})*/
 

@@ -10,11 +10,9 @@ module.exports = (sequelize, DataTypes) => {
         modelName: "Equipo"
     })
 
-    Equipo.associate = (models) => {
-        Equipo.belongsToMany(models.Torneo, { foreignKey: TorneoId, through: models.torneo_equipo, as: 'torneo'})
-    }
     Equipo.associate = models => {
         Equipo.belongsTo(models.Usuario, { as: "lider", foreignKey: "lider_id" })
+        Equipo.belongsToMany(models.Torneo, { foreignKey: 'TorneoId', through: "torneo_equipo", as: 'torneo' })
     }
     return Equipo
 }
