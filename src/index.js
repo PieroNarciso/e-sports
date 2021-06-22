@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
-
+const { sequelize } = require('./models')
 const { routerConnection } = require('./routes');
 const { PORT, SECRET_KEY, SESSION_NAME } = require('./config/env');
 
@@ -40,4 +40,10 @@ routerConnection(app);
 
 app.listen(PORT, () => {
   console.log('Server running in port', PORT);
+  // true significa que se eliminarán las tablas y se volverán a crear cada que se inicie la app
+  sequelize.sync({ force: true }).then(() => {
+    console.log('Conectado')
+  }).catch(error => {
+    console.log('error: ', error)
+  })
 });
