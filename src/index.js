@@ -27,7 +27,7 @@ routerConnection(app);
 app.listen(PORT, () => {
   console.log('Server running in port', PORT);
   // true significa que se eliminarán las tablas y se volverán a crear cada que se inicie la app
-  sequelize.sync({ force: true }).then(() => {
+  sequelize.sync({ force: false }).then(() => {
     console.log('Conectado')
   }).catch(error => {
     console.log('error: ', error)

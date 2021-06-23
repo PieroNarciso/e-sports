@@ -1,8 +1,58 @@
+<br>
+<!-- Filtros -->
+<div class="grid grid-cols-1 grid-rows-1 w-full">
+  <div class="mr-10 justify-self-end flex flex-row space-x-2 h-8">
+    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+      <path fill="currentColor"
+        d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" />
+    </svg>
+    <p>Filtrar</p>
+  </div>
+</div>
+  <!-- PARA LÍDER -->
+<div class="grid grid-rows-4">
+  <div class="row-span-3 pl-8 py-4 gap-y-2 justify-self-center w-11/12 rounded-lg border-2 border-gray-400 grid grid-cols-12 grid-rows-3">
+    <div class="col-span-12"><p>Filtrar por:</p></div>
+    <div class="col-span-3"><p>Estado:</p></div>
+    <div class="col-span-3"><label><input class="mr-2" type="checkbox" value="chkAbierto" checked="true">Abierto</label></div>
+    <div class="col-span-3"><label><input class="mr-2" type="checkbox" value="chkEnCurso" checked="true">En curso</label></div>
+    <div class="col-span-3"><label><input class="mr-2" type="checkbox" value="chkCerrado" checked="true">Cerrado</label></div>
+    <div class="col-span-4"><p>Inscripción:</p></div>
+    <div class="col-span-4"><label><input class="mr-2" type="checkbox" value="chkInscrito" checked="true">Inscrito</label></div>
+    <div class="col-span-4"><label><input class="mr-2" type="checkbox" value="chkNoInscrito" checked="true">No inscrito</label></div>
+  </div>
+  <div class="my-2 flex flex-row justify-self-end mr-10">
+    <p>Aplicar filtros</p>
+  </div>
+</div>
+
+<!-- Para organizador -->
+<div class="grid">
+  <div class="flex justify-center">
+    <div class="pl-8 py-2 border-2 w-11/12 border-gray-400 rounded-lg ">
+      <div>
+        <p>Filtrar por:</p>
+      </div>
+      <div class="flex my-2">
+        <p>Nombre:</p>
+        <input class="h-6 ml-4" type="text" name="" id="">
+      </div>
+    </div>
+  </div>
+  <div class="my-2 flex flex-row justify-self-end mr-10">
+    <p>Aplicar filtros</p>
+  </div>
+</div>
+
 <div class="mx-4 mt-2">
   <% if (torneos.length > 0) { %>
   <div class="grid grid-cols-12 justify-end border-b-2 border-gray-300">
     <span class="col-span-4 col-end-13 rounded-t-md bg-gray-800 text-white px-3 py-1 tracking-wider text-center">
-      ¿Inscrito?
+      <% if (rol == 'lider') { %>
+        ¿Inscrito?
+      <% } else if (rol == 'org') { %>
+        Acción
+      <% } %>
     </span> 
   </div> 
   <div>
@@ -21,7 +71,7 @@
         <span class="ml-2 text-gray-800 font-medium"><%= torneo.nombre %></span>
       </div>
       <div class="grid grid-cols-12 items-center">
-        <p class="col-span-8 pr-2 text-gray-700">¡Modalidad todos contra todos, donde 6 equipos competirán por ganarse el premio de...</p>
+        <p class="col-span-8 pr-2 text-gray-700"><%= torneo.descripcion %></p>
         <!-- Inscripcion por estado del torneo -->
         <% if (!torneo.inscrito) { %>
         <a href="#" class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirse</a>
@@ -30,7 +80,7 @@
         <% } %>
       </div>
       <div class="flex flex-col mt-2 text-sm text-gray-600">
-        <span>Equipos registrados: <%= torneo.registrados %>/<%= torneo.max %></span>
+        <span>Equipos registrados: <%= torneo.registrados %>/<%= torneo.max_participantes %></span>
         <span>Estado: Activo</span>
       </div>
      </div> 
@@ -41,4 +91,16 @@
     No hay torneos 
   </div>
   <% } %>
+</div>
+<!-- Paginación -->
+<br>
+<div class="flex justify-center">
+  <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M18,11V13H10L13.5,16.5L12.08,17.92L6.16,12L12.08,6.08L13.5,7.5L10,11H18M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12Z" />
+  </svg>
+  <svg class="transform rotate-180" style="width:24px;height:24px" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M18,11V13H10L13.5,16.5L12.08,17.92L6.16,12L12.08,6.08L13.5,7.5L10,11H18M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12Z" />
+  </svg>
 </div>

@@ -10,6 +10,10 @@ const {
   perfilPostUser,
   perfilActualizarPostUser,
   perfilActualizarUser,
+  equipoUser,
+  equipoPostUser,
+  equipoActualizarUser,
+  equipoActualizarPostUser
 } = require('../controllers/user');
 const router = Router();
 
@@ -26,6 +30,12 @@ router.post('/perfil', perfilPostUser);
 
 router.get('/perfil/actualizar', perfilActualizarUser);
 router.post('/perfil/actualizar', perfilActualizarPostUser);
+
+router.get('/equipo', equipoUser);
+router.post('/equipo', equipoPostUser);
+
+router.get('/equipo/actualizar', equipoActualizarUser);
+router.post('/equipo/actualizar', equipoActualizarPostUser);
 
 router.get('/user1', (req, res) => {
   res.send('User 1');

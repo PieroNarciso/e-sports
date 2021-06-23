@@ -21,17 +21,21 @@ function validarcomun( e){
         e.preventDefault()
     }
     if(formulario.equipo.value == 0){
-        alert("Completa con  tu equipo")
+        alert("Completa con tu equipo")
+        e.preventDefault()
+    }
+    if(formulario.integrantes.value ==0){
+        alert("Ingresa los integrantes")
         e.preventDefault()
     }
 }
 
 validar= function( e ){
     validarcomun(e);
-    validardatos(e);
+    validardatos();
 }
 
-function validardatos(e){
+function validardatos(){
     
     if(!nombre || !correo){
         error.classList.toggle("hidden")
