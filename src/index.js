@@ -6,8 +6,12 @@ const db = require('./db')
 const { routerConnection } = require('./routes');
 const { PORT, SECRET_KEY, SESSION_NAME } = require('./config/env');
 
-
 const app = express();
+
+// Express global config
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 let secure = false;
 if (process.env.NODE_ENV === 'production') {
@@ -21,11 +25,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure }
 }));
-
-// Express global config
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // View Engine config
 app.set('view engine', 'ejs');
