@@ -1,10 +1,4 @@
 module.exports = {
-<<<<<<< HEAD
-    getTorneos: (req, res) => {
-        res.render('pantallaTorneo');
-    },
-}
-=======
   /**
   * @param {import('express').Request} req
   * @param {import('express').Response} res
@@ -16,4 +10,3 @@ module.exports = {
     res.render('torneos', { torneos });
   }
 }
->>>>>>> f24a7f1604113386bff23ccb66602425f84fbefe
