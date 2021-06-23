@@ -1,23 +1,47 @@
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../db');
 
-    class Usuario extends Model { }
-    Usuario.init({
-        correo: DataTypes.STRING,
-        contraseña: DataTypes.STRING,
-        nombre_completo: DataTypes.STRING,
-        rol: DataTypes.INTEGER // admin 0, org 1, lider 2
-    }, {
-        sequelize,
-        modelName: "Usuario"
-    })
-
-    Usuario.associate = models => {
-        Usuario.hasMany(models.Torneo, { as: "torneos_creados", foreignKey: "organizador_id" })
+  class Usuario extends Model {
+    static associate({ Torneo, Equipo }) {
+      this.hasMany(Torneo, {
+        as: 'torneos_creados',
+        foreignKey: 'organizador_id',
+      });
+      this.hasOne(Equipo, { as: 'equipo', foreignKey: 'lider_id' });
     }
-    Usuario.associate = models => {
-        Usuario.hasOne(models.Equipo, { as: "equipo", foreignKey: "lider_id" })
+  }
+  Usuario.init(
+    {
+      correo: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          isEmail: true,
+        },
+      },
+      contraseña: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          min: 8,
+        },
+      },
+      nombre_completo: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          min: 8,
+        },
+      },
+      rol: {
+        type: DataTypes.ENUM('admin', 'org', 'lider'),
+        allowNull: false,
+      }, // admin 0, org 1, lider 2
+    },
+    {
+      sequelize,
+      modelName: 'Usuario',
     }
+  );
 
-    return Usuario
-}
+module.exports = { Usuario };

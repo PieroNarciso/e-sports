@@ -1,7 +1,7 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
-const { sequelize } = require('./models')
+const db = require('./db')
 const { routerConnection } = require('./routes');
 const { PORT } = require('./config/env');
 
@@ -24,12 +24,13 @@ app.set('layout extractScripts', true);
 // Routes middlewares
 routerConnection(app);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log('Server running in port', PORT);
   // true significa que se eliminarán las tablas y se volverán a crear cada que se inicie la app
-  sequelize.sync({ force: false }).then(() => {
-    console.log('Conectado')
-  }).catch(error => {
-    console.log('error: ', error)
-  })
+  try {
+    await db.sync({});
+    console.log('DB connectado');
+  } catch(err) {
+    console.log(err);
+  }
 });

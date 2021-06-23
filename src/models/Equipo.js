@@ -1,18 +1,28 @@
-const { Model } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../db');
 
-    class Equipo extends Model { }
-    Equipo.init({
-        nombre: DataTypes.STRING,
-        lista_integrantes: DataTypes.STRING
-    }, {
-        sequelize,
-        modelName: "Equipo"
-    })
-
-    Equipo.associate = models => {
-        Equipo.belongsTo(models.Usuario, { as: "lider", foreignKey: "lider_id" })
-        Equipo.belongsToMany(models.Torneo, { foreignKey: 'TorneoId', through: "torneo_equipo", as: 'torneo' })
-    }
-    return Equipo
+class Equipo extends Model {
+  static associate({ Torneo, Usuario }) {
+    this.belongsToMany(Torneo, { as: 'torneos', through: 'torneo_equipo' });
+    this.belongsTo(Usuario, { as: 'lider', foreignKey: 'lider_id' });
+  }
 }
+
+Equipo.init(
+  {
+    nombre: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lista_integrantes: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Equipo',
+  }
+);
+
+module.exports = { Equipo };

@@ -3,9 +3,9 @@ const otorneo = models.Torneo
 const oTorneoEquipo = models.torneo_equipo
 module.exports = {
   /**
-  * @param {import('express').Request} req
-  * @param {import('express').Response} res
-  */
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   */
   getTorneos: (req, res) => {
     otorneo.findAll()
       .then((torneos) => {
