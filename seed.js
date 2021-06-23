@@ -85,7 +85,7 @@ const main = async () => {
       max_participantes: 6, descripcion: 'Torneo 2.', estado: 'activo', cant_particip_diarios: 4,
       tipo: 'Todos contra todos', puntaje_perdedor: 1, puntaje_ganador: 3, puntaje_empate: 2,
       organizador_id: 2
-    })
+    });
     const equipo3 = await Equipo.create( // id 3
       {
         nombre: 'Equipo 3', lista_integrantes: ['I1', 'I2', 'I3', 'I4'],

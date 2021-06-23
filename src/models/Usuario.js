@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../db');
 
-module.exports = (sequelize) => {
   class Usuario extends Model {
     static associate({ Torneo, Equipo }) {
       this.hasMany(Torneo, {
@@ -43,5 +43,5 @@ module.exports = (sequelize) => {
       modelName: 'Usuario',
     }
   );
-  return Usuario;
-};
+
+module.exports = { Usuario };
