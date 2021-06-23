@@ -91,10 +91,10 @@ const main = async () => {
         nombre: 'Equipo 3', lista_integrantes: ['I1', 'I2', 'I3', 'I4'],
           lider_id: 3
       })
-    await torneo2.addEquipo(equipo2).catch(error => {
+    await torneo2.addEquipo(equipo2, { through: { estado: 'activo' } }).catch(error => {
       console.log('error: ', error)
     })
-    await equipo3.setTorneos([torneo2, torneo3]);
+    await equipo3.setTorneos([torneo2, torneo3], { through: { estado: 'activo' } });
   } catch(err) {
     console.log(err);
   }
