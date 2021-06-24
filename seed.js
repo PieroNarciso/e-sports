@@ -17,7 +17,7 @@ const torneos = [
   // id 1
   {
     nombre: 'Torneo ULima', fec_inicio: new Date(2021, 06, 18), fec_fin: new Date(2021, 06, 28),
-      max_participantes: 6, descripcion: 'Torneo 1.', estado: 'activo', cant_particip_diarios: 4,
+      max_participantes: 6, descripcion: 'Torneo 1.', estado: 'abierto', cant_particip_diarios: 4,
       tipo: 'Todos contra todos', puntaje_perdedor: 1, puntaje_ganador: 3, puntaje_empate: 2,
       organizador_id: 2
   }   
@@ -73,7 +73,7 @@ const main = async () => {
       })
     const torneo2 = await Torneo.create({ // id 2
       nombre: 'Torneo 2', fec_inicio: new Date(2021, 06, 17), fec_fin: new Date(2021, 06, 24),
-      max_participantes: 6, descripcion: 'Torneo 2.', estado: 'activo', cant_particip_diarios: 4,
+      max_participantes: 6, descripcion: 'Torneo 2.', estado: 'abierto', cant_particip_diarios: 4,
       tipo: 'Todos contra todos', puntaje_perdedor: 1, puntaje_ganador: 3, puntaje_empate: 2,
       organizador_id: 2
     })
@@ -82,7 +82,7 @@ const main = async () => {
     // FORMA 2 DE AGREGAR
     const torneo3 = await Torneo.create({ // id 3
       nombre: 'Torneo 3', fec_inicio: new Date(2021, 06, 17), fec_fin: new Date(2021, 06, 24),
-      max_participantes: 6, descripcion: 'Torneo 2.', estado: 'activo', cant_particip_diarios: 4,
+      max_participantes: 6, descripcion: 'Torneo 2.', estado: 'abierto', cant_particip_diarios: 4,
       tipo: 'Todos contra todos', puntaje_perdedor: 1, puntaje_ganador: 3, puntaje_empate: 2,
       organizador_id: 2
     });

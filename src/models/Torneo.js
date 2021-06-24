@@ -38,8 +38,8 @@ Torneo.init(
       },
     },
     estado: {
-      type: DataTypes.ENUM('activo', 'inactivo', 'en curso'),
-      defaultValue: 'activo',
+      type: DataTypes.ENUM('abierto', 'cerrado', 'en curso'),
+      defaultValue: 'abierto',
     },
     cant_particip_diarios: DataTypes.INTEGER,
     tipo: DataTypes.STRING,
