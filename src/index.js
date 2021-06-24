@@ -42,7 +42,7 @@ app.listen(PORT, async () => {
   console.log('Server running in port', PORT);
   // true significa que se eliminarán las tablas y se volverán a crear cada que se inicie la app
   try {
-    await db.sync({});
+    await db.sync({force:false});
     console.log('DB connectado');
   } catch(err) {
     console.log(err);
