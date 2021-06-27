@@ -13,7 +13,8 @@
     "dev:tailwind": "postcss ./src/public/css/tailwind.css -o ./src/public/css/index.css",
     "build:tailwind": "NODE_ENV=production postcss ./src/public/css/tailwind.css -o ./src/public/css/index.css",
     "dev": "nodemon ./src/index.js",
-    "start": "node ./src/index.js"
+    "start": "node ./src/index.js",
+    "seed": "node ./src/seeders/index.js"
   },
   "bugs": {
     "url": "https://github.com/PieroNarciso/e-sports/issues"
