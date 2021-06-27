@@ -1,9 +1,12 @@
 const { Usuario, Equipo } = require("../models");
+const sequelize = require("sequelize")
+const op= sequelize.Op
 const models= require("../models");
 const usuario=models.Usuario;
 const equipo= models.Equipo;
 
-const verificacion = (nombre,equipo) =>{
+
+/*const verificacion = (nombre,equipo) =>{
     let verificado;
     Usuario.findAll({
         where:{
@@ -36,7 +39,7 @@ const verificacion = (nombre,equipo) =>{
         //})
 
     //})
-    Equipo.findAll({
+    /*Equipo.findAll({
         where:{
             nombre:equipo
 
@@ -48,11 +51,12 @@ const verificacion = (nombre,equipo) =>{
             verificado=false;
         }else{
             verificado=true;
-        }    
+        }
+    
 
     })
     return verificado;
-}
+}*/
 module.exports = {
     getUser: (req, res) => {
         res.send('User');    
@@ -71,31 +75,59 @@ module.exports = {
     },
     registroPostUser:(req,res) => {
         estado=true;
-        try{
-            nombre=req.body.nombre;
-            correo=req.body.correo;
-            contrasena=req.body.contrasena;
-            nombreequipo=req.body.equipo;
-            const usr={nombre_completo: nombre, correo: correo, contraseña: contrasena, rol: 'lider'}
-            const equipo={ nombre: nombreequipo, lista_integrantes: ["Gorila","Jaguar","Venado"]}
-            if(verificacion(correo, nombreequipo) == true){
-                Usuario.create(usr);
-                Equipo.create(equipo);
-                console.log("si es")
-                res.redirect("/")
-            }else{
-                console.log("a")
-                estado=false;
+        usuario.findAll({
+            where:{correo: req.body.correo}
+        })
+        .then( (lusur) => {
+            console.log(lusur)
+            if(lusur.length > 0 ){
+                console.log("entree")
+                const estado=false;
                 res.render("registro",{estado})
             }
-        }
-        catch(e){
-            console.log(e)
-            estado=false;
-            res.render("registro",{estado})
-        }
-
+            else{
+                equipo.findAll({
+                    where: {
+                        nombre: req.body.equipo
+                    } 
+                })
+                .then( (lequip) =>{
+                    console.log(lequip)
+                    if(lequip.length > 0){
+                        console.log(lequip)
+                        const estado= false;
+                        res.render("registro",{estado})
+                    }else{
+                        Usuario.create({
+                            nombre_completo: req.body.nombre,
+                            correo: req.body.correo,
+                            contraseña: req.body.contrasena,
+                            rol:'lider'
+                        })
+                        .then((rpta) =>{
+                            Equipo.create({
+                                nombre: req.body.equipo,
+                                lista_integrantes: ['Gorila','leon','perro'],
+                                lider_id: rpta.id
+                            })
+                            .then((rpta) =>{
+                                res.redirect('/')
+                            }).catch(error =>{
+                                res.sen(500).send(error)
+                            })
+                        }).catch(error =>{
+                            res.sen(500).send(error)
+                        })
+                    }
+                }).catch(error =>{
+                    res.sen(500).send(error)
+                })     
+            }
+        }).catch(error =>{
+            res.sen(500).send(error)
+        })
     },
+    
     perfilUser:(req,res)=>{
         res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
     })
@@ -108,7 +140,10 @@ module.exports = {
         res.render("perfilLiderActualizar",{estado})
     },
     perfilActualizarPostUser:(req,res)=>{
-        try{
+
+
+
+        /*try{
             nuevo_nombre=req.body.nombre;
             nuevo_correo=req.body.correo;
             nuevo_nombreequipo=req.body.equipo;
@@ -141,7 +176,7 @@ module.exports = {
             res.render("registro",{estado})
 
         }
-        res.redirect("/")
+        res.redirect("/")*/
     },
     equipoUser:(req,res)=>{
         res.render("perfilEquipo",{equipo: "Gatos", integrantes:"Pepe,Juan,Pikachu"})
