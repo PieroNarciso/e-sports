@@ -1,22 +1,17 @@
-const listaEquipo = Vue.createApp({
-  data() {
-    return {
-      equipos: [
-        {
-          nombre: 'Leon',
-          activo: true,
-          integrantes: ['Integrante1', 'Integrante2'],
-          showIntegrantes: false,
-        },
-        {
-          nombre: 'Cobra',
-          activo: false,
-          integrantes: ['Integrante 1', 'Integrante 2'],
-          showIntegrantes: false,
-        },
-      ],
-    }
-  },
-});
+window.addEventListener('DOMContentLoaded', () => {
+  const toggleBtns = document.querySelectorAll('.toggle-integrantes');
 
-listaEquipo.mount('#lista-equipo');
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const integrantesList = btn.querySelector('.integrantes');
+      integrantesList.classList.toggle('hidden');
+      integrantesList.classList.toggle('absolute');
+      const btnLabel = btn.querySelector('.toggle-label');
+      if (btnLabel.innerHTML === 'Ver Integrantes') {
+        btnLabel.innerHTML = 'Ocultar Integrantes';
+      } else {
+        btnLabel.innerHTML = 'Ver Integrantes';
+      }
+    });
+  });
+});
