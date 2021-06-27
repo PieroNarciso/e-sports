@@ -1,9 +1,10 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
+const { torneo_equipo } = require('./torneo_equipo');
 
 class Torneo extends Model {
   static associate({ Equipo, Ronda, Usuario }) {
-    this.belongsToMany(Equipo, { through: 'torneo_equipo' });
+    this.belongsToMany(Equipo, { through: torneo_equipo });
     this.hasMany(Ronda, { as: 'rondas', foreignKey: 'torneo_id' });
     this.belongsTo(Usuario, {
       as: 'organizador',
@@ -37,8 +38,8 @@ Torneo.init(
       },
     },
     estado: {
-      type: DataTypes.ENUM('activo', 'inactivo', 'en curso'),
-      defaultValue: 'activo',
+      type: DataTypes.ENUM('abierto', 'cerrado', 'en curso'),
+      defaultValue: 'abierto',
     },
     cant_particip_diarios: DataTypes.INTEGER,
     tipo: DataTypes.STRING,
