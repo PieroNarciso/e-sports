@@ -1,3 +1,4 @@
+const { Torneo, Equipo } = require('../models')
 const models = require('../models')
 const otorneo = models.Torneo
 const oTorneoEquipo = models.torneo_equipo
@@ -71,6 +72,20 @@ module.exports = {
           });
         })*/
       
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  */
+  getTorneoById: async (req, res) => {
+    try {
+      const torneo = await Torneo.findByPk(req.params.id, { include: Equipo });
+      return res.render('torneo-equipos', { equipos: torneo.Equipos });
+    } catch(err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
   }
 }
 

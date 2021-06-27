@@ -1,33 +1,40 @@
-<div id="lista-equipo" class="space-y-2">
-  <div v-for="equipo in equipos" :key="equipo.nombre" class="border-gray-300 border-2 px-3 py-2 space-y-3">
-    <div class="flex justify-between">
-      <span class="cursor-default text-lg text-gray-600">
-        {{ equipo.nombre }}
+<!--
+  --parameters:
+    @equipos - Equipo[]
+-->
+<div class="space-y-2">
+  <% equipos.forEach(function(equipo) { %>
+  <div class="border-gray-300 border-2 px-3 py-2 space-y-3">
+    <div class="flex justify-between items-center">
+      <span class="cursor-default text-lg text-gray-600 truncate">
+        <%= equipo.nombre %>
       </span>
       <div>
-        <span v-if="equipo.activo" class="px-1 py-1 bg-green-500 text-white rounded-md cursor-default">activo</span>
-        <span v-else class="px-1 py-1 bg-red-500 text-white rounded-md cursor-default">inactivo</span>
+        <% if (equipo.torneo_equipo.estado) { %>
+        <span class="px-1 py-1 bg-green-500 text-white rounded-md cursor-default">activo</span>
+        <% } else { %>
+        <span class="px-1 py-1 bg-red-500 text-white rounded-md cursor-default">inactivo</span>
+        <% } %>
       </div>
     </div>
     <div class="flex justify-end">
-      <button @click="equipo.showIntegrantes = !equipo.showIntegrantes" class="border-2 border-gray-300 px-1 py-2 rounded focus:outline-none text-gray-600 hover:text-gray-800 hover:border-gray-600 relative">
-        <span v-if="!equipo.showIntegrantes">
-          Ver Integrantes
-        </span>
-        <span v-else>Ocultar Integrantes</span>
-
+      <button class="border-2 border-gray-300 px-1 py-1 rounded focus:outline-none text-gray-600 hover:text-gray-800 hover:border-gray-600 relative toggle-integrantes">
+        <span class="text-sm toggle-label">Ver Integrantes</span>
 
         <!-- Lista de integrantes -->
-        <div v-show="equipo.showIntegrantes" class="absolute bg-white rounded-md shadow-lg overflow-hidden top-12 z-10">
-          <div v-for="integrante in equipo.integrantes" :key="integrante" class="flex items-center px-2 py-1 hover:bg-gray-300">
+        <div class="hidden bg-white w-full rounded-md shadow-lg overflow-hidden top-10 z-10 integrantes">
+          <% equipo.lista_integrantes.forEach(function(integrante) { %>
+          <div class="flex items-center px-2 py-1 hover:bg-gray-300">
             <span>
-              {{ integrante }}
+              <%= integrante %>
             </span>
           </div>
+          <% }) %>
         </div>
       </button>
     </div>
   </div>
+  <% }) %>
   <script src="/js/lista-equipos.js"></script>
 </div>
 
