@@ -1,3 +1,4 @@
+const { Torneo, Equipo, Ronda } = require('../models')
 const models = require('../models')
 const otorneo = models.Torneo
 const equipo = models.Equipo
@@ -105,6 +106,40 @@ module.exports = {
           });
         })*/
       
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  */
+  getTorneoById: async (req, res) => {
+    try {
+      const torneo = await Torneo.findByPk(req.params.torneoId, { include: Equipo });
+      return res.render('torneo-equipos', { equipos: torneo.Equipos });
+    } catch(err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Request} res
+  *
+  * Necesita en los parametros `torneoId` y `rondaId`
+  */
+  getRondaByTorneoId: async (req, res) => {
+    const { rondaId } = req.params;
+    try {
+      const ronda = await Ronda.findByPk(rondaId, { include: 'partidas' });
+      if (ronda) {
+        return res.render('ronda-partidas', { ronda });
+      } else {
+        return res.send('404');
+      }
+    } catch(err) {
+      return res.send('Error');
+    }
   }
 }
 
