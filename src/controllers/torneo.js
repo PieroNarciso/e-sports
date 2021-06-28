@@ -2,9 +2,7 @@ const { Torneo, Equipo, Ronda } = require('../models')
 const models = require('../models')
 const otorneo = models.Torneo
 const equipo = models.Equipo
-const oTorneoEquipo = models.torneo_equipo
 const { Op } = require("sequelize")
-const { Equipo } = require('../models')
 
 const renderizar = (req, torneos, res) => {
   if (req.query.p == undefined) var pagActual = 1
@@ -66,13 +64,14 @@ module.exports = {
           where: { lider_id: id }
         }).then((eq) => {
           console.log(eq.id)
-          otorneo.findAll({
+          Torneo.findAll({
             include: [{
               model: Equipo,
-              through: {
-                attributes: ['EquipoId', 'TorneoId'],
-                where: { [Op.not]: [{ EquipoId: eq.id }]}
-              }
+              where: {
+                [Op.or]: {
+                  [Op.not]: {id:1},
+                  [Op.eq]: {id: null}
+                }}
             }]
           }).then((torneos) => {
             console.log(torneos)
@@ -91,21 +90,7 @@ module.exports = {
         }).catch((err) => {
           console.log("Ocurrió un error: " + err)
         })
-    }
-        // PARÁMETRO: NÚMERO DE PÁGINA
-
-        /*var sessionId = 3
-        var listaInscritos = []
-        oTorneoEquipo.findAll({
-          where : {
-            Equipos_lider_id_fkey: sessionId
-          }
-        }).then((lista) => {
-          lista.forEach(element => {
-            listaInscritos.push(element.)
-          });
-        })*/
-      
+    }      
   },
 
   /**
