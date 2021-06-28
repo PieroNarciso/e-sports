@@ -1,4 +1,3 @@
-Dockerfile
 # Build tailwindcss
 src/public/css/index.css
 # Logs
