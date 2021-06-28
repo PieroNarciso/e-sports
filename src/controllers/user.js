@@ -63,10 +63,8 @@ module.exports = {
         where: { correo: req.body.correo },
       })
       .then((lusur) => {
-        console.log(lusur);
         if (lusur.length > 0) {
           //si el tamaño es mayor que 0 entonces si hay usuario.
-          console.log('entree'); //Debug
           const estado = false; //ERROR
           res.render('registro', { estado: estado }); //Se envia para mostrar con el error
         } else {
@@ -78,10 +76,8 @@ module.exports = {
               },
             })
             .then((lequip) => {
-              console.log(lequip);
               if (lequip.length > 0) {
                 //si el tamaño es mayor que 0 entonces si hay equipo.
-                console.log(lequip);
                 const estado = false; //ERROR
                 res.render('registro', { estado }); //Se envia para mostrar con el error
               } else {
@@ -127,8 +123,6 @@ module.exports = {
         where: { id: req.session.userId },
       })
       .then((usuario) => {
-        console.log(usuario);
-        console.log(usuario[0].id);
         equipo
           .findAll({ where: { lider_id: usuario[0].id } })
           .then((equipo) => {
@@ -151,15 +145,12 @@ module.exports = {
         where: { id: req.session.userId },
       })
       .then((usuario) => {
-        console.log(usuario);
-        console.log(usuario[0].id);
         const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
         res.render('perfilLiderActualizar', { estado: estado, u: usuario[0] });
       });
   },
   //POST DEL ACTUALIZAR DEL LIDER
   perfilActualizarPostUser: (req, res) => {
-    console.log('hola');
     usuario.findByPk(req.session.userId).then((usuario_conectado) => {
       usuario
         .findAll({
@@ -170,7 +161,6 @@ module.exports = {
         })
         .then((usuarios) => {
           if (usuarios.length > 0) {
-            console.log('a');
             var estado = false; //Si estado == true, no se mostrará el mensaje error en la pagina.
             res.render('perfilLiderActualizar', {
               estado: estado,
@@ -191,7 +181,6 @@ module.exports = {
                 }
               )
               .then((usuario) => {
-                console.log(usuario);
                 res.redirect('/');
               })
               .catch((error) => {
@@ -261,7 +250,6 @@ module.exports = {
                 u: equipo_usuario[0],
               });
             } else {
-              console.log('AAAAAAAAAAAAA');
               var lista_integrantes = req.body.intengrate.split(',');
               equipo
                 .update(
@@ -276,7 +264,6 @@ module.exports = {
                   }
                 )
                 .then((rpta) => {
-                  console.log(rpta);
                   res.redirect('/');
                 })
                 .catch((error) => {
