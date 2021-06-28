@@ -73,7 +73,7 @@ module.exports = {
   /**
   * Middleware para la atenticacion de un Organizador
   *
-  * Un admin o un organizador puede pasar el middleware
+  * Solo un participante lider puede pasar la atenticacion
   *
   * Al momento de hacer el login del usuario, se debe guardar su role en el atributo
   * `role`
@@ -88,8 +88,8 @@ module.exports = {
   * @param {import('express').NextFunction} next
   */
   authParticipanteLider: (req, res, next) => {
-    if (!['admin', 'organizador'].includes(req.session.role)) {
-      res.status(401).send('No es organizador o admin, no tiene permisos');
+    if (req.session.rol !== 'lider') {
+      res.status(401).send('No es participante lider o no está logueado, no tiene permisos');
     } else {
       next();
     }
