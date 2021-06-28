@@ -69,49 +69,52 @@ module.exports = {
     loginPostUser: (req, res) => {
 
     },
+    //Get de la visa Registro
     registroUser: (req,res) => {
-        const estado = true;
+        const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
         res.render("registro",{estado});
     },
+    
+    //Post de la vista Registro
     registroPostUser:(req,res) => {
-        estado=true;
-        usuario.findAll({
+        estado=true; //Si estado == true, no se mostrará el mensaje error en la pagina.
+        usuario.findAll({ //Encuentra todos los usuarios, donde el correo del registro sea igual.
             where:{correo: req.body.correo}
         })
-        .then( (lusur) => {
+        .then( (lusur) => { 
             console.log(lusur)
-            if(lusur.length > 0 ){
-                console.log("entree")
-                const estado=false;
-                res.render("registro",{estado})
+            if(lusur.length > 0 ){//si el tamaño es mayor que 0 entonces si hay usuario.
+                console.log("entree") //Debug 
+                const estado=false;//ERROR
+                res.render("registro",{estado}) //Se envia para mostrar con el error
             }
             else{
-                equipo.findAll({
+                equipo.findAll({ //Encuentra todos los equipos donde el nombre a crear sea el mismo
                     where: {
                         nombre: req.body.equipo
                     } 
                 })
                 .then( (lequip) =>{
                     console.log(lequip)
-                    if(lequip.length > 0){
+                    if(lequip.length > 0){ //si el tamaño es mayor que 0 entonces si hay equipo.
                         console.log(lequip)
-                        const estado= false;
-                        res.render("registro",{estado})
+                        const estado= false; //ERROR
+                        res.render("registro",{estado}) //Se envia para mostrar con el error
                     }else{
-                        Usuario.create({
+                        Usuario.create({ //se crea usuario
                             nombre_completo: req.body.nombre,
                             correo: req.body.correo,
-                            contraseña: req.body.contrasena,
+                            password: req.body.contrasena,
                             rol:'lider'
                         })
-                        .then((rpta) =>{
+                        .then((rpta) =>{ //se crea equipo
                             Equipo.create({
                                 nombre: req.body.equipo,
                                 lista_integrantes: ['Gorila','leon','perro'],
-                                lider_id: rpta.id
+                                lider_id: rpta.id //Se le asigna el id del participante lider creado al euqipo
                             })
                             .then((rpta) =>{
-                                res.redirect('/')
+                                res.redirect('/') // Se redirecciona.
                             }).catch(error =>{
                                 res.sen(500).send(error)
                             })
@@ -127,18 +130,21 @@ module.exports = {
             res.sen(500).send(error)
         })
     },
-    
+    //GET DEL PERFIL DEL LIDER
     perfilUser:(req,res)=>{
         res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
     })
     },
+    //POST DEL PERFIL DEL LIDER
     perfilPostUser:(req,res) =>{
         
     },
+    //GET DEL ACTUALIZAR DEL LIDER
     perfilActualizarUser:(req,res)=>{
-        const estado=true;
+        const estado=true; //Si estado == true, no se mostrará el mensaje error en la pagina.
         res.render("perfilLiderActualizar",{estado})
     },
+    //POST DEL ACTUALIZAR DEL LIDER
     perfilActualizarPostUser:(req,res)=>{
 
 
@@ -178,17 +184,20 @@ module.exports = {
         }
         res.redirect("/")*/
     },
+    //GET DEL EQUIPO
     equipoUser:(req,res)=>{
         res.render("perfilEquipo",{equipo: "Gatos", integrantes:"Pepe,Juan,Pikachu"})
 
     },
+    //POST DEL EQUIPO
     equipoPostUser:(req,res) =>{
 
     },
+    //GET DEL EQUIPO ACTUALIZAR
     equipoActualizarUser:(req,res)=>{
         const estado=true;
         res.render("perfilEquipoActualizar",{estado})
-    },
+    },//POST DEL EQUIPO ACTUALIZAR
     equipoActualizarPostUser:(req,res)=>{
         try{
 
