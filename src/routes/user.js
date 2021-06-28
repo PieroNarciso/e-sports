@@ -34,8 +34,5 @@ router.post('/equipo/actualizar', equipoActualizarPostUser);
 router.get('/botones', BotonesUser);
 
 router.get('/posiciones', PosicionesUser);
-router.get('/user1', (req, res) => {
-  res.send('User 1');
-});
 
 module.exports = router;
