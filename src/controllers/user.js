@@ -1,9 +1,12 @@
+
 const { Usuario, Equipo } = require("../models");
 const sequelize = require("sequelize")
 const op= sequelize.Op
 const models= require("../models");
 const usuario=models.Usuario;
 const equipo= models.Equipo;
+const bcrypt = require('bcrypt');
+const { authParticipanteLider } = require("../middlewares/auth");
 
 
 /*const verificacion = (nombre,equipo) =>{
@@ -58,17 +61,48 @@ const equipo= models.Equipo;
     return verificado;
 }*/
 module.exports = {
-    getUser: (req, res) => {
-        res.send('User');    
-    },
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Renderiza la pantalla del `Login` para diferentes usuarios
+  * `admin | org | lider`
+  */
+  getLoginUser: (_, res) => {
+    res.render('login', { msg: '' });
+  },
 
-    loginUser: (req, res) => {
-        res.render('login');
-    },
-
-    loginPostUser: (req, res) => {
-
-    },
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response & import('express-session').SessionData} res
+  *
+  * Verifica la informacion otorgada por el usuario al hacer login
+  */
+  postLoginUser: async (req, res) => {
+    const { email, password } = req.body;
+    const msg = 'Email o contraseña incorrecto';
+    try {
+      const usr = await Usuario.findOne({
+        where: { correo: email }
+      });
+      // Usuario existe
+      if (usr) {
+        const isValid = await bcrypt.compare(password, usr.password);
+        // Es valido, se loguea
+        if (isValid) {
+          req.session.userId = usr.id;
+          req.session.rol = usr.rol;
+          
+          return res.redirect('/');
+        }
+        // No es valido
+        return res.render('login', { msg });
+      }
+      // Usuario no existe
+      return res.render('login', { msg });
+    } catch(err) {
+    }
+  },
     //Get de la visa Registro
     registroUser: (req,res) => {
         const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
@@ -132,6 +166,7 @@ module.exports = {
     },
     //GET DEL PERFIL DEL LIDER
     perfilUser:(req,res)=>{
+        
         res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
     })
     },
@@ -197,15 +232,19 @@ module.exports = {
     equipoActualizarUser:(req,res)=>{
         const estado=true;
         res.render("perfilEquipoActualizar",{estado})
-    },//POST DEL EQUIPO ACTUALIZAR
+    },
+    //POST DEL EQUIPO ACTUALIZAR
     equipoActualizarPostUser:(req,res)=>{
         try{
 
         }
         catch{
-            estado=false;
-            res.render("registro",{estado})
+          estado=false;
+          res.render("registro",{estado})
         }
         res.redirect("/")
+      }
+    
+    
     }
-}
+

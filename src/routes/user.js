@@ -1,9 +1,6 @@
 const { Router } = require('express');
-
+const {authParticipanteLider} = require("../middlewares/auth")
 const {
-  getUser,
-  loginUser,
-  loginPostUser,
   registroUser,
   registroPostUser,
   perfilUser,
@@ -17,24 +14,20 @@ const {
 } = require('../controllers/user');
 const router = Router();
 
-router.get('/1', getUser);
-
-router.get('/login', loginUser);
-router.post('/login', loginPostUser);
 
 router.get('/registro', registroUser);
 router.post('/registro', registroPostUser);
 
-router.get('/perfil', perfilUser);
+router.get('/perfil', authParticipanteLider, perfilUser);
 router.post('/perfil', perfilPostUser);
 
-router.get('/perfil/actualizar', perfilActualizarUser);
+router.get('/perfil/actualizar', authParticipanteLider, perfilActualizarUser);
 router.post('/perfil/actualizar', perfilActualizarPostUser);
 
-router.get('/equipo', equipoUser);
+router.get('/equipo', authParticipanteLider, equipoUser);
 router.post('/equipo', equipoPostUser);
 
-router.get('/equipo/actualizar', equipoActualizarUser);
+router.get('/equipo/actualizar', authParticipanteLider, equipoActualizarUser);
 router.post('/equipo/actualizar', equipoActualizarPostUser);
 
 router.get('/user1', (req, res) => {
