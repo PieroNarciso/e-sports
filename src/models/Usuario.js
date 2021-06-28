@@ -19,7 +19,7 @@ const sequelize = require('../db');
           isEmail: true,
         },
       },
-      contraseña: {
+      password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

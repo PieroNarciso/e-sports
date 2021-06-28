@@ -1,9 +1,6 @@
 const { Router } = require('express');
 
 const {
-  getUser,
-  loginUser,
-  loginPostUser,
   registroUser,
   registroPostUser,
   perfilUser,
@@ -17,10 +14,6 @@ const {
 } = require('../controllers/user');
 const router = Router();
 
-router.get('/1', getUser);
-
-router.get('/login', loginUser);
-router.post('/login', loginPostUser);
 
 router.get('/registro', registroUser);
 router.post('/registro', registroPostUser);
