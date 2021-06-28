@@ -10,57 +10,6 @@ const { authParticipanteLider } = require("../middlewares/auth");
 const { HostNotReachableError } = require("sequelize");
 
 
-/*const verificacion = (nombre,equipo) =>{
-    let verificado;
-    Usuario.findAll({
-        where:{
-            correo:correo,
-            rol:"lider"
-        },
-        attributes:['correo'],
-    }) 
-    .then(lusr => { 
-        console.log(lusr)
-        if(lusr.length>0){
-            verificado=false;
-        }else{
-            verificado=true;
-        }
-
-    })
-    
-    //.then((lusr)=>{
-        //lusr.forEach(element =>{
-            //jsonObject= element.get({raw:true})
-           // console.log(jsonObject)
-            /*if(jsonObject == "nombre_completo: "+nombre){
-                console.log("si existe")
-                return false
-            }else{
-                return true
-            }*/
-
-//})
-
-//})
-/*Equipo.findAll({
-    where:{
-        nombre:equipo
-
-    }
-
-})
-.then((lequipo)=>{
-    if(lequipo.length>0){
-        verificado=false;
-    }else{
-        verificado=true;
-    }
- 
-
-})
-return verificado;
-}*/
 module.exports = {
     /**
     * @param {import('express').Request} req
@@ -151,18 +100,18 @@ module.exports = {
                                             .then((rpta) => {
                                                 res.redirect('/') // Se redirecciona.
                                             }).catch(error => {
-                                                res.sen(500).send(error)
+                                                res.status(500).send(error);
                                             })
                                     }).catch(error => {
-                                        res.sen(500).send(error)
+                                        res.status(500).send(error);
                                     })
                             }
                         }).catch(error => {
-                            res.sen(500).send(error)
+                            res.status(500).send(error);
                         })
                 }
             }).catch(error => {
-                res.sen(500).send(error)
+                res.status(500).send(error);
             })
     },
     //GET DEL PERFIL DEL LIDER
@@ -232,12 +181,12 @@ module.exports = {
                         console.log(usuario)
                         res.redirect('/')
                     }).catch(error => {
-                        res.send(500).send(error)
+                        res.status(500).send(error);
                     })
     
                 }
             }).catch(error => {
-                res.send(500).send(error)
+                res.status(500).send(error);
             })
 
 
@@ -303,16 +252,16 @@ module.exports = {
                         console.log(rpta)
                         res.redirect('/')
                     }).catch(error => {
-                        res.send(500).send(error)
+                        res.status(500).send(error);
                     })
     
                 }
             }).catch(error => {
-                res.send(500).send(error)
+                res.status(500).send(error);
             })
         })
         .catch(error=>{
-            res.send(500).send(error)
+            res.status(500).send(error);
         })
     },
     BotonesUser:(req,res)=>{
