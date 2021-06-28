@@ -10,7 +10,9 @@ const {
   equipoUser,
   equipoPostUser,
   equipoActualizarUser,
-  equipoActualizarPostUser
+  equipoActualizarPostUser,
+  PosicionesUser,
+  BotonesUser
 } = require('../controllers/user');
 const router = Router();
 
@@ -29,7 +31,9 @@ router.post('/equipo', equipoPostUser);
 
 router.get('/equipo/actualizar', authParticipanteLider, equipoActualizarUser);
 router.post('/equipo/actualizar', equipoActualizarPostUser);
+router.get('/botones', BotonesUser);
 
+router.get('/posiciones', PosicionesUser);
 router.get('/user1', (req, res) => {
   res.send('User 1');
 });

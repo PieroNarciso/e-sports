@@ -314,8 +314,13 @@ module.exports = {
         .catch(error=>{
             res.send(500).send(error)
         })
+    },
+    BotonesUser:(req,res)=>{
+        res.render("botones")
+
+    },
+    PosicionesUser: (req, res) => {
+        res.render("posiciones")
     }
-
-
 }
 
