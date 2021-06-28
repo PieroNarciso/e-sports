@@ -12,6 +12,7 @@ const actualizarFiltrosLider = () => {
     queryFiltros = queryFiltros.concat('&', "cbAbierto=", cbAbierto, '&', "cbEnCurso=", cbEnCurso, '&',
         "cbCerrado=", cbCerrado, '&', "cbInscrito=", cbInscrito, '&', "cbNoInscrito=", cbNoInscrito)
     document.getElementById('aplicarFiltrosLider').href = "/torneos?p=1".concat(queryFiltros)
+    console.log(queryFiltros)
 }
 
 

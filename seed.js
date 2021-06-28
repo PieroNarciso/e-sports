@@ -9,7 +9,9 @@ const usuarios = [
   // ORGANIZADOR (LO DEBERÍA PODER CREAR EL ADMIN) id 2
   { nombre_completo: 'Armando Barreras', correo: 'abarreras@gmail.com', contraseña: 'abarreras', rol: 'org' },
   // LIDER id 3
+  { nombre_completo: 'Jose Cardenas', correo: 'jcardenas@gmail.com', contraseña: 'jcaradenas', rol: 'lider' },
   { nombre_completo: 'Jose Cardenas', correo: 'jcardenas@gmail.com', contraseña: 'jcaradenas', rol: 'lider' }
+
 ];
 
 // TORNEOS
@@ -26,8 +28,8 @@ const torneos = [
 const equipos = [
   // id 1
   {
-    nombre: 'Los más capos de Progra Web', lista_integrantes: ['Jose', 'André', 'Juliana', 'Carlos', 'Willy'],
-      Equipos_lider_id_fkey: 3
+    nombre: 'Equipo 3', lista_integrantes: ['I1', 'I2', 'I3', 'I4'],
+    lider_id: 4
   }
 ];
 
@@ -69,7 +71,7 @@ const main = async () => {
     const equipo2 = await Equipo.create( // id 2
       {
         nombre: 'Equipo 2', lista_integrantes: ['I1', 'I2', 'I3', 'I4'],
-          Equipos_lider_id_fkey: 3
+          Equipos_lider_id_fkey: 1
       })
     const torneo2 = await Torneo.create({ // id 2
       nombre: 'Torneo 2', fec_inicio: new Date(2021, 06, 17), fec_fin: new Date(2021, 06, 24),

@@ -64,9 +64,9 @@
     <div class="border-b-2 border-gray-300 px-2 py-2 rounded">
       <div class="flex items-center">
         <!-- Colores por estado del torneo -->
-        <% if (torneo.estado == 'activo') { %>
+        <% if (torneo.estado == 'abierto') { %>
         <div class="w-4 h-4 rounded-full bg-green-500"></div>
-        <% } else if (torneo.estado == 'inactivo') { %>
+        <% } else if (torneo.estado == 'cerrado') { %>
         <div class="w-4 h-4 rounded-full bg-red-500"></div>
         <% } else { %>
         <div class="w-4 h-4 rounded-full bg-yellow-500"></div>
