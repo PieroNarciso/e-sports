@@ -262,8 +262,7 @@ module.exports = {
               });
             } else {
               console.log('AAAAAAAAAAAAA');
-              var integrantes = req.body.integrante;
-              var lista_integrantes = [integrantes];
+              var lista_integrantes = req.body.intengrate.split(',');
               equipo
                 .update(
                   {
