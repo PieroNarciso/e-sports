@@ -250,12 +250,11 @@ module.exports = {
                 u: equipo_usuario[0],
               });
             } else {
-              var lista_integrantes = req.body.intengrate.split(',');
               equipo
                 .update(
                   {
                     nombre: req.body.nombre,
-                    lista_integrantes: lista_integrantes,
+                    lista_integrantes: req.body.integrante.split(','),
                   },
                   {
                     where: {
