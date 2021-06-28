@@ -1,8 +1,13 @@
-const { Torneo, Equipo, Ronda, Usuario } = require('../models')
+const { Torneo, Equipo, Ronda, Usuario, sequelize } = require('../models')
 const models = require('../models')
 const otorneo = models.Torneo
 const equipo = models.Equipo
 const { Op } = require("sequelize")
+
+const asignar = (i) => {
+  inscritos = []
+  inscritos = i
+}
 
 const renderizar = (req, torneos, res) => {
   // PAGINACIÓN
@@ -17,12 +22,14 @@ const renderizar = (req, torneos, res) => {
     var listatorneos = torneos.slice(inicio, fin)
   }
   // PARA VER INSCRITOS DEL LIDER
-  res.render('torneos', { listatorneos, rol, cantidadPaginas, pagActual, ids });
+  res.render('torneos', { listatorneos, rol, cantidadPaginas, pagActual, ids, inscritos });
 }
 
 var id = 3
 var ids = []
 var rol
+var contador
+var inscritos = []
 
 module.exports = {
   /**
@@ -38,6 +45,32 @@ module.exports = {
       // BUSCAR ROL
       const us = await Usuario.findByPk(id)
       rol = us.rol
+
+      // BUSCAR CANTIDAD DE EQUIPOS ACTIVOS POR TORNEO
+      Torneo.findAll({
+        include: {
+          model: Equipo
+        }
+      }).then((torneos) => {
+        var x = []
+        torneos.forEach(function (t) {
+          contador = 0
+          if (t.Equipos.length > 0) {
+            t.Equipos.forEach(function (e) {
+              if (e.torneo_equipo.estado == 'activo') {
+                contador++
+              }
+            });
+          }
+          var d = {
+            id: t.id,
+            activos: contador
+          }
+          x.push(d)
+        });
+        asignar(x)
+      })
+
       // SI ES LIDER
       if (rol == 'lider') {
         // hallar id torneos inscritos
@@ -113,7 +146,9 @@ module.exports = {
       }
 
       // SI ES ORGANIZADOR
-
+      else if (rol == 'org') {
+        
+      }
     } catch (err) {
       console.log(err)
       return res.send('Error');

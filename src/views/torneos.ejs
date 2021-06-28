@@ -83,7 +83,13 @@
         <% } %>
       </div>
       <div class="flex flex-col mt-2 text-sm text-gray-600">
-        <span>Equipos registrados: <%= torneo.registrados %>/<%= torneo.max_participantes %></span>
+        <span>Equipos registrados: 
+          <% inscritos.forEach(function(i) { %>
+          <% if (i.id == torneo.id) {%>
+          <%= i.activos%>
+          <% } %>
+          <% }) %>
+          / <%= torneo.max_participantes %></span>
         <span>Estado: Activo</span>
       </div>
      </div> 
