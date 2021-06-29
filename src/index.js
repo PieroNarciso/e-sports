@@ -40,6 +40,9 @@ app.set('layout', path.join(__dirname, 'layouts/main'));
 app.set('layout extractScripts', true);
 
 
+// Middlewares
+app.use(require('./middlewares/locals.js').roleRequestMiddleware);
+
 
 // Routes middlewares
 routerConnection(app);
