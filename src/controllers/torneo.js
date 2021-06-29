@@ -97,6 +97,7 @@ module.exports = {
 
           if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'true') {
             Torneo.findAll({
+              include: Equipo,
               where: {
                 estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
               }
@@ -122,6 +123,7 @@ module.exports = {
                 // SOLO TORNEOS NO INSCRITOS
                 else if (req.query.cbInscrito == 'false' && req.query.cbNoInscrito == 'true') {
                   Torneo.findAll({
+                    include: Equipo,
                     where: {
                       [Op.not]: { id: ids },
                     }
@@ -138,7 +140,7 @@ module.exports = {
         }
         // SIN FILTROS
         else {
-          otorneo.findAll()
+          otorneo.findAll({ include: Equipo })
             .then((torneos) => {
               renderizar(req, torneos, res)
             })
