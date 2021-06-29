@@ -4,9 +4,9 @@ const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const db = require('./db')
 const { routerConnection } = require('./routes');
-const { PORT, SECRET_KEY, SESSION_NAME } = require('./config/env');
-
+const { PORT, SECRET_KEY, SESSION_NAME, DB_MONGODB_URI } = require('./config/env');
 const app = express();
+
 
 // Express global config
 app.use(express.json());
@@ -18,9 +18,15 @@ if (process.env.NODE_ENV === 'production') {
   secure = true;
 }
 
+
+// Session config
+const MongoStore = require('connect-mongo');
 app.use(session({
   name: SESSION_NAME,
   secret: SECRET_KEY,
+  store: MongoStore.create({
+    mongoUrl: DB_MONGODB_URI,
+  }),
   resave: false,
   saveUninitialized: true,
   cookie: { secure }
@@ -42,7 +48,8 @@ app.listen(PORT, async () => {
   console.log('Server running in port', PORT);
   // true significa que se eliminarán las tablas y se volverán a crear cada que se inicie la app
   try {
-    await db.sync({force:false});
+    await db.sync({ force: false });
+    //require('../seed')
     console.log('DB connectado');
   } catch(err) {
     console.log(err);

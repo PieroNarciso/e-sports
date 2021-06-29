@@ -64,9 +64,9 @@
     <div class="border-b-2 border-gray-300 px-2 py-2 rounded">
       <div class="flex items-center">
         <!-- Colores por estado del torneo -->
-        <% if (torneo.estado == 'activo') { %>
+        <% if (torneo.estado == 'abierto') { %>
         <div class="w-4 h-4 rounded-full bg-green-500"></div>
-        <% } else if (torneo.estado == 'inactivo') { %>
+        <% } else if (torneo.estado == 'cerrado') { %>
         <div class="w-4 h-4 rounded-full bg-red-500"></div>
         <% } else { %>
         <div class="w-4 h-4 rounded-full bg-yellow-500"></div>
@@ -76,14 +76,20 @@
       <div class="grid grid-cols-12 items-center">
         <p class="col-span-8 pr-2 text-gray-700"><%= torneo.descripcion %></p>
         <!-- Inscripcion por estado del torneo -->
-        <% if (!torneo.inscrito) { %>
+        <% if (!ids.includes(torneo.id)) { %>
         <a href="#" class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirnos</a>
         <% } else { %>
         <a href="#" class="col-span-4 justify-self-center px-2 w-24 py-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500 text-center">Ver</a>
         <% } %>
       </div>
       <div class="flex flex-col mt-2 text-sm text-gray-600">
-        <span>Equipos registrados: <%= torneo.registrados %>/<%= torneo.max_participantes %></span>
+        <span>Equipos registrados: 
+          <% inscritos.forEach(function(i) { %>
+          <% if (i.id == torneo.id) {%>
+          <%= i.activos%>
+          <% } %>
+          <% }) %>
+          / <%= torneo.max_participantes %></span>
         <span>Estado: Activo</span>
       </div>
      </div> 

@@ -11,31 +11,31 @@
         <div class="mb-3">
             <label htmlFor="text">Nombre</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text" value="<%= u.nombre_completo %>">
             </div>
         
         </div>
         <div class="mb-3">
             <label>Correo Electronico</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email"value="<%= u.correo %>">
             </div>
         </div>
         <div class="mb-3">
-            <label>Nombre Equipo</label>
+            <label>Nueva Contraseña</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="equipo" name="equipo"type="text">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="contrasena" name="contrasena"type="password">
             </div>
         </div>
         <div class="hidden">
             <%= estado %>
         </div>
         <% if(!estado){ %>
-        <div class="mb-5 bg-red-500 rounded flex items-center hidden" id="error" >
+        <div class="mb-5 bg-red-500 rounded flex items-center" id="error" >
             <svg class="w-6 h-6 ml-5" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M13 14H11V9H13M13 18H11V16H13M1 21H23L12 2L1 21Z" />
             </svg> 
-                <p class="grid-cols-2 ml-5"> <b>Error</b> El nombre de equipo ya esta en el torneo o el correo esta registrado </p>
+                <p class="grid-cols-2 ml-5"> <b>Error</b> El nuevo correo ya esta registrado </p>
         </div><% } %>
         <div class="mb-3 mt-5">
                 <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Actualizar" type="submit"> Actualizar </button>
