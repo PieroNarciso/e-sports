@@ -1,0 +1,55 @@
+
+<h1 style="color: seagreen;">LISTA DE USUARIOS</h1>
+
+<form action="agregar" style="height: 50px;">
+    <input type="submit" value="Crear nuevo Jugador" style="background-color: skyblue;
+    padding:10px;border-radius: 13px;"/>
+</form>
+<br>
+
+<br>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre completo</th>
+            <th>Correo Electronico</th>
+            <th>Accion</th>
+        </tr>
+    </thead>
+    <tbody id="datos">
+
+             <% lusuarios.forEach (function (elem) { %>
+                <tr>
+                    <td><%= elem.id %></td>
+                    <td><%= elem.nombre %></td>
+                    <td><%= elem.correo_electronico %></td>
+            
+                        <% listaRoles.forEach(function(f) 
+                        { 
+                            if (f.id == elem.rolId){
+                                %>
+                                <td><%=f.nombre %> 
+                                </td>
+
+
+                            <% } %>
+                        <%}) %>
+            
+
+                </tr>
+             
+
+
+                <td>
+                    <form action="editar" method="POST">
+                        <input type="hidden" name="id" value="<%= elem.id %>" />
+                        <input type="submit" value="Editar" />
+                    </form>
+                </td>
+
+             <% }) %>
+     </tbody>
+</table>
+
+
