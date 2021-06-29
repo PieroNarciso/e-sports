@@ -29,7 +29,7 @@ app.use(session({
   }),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure }
+  cookie: { secure, sameSite: true }
 }));
 
 // View Engine config
@@ -39,6 +39,9 @@ app.use(expressLayouts);
 app.set('layout', path.join(__dirname, 'layouts/main'));
 app.set('layout extractScripts', true);
 
+
+// Middlewares
+app.use(require('./middlewares/locals.js').roleRequestMiddleware);
 
 
 // Routes middlewares
