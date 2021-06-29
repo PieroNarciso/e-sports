@@ -48,6 +48,17 @@ module.exports = {
       return res.render('login', { msg });
     } catch (err) {}
   },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Se encarga de renderizar la opcion `usuarios` donde se muestra la lista de
+  * usuarios y el boton para crear un usuario nuevo
+  */
+  getUsuarios: (_, res) => {
+    res.render('usuarios');
+  },
   //Get de la visa Registro
   registroUser: (req, res) => {
     const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
