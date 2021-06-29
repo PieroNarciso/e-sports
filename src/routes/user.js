@@ -12,10 +12,13 @@ const {
   equipoActualizarUser,
   equipoActualizarPostUser,
   PosicionesUser,
-  BotonesUser
+  BotonesUser,
+  getUsuarios,
 } = require('../controllers/user');
 const router = Router();
 
+
+router.get('/', getUsuarios);
 
 router.get('/registro', registroUser);
 router.post('/registro', registroPostUser);
