@@ -17,7 +17,7 @@ module.exports = {
   * @param {import('express').NextFunction} next
   */
   authSession: (req, res, next) => {
-    if (!req.session.userID) {
+    if (!req.session.userId || !req.session.rol) {
       res.status(401).send('Not Login');
     } else {
       next();
