@@ -27,6 +27,8 @@ Compilar tailwindcss y se genera un archivo en el path `./src/public/css/index.c
 $ npm run dev:tailwind
 ```
 
+> En caso se quiera iniciar el project con los seeders, correr `npm run seed`
+
 Correr el script de desarrollo
 
 ```bash
@@ -80,10 +82,12 @@ $ npm run start
     * `/controllers`: contiene los controladores para las rutas.
     * `/layouts`: contiene los layout en ejs que se van a mostrar en las distintas vistas.
     * `/migrations`: contiene las migraciones que se realicen a la base de datos (postgres).
+    * `/middlewares`: contiene los middlewares de atenticación de los usuarios y otros.
     * `/models`: contiene los modelos de las tablas de la base de datos (postgres|mongodb).
     * `/partials`: contiene partials en ejs de distintos componentes reutilizables.
     * `/public`: contiene las hojas de estilos y javascript.
     * `/routes`: configuración y rutas del proyecto
+    * `/seeders`: contiene los inserts inicial de la base de dato (`npm run seed`)
     * `/views`: contiene las vistas que se van a renderizar en su respectiva ruta.
     * `/index.js`: contiene la aplicación y su configuración inicial.
 * `/package.json`: Contiene las dependencias del proyecto y scripts

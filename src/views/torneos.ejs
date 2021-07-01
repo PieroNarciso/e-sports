@@ -76,7 +76,6 @@
       <div class="grid grid-cols-12 items-center">
         <p class="col-span-8 pr-2 text-gray-700"><%= torneo.descripcion %></p>
         <!-- Inscripcion por estado del torneo -->
-        <% console.log(torneo) %>
         <% if (!ids.includes(torneo.id) && (torneo.estado === 'abierto') && (torneo.max_participantes > torneo.Equipos.length)) { %>
         <a href="#" class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirnos</a>
         <% } else { %>
