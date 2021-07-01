@@ -293,7 +293,7 @@ module.exports = {
                   }
                 )
                 .then((rpta) => {
-                  res.redirect('/');
+                  res.redirect('/user/equipo');
                 })
                 .catch((error) => {
                   res.send(500).send(error);
