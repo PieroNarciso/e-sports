@@ -1,11 +1,18 @@
-const { Torneo, Equipo, Ronda } = require('../models')
+const { Torneo, Equipo, Ronda, Usuario, sequelize } = require('../models')
 const models = require('../models')
 const otorneo = models.Torneo
-const oTorneoEquipo = models.torneo_equipo
+const equipo = models.Equipo
 const { Op } = require("sequelize")
 
+const asignar = (i) => {
+  inscritos = []
+  inscritos = i
+}
+
 const renderizar = (req, torneos, res) => {
-  var pagActual = req.query.p
+  // PAGINACIÓN
+  if (req.query.p == undefined) var pagActual = 1
+  else var pagActual = req.query.p
   var cantidadPaginas = Math.round((torneos.length / 5) + 0.5)
   var inicio = (pagActual - 1) * 5
   var fin = pagActual * 5
@@ -14,9 +21,15 @@ const renderizar = (req, torneos, res) => {
   } else {
     var listatorneos = torneos.slice(inicio, fin)
   }
-  const rol = 'lider'
-  res.render('torneos', { listatorneos, rol, cantidadPaginas, pagActual });
+  // PARA VER INSCRITOS DEL LIDER
+  res.render('torneos', { listatorneos, rol, cantidadPaginas, pagActual, ids, inscritos });
 }
+
+var id = 3
+var ids = []
+var rol
+var contador
+var inscritos = []
 
 module.exports = {
   /**
@@ -27,51 +40,119 @@ module.exports = {
 // http://localhost:3000/torneos?p=1&cbAbierto=true&cbEnCurso=true&cbCerrado=true&cbInscrito=true&cbNoInscrito=true
 
 
-  getTorneos: (req, res) => {
-    if (req.query.cbAbierto != null) {
-      var cbAbierto = ''
-      var cbEnCurso = ''
-      var cbCerrado = ''
-      if (req.query.cbAbierto == 'true') cbAbierto = 'abierto'
-      if (req.query.cbEnCurso == 'true') cbEnCurso = 'cerrado'
-      if (req.query.cbCerrado == 'true') cbCerrado = 'inactivo'
-      console.log(req.query)
-      otorneo.findAll({
-        where: {
-          // torneos abiertos
-          estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
+  getTorneos: async (req, res) => {
+    try {
+      // BUSCAR ROL
+      const us = await Usuario.findByPk(id)
+      rol = us.rol
+
+      // BUSCAR CANTIDAD DE EQUIPOS ACTIVOS POR TORNEO
+      Torneo.findAll({
+        include: {
+          model: Equipo
         }
       }).then((torneos) => {
-        renderizar(req, torneos, res)
-      }).catch((err) => {
-        console.log("Ocurrió un error: " + err)
+        var x = []
+        torneos.forEach(function (t) {
+          contador = 0
+          if (t.Equipos.length > 0) {
+            t.Equipos.forEach(function (e) {
+              if (e.torneo_equipo.estado == 'activo') {
+                contador++
+              }
+            });
+          }
+          var d = {
+            id: t.id,
+            activos: contador
+          }
+          x.push(d)
+        });
+        asignar(x)
       })
 
-
-    } else if (req.query.txtNombre != null) {
-      
-    } else {
-      otorneo.findAll()
-        .then((torneos) => {
-          renderizar(req, torneos, res)
-        }).catch((err) => {
-          console.log("Ocurrió un error: " + err)
-        })
-    }
-        // PARÁMETRO: NÚMERO DE PÁGINA
-
-        /*var sessionId = 3
-        var listaInscritos = []
-        oTorneoEquipo.findAll({
-          where : {
-            Equipos_lider_id_fkey: sessionId
+      // SI ES LIDER
+      if (rol == 'lider') {
+        // hallar id torneos inscritos
+        equipo.findOne({
+          where: {
+            lider_id: id
           }
-        }).then((lista) => {
-          lista.forEach(element => {
-            listaInscritos.push(element.)
-          });
-        })*/
-      
+        }).then((eq) => {
+          eq.getTorneos({
+          }).then((torneos) => {
+            torneos.forEach(function (t) {
+              ids.push(t.id)
+            });
+          })
+        })
+        // SECCIÓN PARA FILTRAR
+        if (req.query.cbAbierto != null) {
+          var cbAbierto = ''
+          var cbEnCurso = ''
+          var cbCerrado = ''
+          if (req.query.cbAbierto == 'true') cbAbierto = 'abierto'
+          if (req.query.cbEnCurso == 'true') cbEnCurso = 'en curso'
+          if (req.query.cbCerrado == 'true') cbCerrado = 'cerrado'
+
+          if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'true') {
+            Torneo.findAll({
+              where: {
+                estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
+              }
+            }).then((torneos) => {
+              renderizar(req, torneos, res)
+            })
+          }
+          else {
+            equipo.findOne({
+              where: {
+                lider_id: id
+              }
+            }).then((eq) => {
+              eq.getTorneos({
+                where: {
+                  estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
+                }
+              }).then((torneos) => {
+                // SOLO TORNEOS INSCRITOS
+                if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'false') {
+                  renderizar(req, torneos, res)
+                }
+                // SOLO TORNEOS NO INSCRITOS
+                else if (req.query.cbInscrito == 'false' && req.query.cbNoInscrito == 'true') {
+                  Torneo.findAll({
+                    where: {
+                      [Op.not]: { id: ids },
+                    }
+                  }).then((torneos2) => {
+                    renderizar(req, torneos2, res)
+                  })
+                }
+                // NINGUNO
+                else res.send('No se encontraron torneos.')
+              })
+            })
+          }
+          
+        }
+        // SIN FILTROS
+        else {
+          otorneo.findAll()
+            .then((torneos) => {
+              renderizar(req, torneos, res)
+            })
+        }
+      }
+
+      // SI ES ORGANIZADOR
+      else if (rol == 'org') {
+        
+      }
+    } catch (err) {
+      console.log(err)
+      return res.send('Error');
+    }
   },
 
   /**
