@@ -1,10 +1,11 @@
+const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
+
 const { Usuario, Equipo } = require('../models');
-const sequelize = require('sequelize');
-const op = sequelize.Op;
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
-const bcrypt = require('bcrypt');
+const { SESSION_NAME } = require('../config/env');
 
 
 module.exports = {
@@ -47,8 +48,37 @@ module.exports = {
       }
       // Usuario no existe
       return res.render('login', { msg });
-    } catch (err) {}
+    } catch (err) {
+      return res.status(500).send('500 Server Error');
+    }
   },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Destruye la session y el rol del usuario logueado
+  */
+  logoutUser: (req, res) => {
+    req.session.destroy(err => {
+      if (err) {
+        return res.status(400).redirect('/');
+      }
+      return res.clearCookie(SESSION_NAME).redirect('/');
+    });
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Se encarga de renderizar la opcion `usuarios` donde se muestra la lista de
+  * usuarios y el boton para crear un usuario nuevo
+  */
+  getUsuarios: (_, res) => {
+    res.render('usuarios');
+  },
+
   //Get de la visa Registro
   registroUser: (req, res) => {
     const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
@@ -145,7 +175,7 @@ module.exports = {
         .findAll({
           where: {
             correo: req.body.correo,
-            id: { [op.ne]: [req.session.userId] },
+            id: { [Op.ne]: [req.session.userId] },
           },
         })
         .then((usuarios) => {
@@ -228,7 +258,7 @@ module.exports = {
           .findAll({
             where: {
               nombre: req.body.nombre,
-              lider_id: { [op.ne]: [req.session.userId] },
+              lider_id: { [Op.ne]: [req.session.userId] },
             },
           })
           .then((equipos_encontrados) => {
@@ -252,7 +282,7 @@ module.exports = {
                   }
                 )
                 .then((rpta) => {
-                  res.redirect('/');
+                  res.redirect('/user/equipo');
                 })
                 .catch((error) => {
                   res.status(500).send(error);
