@@ -1,11 +1,13 @@
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const { Usuario, Equipo } = require('../models');
+const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
 const { SESSION_NAME } = require('../config/env');
+const torneo = require('./torneo');
+const { torneo_equipo } = require('../models/torneo_equipo');
 
 
 module.exports = {
@@ -297,11 +299,36 @@ module.exports = {
         res.status(500).send(error);
       });
   },
+
+  //Botones
   BotonesUser: (req, res) => {
-    res.render('botones');
+    var id=req.params.id;
+    res.render('botones',{id: id});
   },
+  //Posiciones 
   PosicionesUser: (req, res) => {
-    
-    res.render('posiciones');
+    var id= req.params.id;
+    torneo_equipo.findAll({
+      where:{
+        torneo_id: id
+      },
+      include:[{
+        
+      }]
+    })
+    .then(equipostorneo=>{
+
+    })
+    /*Torneo.findByPk(id,
+      {
+        include: [
+          {model: Equipo},
+          {model: Ronda,include: Partida}]
+      })
+    .then(objeto => {
+      var Lequipos= objeto.Equipo;
+      var lrondas = objeto.Ronda;
+      var lpartidas= objeto.Partida;
+    })*/
   },
 };

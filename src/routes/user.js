@@ -33,7 +33,7 @@ router.get('/equipo', authParticipanteLider, equipoUser);
 router.post('/equipo', equipoPostUser);
 
 router.get('/equipo/actualizar', authParticipanteLider, equipoActualizarUser);
-router.post('/equipo/actualizar', equipoActualizarPostUser);
+router.post('/equipo/actualizar',authParticipanteLider, equipoActualizarPostUser);
 router.get('/botones', BotonesUser);
 
 router.get('/posiciones', PosicionesUser);
