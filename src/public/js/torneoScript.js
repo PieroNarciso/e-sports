@@ -14,27 +14,41 @@ const actualizarFiltrosLider = () => {
     document.getElementById('aplicarFiltrosLider').href = "/torneos?p=1".concat(queryFiltros)
 }
 
-
-const avanzarPag = () => {
-
+const actualizarFiltrosOrg = () => {
+    queryFiltros = ''
+    var txtNombre = document.getElementById('txtNombre').value
+    console.log(txtNombre)
+    queryFiltros = queryFiltros.concat('&nomb=', txtNombre)
+    var string = "/torneos?p=1".concat(queryFiltros)
+    console.log(queryFiltros)
+    window.location = string
 }
 
 const mostrarFiltros = () => {
     const filtros = document.getElementById('filtros')
     if (filtros.hidden == true) filtros.hidden = false
     else filtros.hidden = true
-    actualizarFiltrosLider()
+    // ¿es lider?
+    if (checkbox != null) actualizarFiltrosLider()
 }
 
 
-try {
-    document.getElementById('avanzar').addEventListener('click', avanzarPag)
-} catch {}
+var checkbox = document.getElementById('cbAbierto')
+if (checkbox != null) {
+    document.getElementById('cbAbierto').addEventListener('click', actualizarFiltrosLider)
+    document.getElementById('cbEnCurso').addEventListener('click', actualizarFiltrosLider)
+    document.getElementById('cbCerrado').addEventListener('click', actualizarFiltrosLider)
+    document.getElementById('cbInscrito').addEventListener('click', actualizarFiltrosLider)
+    document.getElementById('cbNoInscrito').addEventListener('click', actualizarFiltrosLider)
+}
 document.getElementById('btnFiltro').addEventListener('click', mostrarFiltros)
-document.getElementById('cbAbierto').addEventListener('click', actualizarFiltrosLider)
-document.getElementById('cbEnCurso').addEventListener('click', actualizarFiltrosLider)
-document.getElementById('cbCerrado').addEventListener('click', actualizarFiltrosLider)
-document.getElementById('cbInscrito').addEventListener('click', actualizarFiltrosLider)
-document.getElementById('cbNoInscrito').addEventListener('click', actualizarFiltrosLider)
+
+var o = document.getElementById('aplicarFiltrosOrg')
+if (o != null) {
+    o.addEventListener('click', () => {
+        actualizarFiltrosOrg();
+    })
+}
+    
 
 

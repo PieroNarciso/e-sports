@@ -1,7 +1,4 @@
 const { Torneo, Equipo, Ronda, Usuario, sequelize } = require('../models')
-const models = require('../models')
-const otorneo = models.Torneo
-const equipo = models.Equipo
 const { Op } = require("sequelize")
 
 const asignar = (i) => {
@@ -25,10 +22,13 @@ const renderizar = (req, torneos, res) => {
   res.render('torneos', { listatorneos, rol, cantidadPaginas, pagActual, ids, inscritos });
 }
 
-var id = 3
-var ids = []
+var id
+// si es lider, almacena los ids de los torneos inscritos
+// si es organizador, almacena los ids de los torneos que ha creado
+var ids
 var rol
 var contador
+// lista de "dictionaries" con el id del torneo y la cantidad de equipos activos del mismo torneo
 var inscritos = []
 
 module.exports = {
@@ -42,11 +42,12 @@ module.exports = {
 
   getTorneos: async (req, res) => {
     try {
+      id = req.session.userId
       // BUSCAR ROL
       const us = await Usuario.findByPk(id)
       rol = us.rol
-
       // BUSCAR CANTIDAD DE EQUIPOS ACTIVOS POR TORNEO
+      /* Esto es para mostrar por cada torneo el numero de equipos activos inscritos sobre el máximo de equipos posibles*/
       Torneo.findAll({
         include: {
           model: Equipo
@@ -74,7 +75,8 @@ module.exports = {
       // SI ES LIDER
       if (rol == 'lider') {
         // hallar id torneos inscritos
-        equipo.findOne({
+        ids = []
+        Equipo.findOne({
           where: {
             lider_id: id
           }
@@ -106,7 +108,7 @@ module.exports = {
             })
           }
           else {
-            equipo.findOne({
+            Equipo.findOne({
               where: {
                 lider_id: id
               }
@@ -140,7 +142,7 @@ module.exports = {
         }
         // SIN FILTROS
         else {
-          otorneo.findAll({ include: Equipo })
+          Torneo.findAll()
             .then((torneos) => {
               renderizar(req, torneos, res)
             })
@@ -149,7 +151,36 @@ module.exports = {
 
       // SI ES ORGANIZADOR
       else if (rol == 'org') {
-        
+        ids = []
+        // hallar id de los torneos creados
+        Torneo.findAll({
+          where: {
+            organizador_id: id
+          }
+        }).then((torneos) => {
+          torneos.forEach(function (t) {
+            ids.push(t.id)
+          })
+        }).then(() => {
+          // si el campo de texto está vacío o no se aplicó el filtro:
+          if ((req.query.nomb == '') || (req.query.nomb == null)) {
+            Torneo.findAll().then((torneos) => {
+              renderizar(req, torneos, res)
+            })
+          }
+          // si hay filtro
+          else {
+            Torneo.findAll({
+              where: {
+                nombre: {
+                  [Op.substring]: req.query.nomb
+                }
+              }
+            }).then((torneos) => {
+              renderizar(req, torneos, res)
+            })
+          }
+        })
       }
     } catch (err) {
       console.log(err)
