@@ -1,5 +1,5 @@
 const { Router } = require('express');
-
+const {authParticipanteLider} = require("../middlewares/auth")
 const {
   registroUser,
   registroPostUser,
@@ -10,28 +10,32 @@ const {
   equipoUser,
   equipoPostUser,
   equipoActualizarUser,
-  equipoActualizarPostUser
+  equipoActualizarPostUser,
+  PosicionesUser,
+  BotonesUser,
+  getUsuarios,
 } = require('../controllers/user');
 const router = Router();
 
 
+router.get('/', getUsuarios);
+
 router.get('/registro', registroUser);
 router.post('/registro', registroPostUser);
 
-router.get('/perfil', perfilUser);
+router.get('/perfil', authParticipanteLider, perfilUser);
 router.post('/perfil', perfilPostUser);
 
-router.get('/perfil/actualizar', perfilActualizarUser);
+router.get('/perfil/actualizar', authParticipanteLider, perfilActualizarUser);
 router.post('/perfil/actualizar', perfilActualizarPostUser);
 
-router.get('/equipo', equipoUser);
+router.get('/equipo', authParticipanteLider, equipoUser);
 router.post('/equipo', equipoPostUser);
 
-router.get('/equipo/actualizar', equipoActualizarUser);
+router.get('/equipo/actualizar', authParticipanteLider, equipoActualizarUser);
 router.post('/equipo/actualizar', equipoActualizarPostUser);
+router.get('/botones', BotonesUser);
 
-router.get('/user1', (req, res) => {
-  res.send('User 1');
-});
+router.get('/posiciones', PosicionesUser);
 
 module.exports = router;

@@ -1,14 +1,14 @@
-const app = Vue.createApp({
-  data() {
-    return {
-      drawerShow: false,
-    }
-  },
-  methods: {
-    toggleDrawer() {
-      this.drawerShow = !this.drawerShow
-    }
-  }
-});
+window.addEventListener('DOMContentLoaded', () => {
+  const drawerToggleBtns = document.querySelectorAll('.toggle-drawer');
+  const drawerElement = document.querySelector('#drawer');
 
-app.mount('#navbar-app');
+  const toggleDrawer = () => {
+    drawerElement.classList.toggle('hidden');
+    drawerElement.classList.toggle('flex');
+  }
+
+  drawerToggleBtns.forEach(btn => {
+    btn.addEventListener('click', toggleDrawer);
+  });
+
+});

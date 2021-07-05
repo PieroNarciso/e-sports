@@ -22,7 +22,7 @@ const renderizar = (req, torneos, res) => {
   res.render('torneos', { listatorneos, rol, cantidadPaginas, pagActual, ids, inscritos });
 }
 
-var id = 2
+var id
 // si es lider, almacena los ids de los torneos inscritos
 // si es organizador, almacena los ids de los torneos que ha creado
 var ids
@@ -42,6 +42,7 @@ module.exports = {
 
   getTorneos: async (req, res) => {
     try {
+      id = req.session.userId
       // BUSCAR ROL
       const us = await Usuario.findByPk(id)
       rol = us.rol
@@ -98,6 +99,7 @@ module.exports = {
 
           if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'true') {
             Torneo.findAll({
+              include: Equipo,
               where: {
                 estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
               }
@@ -123,6 +125,7 @@ module.exports = {
                 // SOLO TORNEOS NO INSCRITOS
                 else if (req.query.cbInscrito == 'false' && req.query.cbNoInscrito == 'true') {
                   Torneo.findAll({
+                    include: Equipo,
                     where: {
                       [Op.not]: { id: ids },
                     }
@@ -162,7 +165,6 @@ module.exports = {
           // si el campo de texto está vacío o no se aplicó el filtro:
           if ((req.query.nomb == '') || (req.query.nomb == null)) {
             Torneo.findAll().then((torneos) => {
-              console.log(ids)
               renderizar(req, torneos, res)
             })
           }
@@ -175,7 +177,6 @@ module.exports = {
                 }
               }
             }).then((torneos) => {
-              console.log(torneos)
               renderizar(req, torneos, res)
             })
           }
