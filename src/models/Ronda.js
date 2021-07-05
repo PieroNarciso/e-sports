@@ -9,17 +9,10 @@ class Ronda extends Model {
 }
 Ronda.init(
   {
-    nro_correlativo: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     fecha: {
       type: DataTypes.DATE,
       allowNull: false,
-    },
-    ordinal: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      defaultValue: sequelize.fn('NOW'),
     },
   },
   {

@@ -1,4 +1,4 @@
-const { Torneo, Equipo, Ronda, Usuario, sequelize } = require('../models')
+const { Torneo, Equipo, Ronda, Usuario, Partida } = require('../models')
 const { Op } = require("sequelize")
 
 const asignar = (i) => {
@@ -220,12 +220,48 @@ module.exports = {
     } catch(err) {
       return res.send('Error');
     }
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Cambiar el estado del torneo a `en curso`
+  * Params:
+  *   - id: number Torneo id
+  *
+  * 1. Verificar que el numero de equipos no sea mayor a 6
+  */
+  changeTorneoToEnCurso: async (req, res) => {
+    try {
+      const torneo = await Torneo.findByPk(req.params.id, {
+        include: {
+          model: Equipo,
+          where: {
+            estado: 'activo' 
+          }
+        }
+      });
+      if (torneo.Equipos.length < 2) {
+        return res.send({ msg: 'Hay menos de 2 equipos' });
+      }
+      if (torneo.Equipos.length > 6) {
+        // Retornar mensaje de error en el ejs
+        return res.send({ msg: 'Hay más de 6 equipos' });
+      }
+      const ronda = await Ronda.create();
+      for (let i = 0; i < torneo.Equipos.length; ++i) {
+        for (let j = i+1; j < torneo.Equipos.length; ++j) {
+          await Partida.create({
+            ronda_id: ronda.id,
+            equipo_A: torneo.Equipos[i].nombre,
+            equipo_B: torneo.Equipos[j].nombre,
+          });
+        }
+      }
+      return res.redirect('/torneos');
+    } catch(err) {
+      return res.status(500).send(err);
+    }
   }
 }
-
-
-/*
-      // filtros del lider
-      if(req.query.cbAbierto != null){
-
-      }*/
