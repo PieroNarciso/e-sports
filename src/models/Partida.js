@@ -20,13 +20,9 @@ Partida.init(
     // puntos que ganaron A y B de la partida
     resultado_A: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
     },
     resultado_B: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
     },
   },
   {
