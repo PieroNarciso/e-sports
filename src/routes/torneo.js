@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { getTorneos, getTorneoById, getRondaByTorneoId, changeTorneoToEnCurso } = require('../controllers/torneo');
+const { verTorneos, getTorneos, getTorneoById, getRondaByTorneoId, changeTorneoToEnCurso } = require('../controllers/torneo');
 
 const router = Router();
 
@@ -21,5 +21,10 @@ router.get('/en-curso/:id', changeTorneoToEnCurso);
   * Renderiza la ronda de un torneo y sus partidas
   */
 router.get('/:torneoId/:rondaId', getRondaByTorneoId);
+
+/**
+  * Fetch para el SPA
+  */
+router.get('/ver/', verTorneos);
 
 module.exports = router;
