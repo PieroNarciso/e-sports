@@ -297,14 +297,4 @@ module.exports = {
       return res.status(500).send(err);
     }
   },
-
-
-  verTorneos: async (req, res) => {
-    try {
-      
-    } catch (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
-  }
 }
