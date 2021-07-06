@@ -11,7 +11,7 @@
 </div>
   <!-- PARA LÍDER -->
 <div id="filtros" hidden><% if (rol=='lider' ) { %>
-<div class="grid grid-rows-4">
+<div id="filtroslider" class="grid grid-rows-4">
   <div class="row-span-3 pl-8 py-4 gap-y-2 justify-self-center w-11/12 rounded-lg border-2 border-gray-400 grid grid-cols-12 grid-rows-3">
     <div class="col-span-12"><p>Filtrar por:</p></div>
     <div class="col-span-3"><p>Estado:</p></div>
@@ -28,7 +28,7 @@
 </div>
 <% } else if (rol=='org' ) { %>
 <!-- Para organizador -->
-<div class="grid">
+<div id="filtrosorg" class="grid">
   <div class="flex justify-center">
     <div class="pl-8 py-2 border-2 w-11/12 border-gray-400 rounded-lg ">
       <div>
@@ -36,12 +36,14 @@
       </div>
       <div class="flex my-2">
         <p>Nombre:</p>
-        <input class="h-6 ml-4" type="text" name="" id="">
+        <input class="h-6 ml-4" type="text" name="" id="txtNombre">
       </div>
     </div>
   </div>
   <div class="my-2 flex flex-row justify-self-end mr-10">
-    <p>Aplicar filtros</p>
+    <a id='aplicarFiltrosOrg' href="#" class="my-2 flex flex-row justify-self-end mr-10">
+      <p>Aplicar filtros</p>
+    </a>
   </div>
 </div>
 <% } %>
@@ -71,15 +73,40 @@
         <% } else { %>
         <div class="w-4 h-4 rounded-full bg-yellow-500"></div>
         <% } %>
-        <span class="ml-2 text-gray-800 font-medium"><%= torneo.nombre %></span>
+        <span class="ml-2 text-gray-800 font-medium">
+          <%if (rol=='org') {%>
+            <%=torneo.id%>
+            <%=". "%>
+            <% } %>
+          <%= torneo.nombre %></span>
       </div>
-      <div class="grid grid-cols-12 items-center">
-        <p class="col-span-8 pr-2 text-gray-700"><%= torneo.descripcion %></p>
+      <div class="grid grid-cols-12 items-center h-12">
+        <p class="mb-12 col-span-8 pr-2 text-gray-700"><%= torneo.descripcion %></p>
         <!-- Inscripcion por estado del torneo -->
-        <% if (!ids.includes(torneo.id) && (torneo.estado === 'abierto') && (torneo.max_participantes > torneo.Equipos.length)) { %>
-        <a href="#" class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirnos</a>
+        <% if (!ids.includes(torneo.id)) { %>
+          <!-- Para lider -->
+          <% if (rol == 'lider') {%>
+            <% inscritos.forEach(function(i) { %>
+              <% if (i.id==torneo.id) {%>
+                <% if (!ids.includes(torneo.id) && (torneo.estado==='abierto' ) && (torneo.max_participantes> i.activos)) { %>
+                  <a href="#"
+                    class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirnos</a>
+                <% } %>
+               <% } %>
+            <% }) %>
+          <% } %>
         <% } else { %>
-        <a href="/botones/<%= torneo.id%>" class="col-span-4 justify-self-center px-2 w-24 py-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500 text-center">Ver</a>
+          <% if (rol=='lider') {%>
+            <a href="/user/botones/<%= torneo.id%>" class="col-span-4 justify-self-center px-2 w-24 pzy-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500 text-center">Ver</a>
+          <% } else { %>
+            <div class="flex flex-col col-start-10">
+              <a href="#"
+                class="col-span-4 justify-self-center px-2 w-24 py-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500 text-center">Editar</a>
+              <a href="#"
+                class="col-span-4 justify-self-center px-2 w-24 py-2 bg-white border-2 border-gray-600 text-gray-700 rounded-md focus:outline-none hover:text-gray-600 hover:border-gray-500 text-center">Organizar</a>
+            </div>
+            <% } %>
+
         <% } %>
       </div>
       <div class="flex flex-col mt-2 text-sm text-gray-600">
@@ -91,6 +118,8 @@
           <% }) %>
           / <%= torneo.max_participantes %></span>
         <span>Estado: Activo</span>
+        <span>Fecha inicio: <%= torneo.fec_inicio%></span>
+        <span>Fecha fin: <%= torneo.fec_fin%></span>
       </div>
      </div> 
     <% }) %>
@@ -103,7 +132,6 @@
 </div>
 <!-- Paginación -->
 <br>
-
 <div class="flex justify-center">
   <%if (parseInt(pagActual)>1){%>
     <a href="/torneos?p=<%=parseInt(pagActual)-1%>" class="mr-4" id="retroceder"><svg style="width:24px;height:24px" viewBox="0 0 24 24">

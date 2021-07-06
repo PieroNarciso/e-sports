@@ -6,6 +6,6 @@ module.exports = {
    * @param {import('express').Response} res
    */
   mainPage: (req, res) => {
-    res.render('index');
+    res.render('spa');
   },
 };

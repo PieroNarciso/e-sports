@@ -5,9 +5,8 @@ const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
-const { SESSION_NAME } = require('../config/env');
-const torneo = require('./torneo');
-const { torneo_equipo } = require('../models/torneo_equipo');
+const { SESSION_NAME, SALT_ROUNDS } = require('../config/env');
+const { render } = require('ejs');
 
 
 module.exports = {
@@ -56,13 +55,13 @@ module.exports = {
   },
 
   /**
-  * @param {import('express').Request} req
-  * @param {import('express').Response} res
-  *
-  * Destruye la session y el rol del usuario logueado
-  */
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   *
+   * Destruye la session y el rol del usuario logueado
+   */
   logoutUser: (req, res) => {
-    req.session.destroy(err => {
+    req.session.destroy((err) => {
       if (err) {
         return res.status(400).redirect('/');
       }
@@ -71,12 +70,12 @@ module.exports = {
   },
 
   /**
-  * @param {import('express').Request} req
-  * @param {import('express').Response} res
-  *
-  * Se encarga de renderizar la opcion `usuarios` donde se muestra la lista de
-  * usuarios y el boton para crear un usuario nuevo
-  */
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   *
+   * Se encarga de renderizar la opcion `usuarios` donde se muestra la lista de
+   * usuarios y el boton para crear un usuario nuevo
+   */
   getUsuarios: (_, res) => {
     res.render('usuarios');
   },
@@ -87,58 +86,70 @@ module.exports = {
     res.render('registro', { estado: estado });
   },
 
-    //Post de la vista Registro
-    registroPostUser: (req, res) => {
-        estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
-        usuario.findAll({ //Encuentra todos los usuarios, donde el correo del registro sea igual.
-            where: { correo: req.body.correo }
-        })
-            .then((lusur) => {
-                console.log(lusur)
-                if (lusur.length > 0) {//si el tamaño es mayor que 0 entonces si hay usuario.
-                    const estado = false;//ERROR
-                    res.render("registro", { estado: estado }) //Se envia para mostrar con el error
-                }
-                else {
-                    equipo.findAll({ //Encuentra todos los equipos donde el nombre a crear sea el mismo
-                        where: {
-                            nombre: req.body.equipo
-                        }
-                    })
-                        .then((lequip) => {
-                            if (lequip.length > 0) { //si el tamaño es mayor que 0 entonces si hay equipo.
-                                const estado = false; //ERROR
-                                res.render("registro", { estado }) //Se envia para mostrar con el error
-                            } else {
-                                Usuario.create({ //se crea usuario
-                                    nombre_completo: req.body.nombre,
-                                    correo: req.body.correo,
-                                    password: req.body.contrasena,
-                                    rol: 'lider'
-                                })
-                                    .then((rpta) => { //se crea equipo
-                                        Equipo.create({
-                                            nombre: req.body.equipo,
-                                            lista_integrantes: ['Gorila', 'leon', 'perro'],
-                                            lider_id: rpta.id //Se le asigna el id del participante lider creado al euqipo
-                                        })
-                                            .then((rpta) => {
-                                                res.redirect('/') // Se redirecciona.
-                                            }).catch(error => {
-                                                res.status(500).send(error);
-                                            })
-                                    }).catch(error => {
-                                        res.status(500).send(error);
-                                    })
-                            }
-                        }).catch(error => {
-                            res.status(500).send(error);
-                        })
-                }
-            }).catch(error => {
-                res.status(500).send(error);
+  //Post de la vista Registro
+  registroPostUser: (req, res) => {
+    estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
+    usuario
+      .findAll({
+        //Encuentra todos los usuarios, donde el correo del registro sea igual.
+        where: { correo: req.body.correo },
+      })
+      .then((lusur) => {
+        if (lusur.length > 0) {
+          //si el tamaño es mayor que 0 entonces si hay usuario.
+          const estado = false; //ERROR
+          res.render('registro', { estado: estado }); //Se envia para mostrar con el error
+        } else {
+          equipo
+            .findAll({
+              //Encuentra todos los equipos donde el nombre a crear sea el mismo
+              where: {
+                nombre: req.body.equipo,
+              },
             })
-        },
+            .then((lequip) => {
+              if (lequip.length > 0) {
+                //si el tamaño es mayor que 0 entonces si hay equipo.
+                const estado = false; //ERROR
+                res.render('registro', { estado }); //Se envia para mostrar con el error
+              } else {
+                bcrypt
+                  .hash(req.body.contrasena, SALT_ROUNDS)
+                  .then((passHashed) => {
+                    req.body.contrasena = passHashed;
+                    Usuario.create({
+                      //se crea usuario
+                      nombre_completo: req.body.nombre,
+                      correo: req.body.correo,
+                      password: req.body.contrasena,
+                      rol: 'lider',
+                    })
+                      .then((rpta) => {
+                        //se crea equipo
+                        Equipo.create({
+                          nombre: req.body.equipo,
+                          lista_integrantes: ['Gorila', 'leon', 'perro'],
+                          lider_id: rpta.id, //Se le asigna el id del participante lider creado al euqipo
+                        })
+                          .then((rpta) => {
+                            res.redirect('/login'); // Se redirecciona.
+                          })
+                          .catch((error) => {
+                            res.status(500).send(error);
+                          });
+                      })
+                      .catch((error) => {
+                        res.status(500).send(error);
+                      });
+                  })
+                  .catch((err) => {
+                    return res.status(500).send(err);
+                  });
+              }
+            })
+          }
+        }) 
+    },
   //GET DEL PERFIL DEL LIDER
   perfilUser: (req, res) => {
     usuario
@@ -188,29 +199,37 @@ module.exports = {
               u: usuario_conectado[0],
             });
           } else {
-            usuario
-              .update(
-                {
-                  nombre_completo: req.body.nombre,
-                  correo: req.body.correo,
-                  password: req.body.contrasena,
-                },
-                {
-                  where: {
-                    id: req.session.userId,
-                  },
-                }
-              )
-              .then((usuario) => {
-                res.redirect('/');
+            bcrypt
+              .hash(req.body.contrasena, SALT_ROUNDS)
+              .then((passHashed) => {
+                req.body.contrasena = passHashed;
+                usuario
+                  .update(
+                    {
+                      nombre_completo: req.body.nombre,
+                      correo: req.body.correo,
+                      password: req.body.contrasena,
+                    },
+                    {
+                      where: {
+                        id: req.session.userId,
+                      },
+                    }
+                  )
+                  .then(() => {
+                    res.redirect('/user/perfil');
+                  })
+                  .catch((error) => {
+                    res.status(500).send(error);
+                  });
               })
-              .catch((error) => {
-                res.status(500).send(error);
+              .catch((err) => {
+                return res.status(500).send(err);
               });
           }
         })
         .catch((error) => {
-            res.status(500).send(error);
+          res.status(500).send(error);
         });
     });
   },
@@ -308,6 +327,8 @@ module.exports = {
   //Posiciones 
   PosicionesUser: (req, res) => {
     var id= req.params.id;
+    res.render('posiciones');
+    /*
     torneo_equipo.findAll({
       where:{
         torneo_id: id
@@ -318,7 +339,7 @@ module.exports = {
     })
     .then(equipostorneo=>{
 
-    })
+    })*/
     /*Torneo.findByPk(id,
       {
         include: [
