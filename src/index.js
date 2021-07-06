@@ -13,11 +13,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-let secure = false;
-if (process.env.NODE_ENV === 'production') {
-  secure = true;
-}
-
 
 // Session config
 const MongoStore = require('connect-mongo');
@@ -29,7 +24,7 @@ app.use(session({
   }),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure, sameSite: true }
+  cookie: { sameSite: true }
 }));
 
 // View Engine config
