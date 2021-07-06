@@ -10,7 +10,7 @@ const {
   SESSION_NAME = 'connectsid',
   SECRET_KEY = 'secret',
   SALT_ROUNDS = 10,
-  DATABASE_URL,
+  DATABASE_URI,
 } = process.env;
 
 
@@ -24,5 +24,5 @@ module.exports = {
   SESSION_NAME,
   SECRET_KEY,
   SALT_ROUNDS,
-  DATABASE_URL,
+  DATABASE_URI,
 }
