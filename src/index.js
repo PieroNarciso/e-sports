@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let secure = false;
 if (process.env.NODE_ENV === 'production') {
-  secure = true;
+  secure = false;
 }
 
 
@@ -29,7 +29,7 @@ app.use(session({
   }),
   resave: false,
   saveUninitialized: true,
-  cookie: { secure, sameSite: true }
+  cookie: { sameSite: true }
 }));
 
 // View Engine config
