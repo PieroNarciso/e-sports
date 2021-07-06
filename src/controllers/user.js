@@ -6,7 +6,6 @@ const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
 const { SESSION_NAME, SALT_ROUNDS } = require('../config/env');
-const { render } = require('ejs');
 
 
 module.exports = {
