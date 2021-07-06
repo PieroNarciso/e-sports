@@ -33,9 +33,9 @@ router.get('/equipo', authParticipanteLider, equipoUser);
 router.post('/equipo', equipoPostUser);
 
 router.get('/equipo/actualizar', authParticipanteLider, equipoActualizarUser);
-router.post('/equipo/actualizar', equipoActualizarPostUser);
-router.get('/botones', BotonesUser);
+router.post('/equipo/actualizar',authParticipanteLider, equipoActualizarPostUser);
+router.get('/botones/:id', BotonesUser);
 
-router.get('/posiciones', PosicionesUser);
+router.get('/posiciones/:id', PosicionesUser);
 
 module.exports = router;

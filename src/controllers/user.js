@@ -1,11 +1,12 @@
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const { Usuario, Equipo } = require('../models');
+const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
 const { SESSION_NAME, SALT_ROUNDS } = require('../config/env');
+
 
 module.exports = {
   /**
@@ -133,11 +134,11 @@ module.exports = {
                             res.redirect('/login'); // Se redirecciona.
                           })
                           .catch((error) => {
-                            res.sen(500).send(error);
+                            res.status(500).send(error);
                           });
                       })
                       .catch((error) => {
-                        res.sen(500).send(error);
+                        res.status(500).send(error);
                       });
                   })
                   .catch((err) => {
@@ -145,15 +146,9 @@ module.exports = {
                   });
               }
             })
-            .catch((error) => {
-              res.sen(500).send(error);
-            });
-        }
-      })
-      .catch((error) => {
-        res.sen(500).send(error);
-      });
-  },
+          }
+        }) 
+    },
   //GET DEL PERFIL DEL LIDER
   perfilUser: (req, res) => {
     usuario
@@ -171,8 +166,6 @@ module.exports = {
             });
           });
       });
-    //res.render("perfilLider",{nombre: "Pepe",correo:"pepe@gmail.com",equipo:"Gatos"
-    // })
   },
   //POST DEL PERFIL DEL LIDER
   perfilPostUser: (req, res) => {},
@@ -324,10 +317,38 @@ module.exports = {
         res.status(500).send(error);
       });
   },
+
+  //Botones
   BotonesUser: (req, res) => {
-    res.render('botones');
+    var id=req.params.id;
+    res.render('botones',{id: id});
   },
+  //Posiciones 
   PosicionesUser: (req, res) => {
+    var id= req.params.id;
     res.render('posiciones');
+    /*
+    torneo_equipo.findAll({
+      where:{
+        torneo_id: id
+      },
+      include:[{
+        
+      }]
+    })
+    .then(equipostorneo=>{
+
+    })*/
+    /*Torneo.findByPk(id,
+      {
+        include: [
+          {model: Equipo},
+          {model: Ronda,include: Partida}]
+      })
+    .then(objeto => {
+      var Lequipos= objeto.Equipo;
+      var lrondas = objeto.Ronda;
+      var lpartidas= objeto.Partida;
+    })*/
   },
 };
