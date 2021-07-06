@@ -9,7 +9,8 @@ const {
   DB_MONGODB_URI = '',
   SESSION_NAME = 'connectsid',
   SECRET_KEY = 'secret',
-  SALT_ROUNDS = 10
+  SALT_ROUNDS = 10,
+  DATABASE_URL,
 } = process.env;
 
 
@@ -23,4 +24,5 @@ module.exports = {
   SESSION_NAME,
   SECRET_KEY,
   SALT_ROUNDS,
+  DATABASE_URL,
 }
