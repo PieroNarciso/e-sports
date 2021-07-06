@@ -94,4 +94,8 @@ $ npm run start
 * `/.sequelizerc`: Configuración del ORM para postgres
 
 
-## Integrantes
+## Ingredientes
+* Piero Narciso
+* Alessandra Nuñez
+* Sebastián Bañón
+* Maricielo Jara
