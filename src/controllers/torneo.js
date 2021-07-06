@@ -75,78 +75,79 @@ module.exports = {
       // SI ES LIDER
       if (rol == 'lider') {
         // hallar id torneos inscritos
-        ids = []
         Equipo.findOne({
           where: {
             lider_id: id
           }
         }).then((eq) => {
+          ids = []
           eq.getTorneos({
           }).then((torneos) => {
             torneos.forEach(function (t) {
               ids.push(t.id)
             });
           })
-        })
-        // SECCIÓN PARA FILTRAR
-        if (req.query.cbAbierto != null) {
-          var cbAbierto = ''
-          var cbEnCurso = ''
-          var cbCerrado = ''
-          if (req.query.cbAbierto == 'true') cbAbierto = 'abierto'
-          if (req.query.cbEnCurso == 'true') cbEnCurso = 'en curso'
-          if (req.query.cbCerrado == 'true') cbCerrado = 'cerrado'
+        }).then(() => {
+          if (req.query.cbAbierto != null) {
+            var cbAbierto = ''
+            var cbEnCurso = ''
+            var cbCerrado = ''
+            if (req.query.cbAbierto == 'true') cbAbierto = 'abierto'
+            if (req.query.cbEnCurso == 'true') cbEnCurso = 'en curso'
+            if (req.query.cbCerrado == 'true') cbCerrado = 'cerrado'
 
-          if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'true') {
-            Torneo.findAll({
-              include: Equipo,
-              where: {
-                estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
-              }
-            }).then((torneos) => {
-              renderizar(req, torneos, res)
-            })
-          }
-          else {
-            Equipo.findOne({
-              where: {
-                lider_id: id
-              }
-            }).then((eq) => {
-              eq.getTorneos({
+            if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'true') {
+              Torneo.findAll({
+                include: Equipo,
                 where: {
                   estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
                 }
               }).then((torneos) => {
-                // SOLO TORNEOS INSCRITOS
-                if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'false') {
-                  renderizar(req, torneos, res)
-                }
-                // SOLO TORNEOS NO INSCRITOS
-                else if (req.query.cbInscrito == 'false' && req.query.cbNoInscrito == 'true') {
-                  Torneo.findAll({
-                    include: Equipo,
-                    where: {
-                      [Op.not]: { id: ids },
-                    }
-                  }).then((torneos2) => {
-                    renderizar(req, torneos2, res)
-                  })
-                }
-                // NINGUNO
-                else res.send('No se encontraron torneos.')
+                renderizar(req, torneos, res)
               })
-            })
+            }
+            else {
+              Equipo.findOne({
+                where: {
+                  lider_id: id
+                }
+              }).then((eq) => {
+                eq.getTorneos({
+                  where: {
+                    estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
+                  }
+                }).then((torneos) => {
+                  // SOLO TORNEOS INSCRITOS
+                  if (req.query.cbInscrito == 'true' && req.query.cbNoInscrito == 'false') {
+                    renderizar(req, torneos, res)
+                  }
+                  // SOLO TORNEOS NO INSCRITOS
+                  else if (req.query.cbInscrito == 'false' && req.query.cbNoInscrito == 'true') {
+                    Torneo.findAll({
+                      include: Equipo,
+                      where: {
+                        [Op.not]: { id: ids },
+                      }
+                    }).then((torneos2) => {
+                      renderizar(req, torneos2, res)
+                    })
+                  }
+                  // NINGUNO
+                  else res.send('No se encontraron torneos.')
+                })
+              })
+            }
+
           }
-          
-        }
-        // SIN FILTROS
-        else {
-          Torneo.findAll()
-            .then((torneos) => {
-              renderizar(req, torneos, res)
-            })
-        }
+          // SIN FILTROS
+          else {
+            Torneo.findAll()
+              .then((torneos) => {
+                renderizar(req, torneos, res)
+              })
+          }
+        })
+        // SECCIÓN PARA FILTRAR
       }
 
       // SI ES ORGANIZADOR
