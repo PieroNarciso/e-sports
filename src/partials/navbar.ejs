@@ -47,7 +47,6 @@
       </a>
       <!-- Opciones para el organizador -->
       <% } else if (globalRol === 'org') { %>
-      <!-- Opciones para usuario no registrado | logueado (espectador) -->
       <a href="/torneos" class="drawer-link">
         <svg class="w-6 h-6" viewBox="0 0 24 24">
           <path fill="currentColor"
@@ -55,6 +54,7 @@
         </svg>
         <span class="ml-3">Torneos</span>
       </a>
+      <!-- Opciones para usuario no registrado | logueado (espectador) -->
       <% } else { %>
         <a href="/user/registro" class="drawer-link">
           <svg class="w-6 h-6" viewBox="0 0 24 24">
