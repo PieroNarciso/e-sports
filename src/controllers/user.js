@@ -41,7 +41,7 @@ module.exports = {
           req.session.userId = usr.id;
           req.session.rol = usr.rol;
 
-          return res.redirect('/');
+          return res.redirect('/torneos');
         }
         // No es valido
         return res.render('login', { msg });
