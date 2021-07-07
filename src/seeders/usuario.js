@@ -24,5 +24,11 @@ module.exports = async () => {
       password: bcrypt.hashSync('jcardenas', SALT_ROUNDS),
       rol: 'lider',
     },
+    {
+      nombre_completo: 'Alessandra Nuñez',
+      correo: 'anunez@gmail.com',
+      password: bcrypt.hashSync('anunez', SALT_ROUNDS),
+      rol: 'org',
+    },
   ]);
 };
