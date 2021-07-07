@@ -32,7 +32,7 @@ const Home = {
     }
   },
   mounted() {
-    fetch('http://localhost:3000/torneos/?spa=true').then(res => res.json())
+    fetch('/torneos/?spa=true').then(res => res.json())
       .then((data) => {
         this.torneos = data.torneos
         this.inscritos = data.inscritos
