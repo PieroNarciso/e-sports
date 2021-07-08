@@ -11,7 +11,6 @@ Ronda.init(
   {
     fecha: {
       type: DataTypes.DATE,
-      allowNull: false,
       defaultValue: sequelize.fn('NOW'),
     },
   },

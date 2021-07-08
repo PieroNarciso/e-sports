@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
-const { getTorneos, getTorneoById, getRondaByTorneoId, changeTorneoToEnCurso } = require('../controllers/torneo');
-const { authOrganizador } = require('../middlewares/auth');
+const { getTorneos, getTorneoById, getRondaByTorneoId, changeTorneoToEnCurso, inscribirEquipo } = require('../controllers/torneo');
+const { authOrganizador, authParticipanteLider } = require('../middlewares/auth');
 
 const router = Router();
 
@@ -17,6 +17,12 @@ router.get('/:torneoId', authOrganizador, getTorneoById);
   * `/torneos`
   */
 router.get('/en-curso/:id', authOrganizador, changeTorneoToEnCurso);
+
+/**
+  * Inscribe a un equipo si no esta inscrito
+  * redirige a `/torneos`
+  */
+  router.get('/inscribir-equipo/:torneoId', authParticipanteLider, inscribirEquipo);
 
 /**
   * Renderiza la ronda de un torneo y sus partidas

@@ -1,4 +1,4 @@
-const { Torneo, Equipo, Ronda, Usuario, Partida } = require('../models')
+const { Torneo, Equipo, Ronda, Usuario, Partida, torneo_equipo } = require('../models')
 const { Op } = require("sequelize")
 
 const asignar = (i) => {
@@ -259,6 +259,25 @@ module.exports = {
   * @param {import('express').Request} req
   * @param {import('express').Response} res
   *
+  * Params:
+  *   -- torneoId: number - Torneo id
+  */
+  inscribirEquipo: async (req, res) => {
+    try {
+      const torneo = await Torneo.findByPk(req.params.torneoId, { include: Equipo });
+      const equipo = await Equipo.findOne({ where: { lider_id: req.session.userId }});
+
+      await torneo.addEquipo(equipo, { through: { estado: 'activo' } });
+      return res.status(200).redirect('/torneos');
+    } catch(err) {
+      return res.status(500).redirect('/torneos');
+    }
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
   * Cambiar el estado del torneo a `en curso`
   * Params:
   *   - id: number Torneo id
@@ -271,10 +290,11 @@ module.exports = {
         include: {
           model: Equipo,
           where: {
-            estado: 'activo' 
+            '$Equipos.torneo_equipo.estado$': 'activo'
           }
         }
       });
+
       if (torneo.Equipos.length < 2) {
         return res.send({ msg: 'Hay menos de 2 equipos' });
       }
@@ -282,18 +302,30 @@ module.exports = {
         // Retornar mensaje de error en el ejs
         return res.send({ msg: 'Hay más de 6 equipos' });
       }
-      const ronda = await Ronda.create();
+
+      const rondas = [];
+
       for (let i = 0; i < torneo.Equipos.length; ++i) {
-        for (let j = i+1; j < torneo.Equipos.length; ++j) {
-          await Partida.create({
-            ronda_id: ronda.id,
-            equipo_A: torneo.Equipos[i].nombre,
-            equipo_B: torneo.Equipos[j].nombre,
-          });
+        const ronda = await Ronda.create({ torneo_id: torneo.id });
+        rondas.push(ronda);
+      }
+
+      for (let i = 0; i < torneo.Equipos.length; ++i) {
+        let rondaNum = 1;
+        for (let j = 0; j < torneo.Equipos.length; ++j) {
+          if (i !== j) {
+            await Partida.create({
+              ronda_id: rondas[rondaNum-1].id,
+              equipo_A: torneo.Equipos[i].nombre,
+              equipo_B: torneo.Equipos[j].nombre,
+            });
+            rondaNum++;
+          }
         }
       }
       return res.redirect('/torneos');
     } catch(err) {
+      console.log(err);
       return res.status(500).send(err);
     }
   },

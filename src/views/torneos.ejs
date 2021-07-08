@@ -89,7 +89,7 @@
             <% inscritos.forEach(function(i) { %>
               <% if (i.id==torneo.id) {%>
                 <% if (!ids.includes(torneo.id) && (torneo.estado==='abierto' ) && (torneo.max_participantes> i.activos)) {%>
-                  <a href="#"
+                  <a href="/torneos/inscribir-equipo/<%= torneo.id %>"
                     class="col-span-4 justify-self-center w-24 px-2 py-2 bg-green-500 text-white rounded-md focus:outline-none hover:bg-green-400 text-center">Inscribirnos</a>
                 <% } %>
                <% } %>
