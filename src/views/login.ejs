@@ -1,10 +1,16 @@
-<div class="mt-12 mx-5">
-  <form action="/login" method="POST" class="px-3 py-2 space-y-3 rounded-lg shadow-lg">
+<div class="mx-2 sm:mx-20 md:mx-40">
+  <form action="/login" method="POST" class="px-3 py-4 space-y-5 rounded-lg shadow relative">
     <% if (msg.length > 0) { %>
       <span class="text-white bg-red-500 w-full cursor-default block text-center py-1 rounded"><%= msg %></span>
     <% } %>
-    <input class="w-full rounded-md ring-2 border-0 ring-gray-400 focus:ring-2 focus:ring-indigo-500" type="email" name="email" placeholder="Correo electrónico" required>
-    <input class="w-full rounded-md ring-2 border-0 ring-gray-400 focus:ring-2 focus:ring-indigo-500" type="password" name="password" placeholder="Contraseña" required>
-    <button class="bg-indigo-500 focus:outline-none hover:bg-indigo-400 text-white px-2 py-2 rounded font-medium" type="submit">Ingresar</button>
+    <div>
+      <input class="w-full rounded-md ring-2 border-0 ring-gray-400 focus:ring-2 focus:ring-indigo-500" type="email" name="email" placeholder="Correo electrónico" required>
+    </div>
+    <div>
+      <input class="w-full rounded-md ring-2 border-0 ring-gray-400 focus:ring-2 focus:ring-indigo-500" type="password" name="password" placeholder="Contraseña" required>
+    </div>
+    <div>
+      <button class="bg-indigo-500 focus:outline-none hover:bg-indigo-400 text-white px-2 py-2 rounded font-medium" type="submit">Ingresar</button>
+    </div>
   </form>
 </div>
