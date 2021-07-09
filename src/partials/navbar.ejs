@@ -6,12 +6,12 @@
           <path fill="currentColor" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
         </svg>
       </button> 
-      <a href="/" class="ml-2 text-lg font-medium text-white">E-Sport</a>
+      <% if (globalRol.length === 0) { %>
+        <a href="/#/" class="ml-2 text-lg font-medium text-white">E-Sport</a>
+      <% } else { %>
+        <a href="/" class="ml-2 text-lg font-medium text-white">E-Sport</a>
+      <% } %>
     </div>
-    <!-- <div class="hidden sm:flex items-center space-x-2"> -->
-    <!--   <a class="px-2 py-1 bg-indigo-800 text-white rounded font-medium focus:outline-none hover:bg-indigo-600" href="/user/registro">Registrarse</a> --> 
-    <!--   <a class="px-2 py-1 bg-indigo-800 text-white rounded font-medium focus:outline-none hover:bg-indigo-600" href="/login">Iniciar Sesion</a> --> 
-    <!-- </div> -->
   </nav>
 </div>
 <script src="/js/navbar.js"></script>
