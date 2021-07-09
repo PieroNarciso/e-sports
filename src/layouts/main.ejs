@@ -9,17 +9,21 @@
     <!-- <link href="/css/crear-torneo.css" rel="stylesheet"> -->
     <!-- Tailwind CSS -->
     <link href="/css/index.css" rel="stylesheet">
-    <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/vue-router@4.0.10/dist/vue-router.global.js"></script>
+    <% if (globalRol.length === 0) { %>
+      <script src="https://unpkg.com/vue@3.1.1/dist/vue.global.prod.js"></script>
+      <script src="https://unpkg.com/vue-router@4.0.10/dist/vue-router.global.js"></script>
+    <% } %>
   </head>
   <body>
-    <div>
-    <%- include('../partials/navbar.ejs') %>
-
-    <div class="mx-2 my-3">
-      <%- body %>
-    </div>
-    <%- script %>
+    <div class="flex">
+      <%- include('../partials/drawer.ejs') %>
+      <div class="flex-grow">
+        <%- include('../partials/navbar.ejs') %>
+        <div class="mx-2 my-3">
+          <%- body %>
+        </div>
+      </div>
     </div>
   </body>
+  <%- script %>
 </html>
