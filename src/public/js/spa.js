@@ -10,7 +10,7 @@ const Home = {
         </div>
         <!-- boton -->
         <div class="col-span-1 row-span-3 self-center">
-          <router-link v-bind:to="'/posiciones/?id='+torneo.id" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Ver</router-link>
+          <router-link v-bind:to="'/posiciones/?id='+torneo.id" id="botona" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Ver</router-link>
         </div>
         <div class="px-4 w-full h-auto col-span-3">
           <p>{{torneo.descripcion}}</p>

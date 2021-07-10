@@ -254,7 +254,7 @@ module.exports = {
           res.render('posiciones',{lequipo: torneo.Equipos, rpta: torneo})
         }catch(error){
           res.status(500).send(error)
-    
+
         }
       }else{
       const ronda = await Ronda.findByPk(rondaId, { include: 'partidas' });
@@ -331,8 +331,8 @@ module.exports = {
               ronda_id: rondas[rondaNum-1].id,
               equipo_A: torneo.Equipos[i].nombre,
               equipo_B: torneo.Equipos[j].nombre,
-              resultado_A: parseInt(Math.random()*(3 - 2)+2),
-              resultado_B: parseInt(Math.random()*(4 - 2)+2)
+              resultado_A: parseInt(Math.random()*(5 - 3)+3),
+              resultado_B: parseInt(Math.random()*(2 - 1)+1)
             });
             rondaNum++;
           }
@@ -356,4 +356,5 @@ module.exports = {
 
     }
   },
+
 }

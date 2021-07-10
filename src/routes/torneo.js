@@ -8,6 +8,10 @@ const router = Router();
 
 router.get('/', getTorneos);
 /**
+ * Renderiza la tabla de posiciones al darle click a Ver
+ */
+ router.get('/^posicion$/:id',authOrganizador,getPosiciones)
+/**
   * Renderiza la lista de equipos del respectivo torneo `id`
   */
 router.get('/:torneoId', authOrganizador, getTorneoById);
@@ -28,8 +32,5 @@ router.get('/en-curso/:id', authOrganizador, changeTorneoToEnCurso);
   * Renderiza la ronda de un torneo y sus partidas
   */
 router.get('/:torneoId/:rondaId', authOrganizador, getRondaByTorneoId);
-/**
- * Renderiza la tabla de posiciones al darle click a Ver
- */
-router.get('/posicion/:id',authOrganizador,getPosiciones)
+
 module.exports = router;
