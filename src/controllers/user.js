@@ -346,7 +346,7 @@ module.exports = {
           console.log(rpta.Equipos.length)
           console.log(rpta.rondas[5].partidas[4].equipo_A)
           if(rpta.rondas[i].partidas[j].equipo_A == rpta.Equipos[i].nombre && rpta.rondas[i].partidas[j].equipo_B == rpta.Equipos[j].nombre){
-              rpta.rondas[i].partidas[j].resultado_A
+            
           }
 
         }
