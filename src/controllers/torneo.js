@@ -305,7 +305,7 @@ module.exports = {
 
       const rondas = [];
 
-      for (let i = 0; i < torneo.Equipos.length; ++i) {
+      for (let i = 0; i < torneo.Equipos.length-1; ++i) {
         const ronda = await Ronda.create({ torneo_id: torneo.id });
         rondas.push(ronda);
       }
