@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
+const { Usuario, Equipo, Torneo, Ronda, Partida , torneo_equipo} = require('../models');
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
@@ -198,6 +198,14 @@ module.exports = {
               u: usuario_conectado[0],
             });
           } else {
+            if(req.body.contrasena == 0 && req.body.correo != 0 && req.body.nombre != 0){
+                usuario.update({ nombre_completo: req.body.nombre, correo: req.body.correo},{where:{id: req.session.userId}})
+                .then(()=>{
+                  res.redirect('/user/perfil');
+                })
+                .catch((error)=>{res.status(500).send(error)})
+            }
+            else{
             bcrypt
               .hash(req.body.contrasena, SALT_ROUNDS)
               .then((passHashed) => {
@@ -225,7 +233,7 @@ module.exports = {
               .catch((err) => {
                 return res.status(500).send(err);
               });
-          }
+          }}
         })
         .catch((error) => {
           res.status(500).send(error);
@@ -326,7 +334,37 @@ module.exports = {
   //Posiciones 
   PosicionesUser: (req, res) => {
     var id= req.params.id;
-    res.render('posiciones');
+    
+    Torneo.findByPk(id,
+      {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
+    })
+    .then(rpta=>{
+
+      for(let i=0; i<rpta.Equipos.length+1;i++){
+        for(let j=0; j< rpta.Equipos.length+1;j++){
+          console.log("EQUIPOS: "+ rpta.Equipos[i].nombre)
+          console.log(rpta.Equipos.length)
+          console.log(rpta.rondas[5].partidas[4].equipo_A)
+          if(rpta.rondas[i].partidas[j].equipo_A == rpta.Equipos[i].nombre && rpta.rondas[i].partidas[j].equipo_B == rpta.Equipos[j].nombre){
+              rpta.rondas[i].partidas[j].resultado_A
+          }
+
+        }
+      }
+      //res.render("posiciones",{ lequipo: rpta.Equipos,lrondas: rpta.rondas})
+    })
+
+    /*Torneo.findAll({
+      include:[{
+        model: Equipo,
+      }], where:{
+        id: id
+      }
+    })
+    .then(rpta=>{
+      console.log(rpta.Equipos)
+      res.render("posiciones", {lequipo: rpta.Equipos})
+    })
     /*
     torneo_equipo.findAll({
       where:{

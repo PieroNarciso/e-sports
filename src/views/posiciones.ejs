@@ -1,26 +1,35 @@
-<div class="h-screen flex items-center justify-center bg-gray-400">
+<div class="flex items-center justify-center">
     <div class="bg-white p-10 rounded-lg w-2/3 ">
         <div class="grid items-center justify-center">
         <table class="table-fixed bg-blue-400 border-4 border-opacity-100 border-indigo-300"> 
             <thead class="bg-blue-400 border-4 border-opacity-100 border-indigo-300"> 
                 <tr>
-                        <!--for por equipos-->
-                        <th class="w-1/4 bg-blue-400 border-4 border-opacity-100 border-indigo-300">Equipo A</th>
-                        <th>Equipo B</th>
-                        <!-- Termina For -->
+                        <th class="w-1/4 bg-blue-400 border-4 border-opacity-100 border-indigo-300">Equipos</th>
+                        <% lequipo.forEach(rpta => { %>
+                            <th class="border-4 border-opacity-100 border-indigo-300"><%= rpta.nombre %></th>
+                        <% }) %>
                         <th> Total de Puntos </th>
+                        
                 </tr>
             </thead>
             <tbody class="bg-blue-600">
-                <!-- For por cada ronda -->
+                <% num= 64 %>
+                <% cronda= 0 %> 
+                <% for(let i = 0; i< lequipo.length; i++){ %>
                 <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
-                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" > A </td>
-                    <!-- For por equipo -->
-                    <td>Punto de la ronda</td> 
-                    <!-- Fin de for equipo -->               
-                    <td> Total de Puntos</td>
-                <!-- Terminar for por ronda --> 
+                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" > <%= String.fromCharCode(num+1) %> <%= lequipo[i].nombre %></td>
+                    
+                    <td class="border-4 border-opacity-100 border-indigo-300"> [------]</td>    
+                                        
+                    <td class="border-4 border-opacity-100 border-indigo-300"> <%= "a" %>  </td>
+                          
+                     
+                    
+                               
+                    <td class="border-4 border-opacity-100 border-indigo-300"> <%= contador %> </td>
                 </tr>
+                <% num= num+1 %>
+                <%}%> 
                 <!-- Mas tarde reemplazar por el total de puntos de la ronda -->
             </tbody>
         </table>
