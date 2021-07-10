@@ -10,7 +10,7 @@ const Home = {
         </div>
         <!-- boton -->
         <div class="col-span-1 row-span-3 self-center">
-          <a href="#" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Ver</a>
+          <router-link v-bind:to="'/posiciones/?id='+torneo.id" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Ver</router-link>
         </div>
         <div class="px-4 w-full h-auto col-span-3">
           <p>{{torneo.descripcion}}</p>
@@ -58,7 +58,43 @@ const Torneo = {
     }
   }
 }
-
+const Posiciones={
+  template:/*html*/ `
+    <div class="flex items-center justify-center">
+    <div class="bg-white p-10 rounded-lg w-2/3 ">
+        <div class="grid items-center justify-center">
+        <table class="table-fixed bg-blue-400 border-4 border-opacity-100 border-indigo-300"> 
+            <thead class="bg-blue-400 border-4 border-opacity-100 border-indigo-300"> 
+                <tr>
+                        <th class="w-1/4 bg-blue-400 border-4 border-opacity-100 border-indigo-300">Equipos</th>
+                        <th v-for="equipo in Equipos" class="border-4 border-opacity-100 border-indigo-300">{{equipo.nombre}}</th> 
+                        <th> Total de Puntos </th>
+                        
+                </tr>
+            </thead>
+            <tbody class="bg-blue-600">
+                 <!-- Primer for de equipos sirve para setear las filas -->
+                <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
+                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" ></td>
+                    <!-- Segundo For sirve para setear las columnas -->
+                            <!-- veo si el equipo de la fila al equipo de la columna  -->
+                            <td class="border-4 border-opacity-100 border-indigo-300"> [------]  </td>
+                            <!-- aca deberia ir el puntaje -->
+                             <td class="border-4 border-opacity-100 border-indigo-300"> </td>
+                    <td class="border-4 border-opacity-100 border-indigo-300"></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+    </div>
+</div>
+  `,
+  mounted()
+  {
+      console.log(this.$route.query.id)
+  },
+}
 const Rondas = {
   template: `Rondas`
 }
@@ -68,7 +104,8 @@ const router = VueRouter.createRouter({
   routes: [
     { path: '/', component: Home },
     { path: '/torneos', component: Torneo },
-    { path: '/rondas', component: Rondas }
+    { path: '/rondas', component: Rondas },
+    {path: '/posiciones', component: Posiciones}
   ]
 })
 

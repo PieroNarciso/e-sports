@@ -1,3 +1,17 @@
+
+<% function buscarpartida(nombre1,nombre2){  %>
+    <% let resultado %>
+    <% rpta.rondas.forEach( ronda => {%>
+        <%ronda.partidas.forEach(partida =>{ %>
+            <%  if(partida.equipo_B == nombre1 && partida.equipo_A == nombre2) { %>
+                <%      resultado= partida.resultado_A %>
+                <%   }else{                 %>
+                <%      resultado= partida.resultado_B   %>
+                <%  } %>
+            <%  })  %>
+    <% }) %>
+    <% return resultado %>
+<% } %>
 <div class="flex items-center justify-center">
     <div class="bg-white p-10 rounded-lg w-2/3 ">
         <div class="grid items-center justify-center">
@@ -14,24 +28,27 @@
             </thead>
             <tbody class="bg-blue-600">
                 <% num= 64 %>
-                <% cronda= 0 %> 
-                <% for(let i = 0; i< lequipo.length; i++){ %>
+                <% puntaje=0 %>
+                <% contador=0 %> 
+                <% for(let i = 0; i< lequipo.length; i++){ %> <!-- Primer for de equipos sirve para setear las filas -->
                 <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
                     <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" > <%= String.fromCharCode(num+1) %> <%= lequipo[i].nombre %></td>
-                <% for(let j=0; j< lequipo.length; j++){ %>
-                    <td class="border-4 border-opacity-100 border-indigo-300"> [------]</td>    
-                                        
-                    <td class="border-4 border-opacity-100 border-indigo-300"> <%= "a" %>  </td>
-                          
-                     
-                    
-                               
-                    <td class="border-4 border-opacity-100 border-indigo-300"> <%= contador %> </td>
-                <% } %>
+                    <% for(let j=0 ; j < lequipo.length; j++) { %> <!-- Segundo For sirve para setear las columnas -->
+                            <% if(lequipo[i].nombre == lequipo[j].nombre) { %>
+                            <!-- veo si el equipo de la fila al equipo de la columna  -->
+                            <td class="border-4 border-opacity-100 border-indigo-300"> [------]  </td>
+                            <% }else { %>
+                                    <% puntaje = buscarpartida(lequipo[i].nombre, lequipo[j].nombre) %>
+                                     <!-- aca deberia ir el puntaje -->
+                                    <td class="border-4 border-opacity-100 border-indigo-300"> <%= puntaje %>  </td>
+                                    <% contador = contador + puntaje %>
+                            <% } %>
+                        <% } %>      
+                    <td class="border-4 border-opacity-100 border-indigo-300"> <%= contador %></td> 
                 </tr>
+                <% contador = 0 %>
                 <% num= num+1 %>
-                <%}%> 
-                <!-- Mas tarde reemplazar por el total de puntos de la ronda -->
+                <% } %>
             </tbody>
         </table>
         </div>

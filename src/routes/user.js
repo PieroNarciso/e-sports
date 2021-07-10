@@ -49,6 +49,6 @@ router.post('/equipo/actualizar',authParticipanteLider, equipoActualizarPostUser
 router.get('/botones/:id', BotonesUser);
 
 /* Recbie como params el id del torne para luego renderizar las posiciones*/
-router.get('/posiciones/:id', PosicionesUser);
+router.get('/posiciones/:id',authParticipanteLider, PosicionesUser);
 
 module.exports = router;

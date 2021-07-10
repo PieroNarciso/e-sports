@@ -334,25 +334,38 @@ module.exports = {
   //Posiciones 
   PosicionesUser: (req, res) => {
     var id= req.params.id;
-    
     Torneo.findByPk(id,
       {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
     })
-    .then(rpta=>{
-
-      for(let i=0; i<rpta.Equipos.length+1;i++){
-        for(let j=0; j< rpta.Equipos.length+1;j++){
-          console.log("EQUIPOS: "+ rpta.Equipos[i].nombre)
-          console.log(rpta.Equipos.length)
-          console.log(rpta.rondas[5].partidas[4].equipo_A)
-          if(rpta.rondas[i].partidas[j].equipo_A == rpta.Equipos[i].nombre && rpta.rondas[i].partidas[j].equipo_B == rpta.Equipos[j].nombre){
-            
-          }
-
-        }
-      }
-      //res.render("posiciones",{ lequipo: rpta.Equipos,lrondas: rpta.rondas})
+    .then(rpta=>{       
+      res.render("posiciones",{ lequipo: rpta.Equipos, rpta: rpta})
+    })  
+    .catch(error =>{
+      console.log(error)
     })
+
+
+      
+      //for(let i =0; i<5;i++){
+      //  for(let j=0;j<6;j++){
+      //    lpartidas.push(rpta.rondas[i].partidas[j])
+      //}
+      //}
+     // for(let i=1; i<lpartidas.length;i++){
+     //   for(let j=0; j< lpartidas.length-i;j++ ){
+     //     if(lpartidas[j].id > lpartidas[j+1].id){
+     //         aux= lpartidas[j];
+     //         lpartidas[j] = lpartidas[j+1];
+     //         lpartidas[i+1] = aux;
+     //     }
+     //   }
+     // }
+     // for(let i=1; i<lpartidas.length;i++){
+     //   console.log("============="+lpartidas[i].equipo_A +"vs" +lpartidas[i].equipo_B)
+//
+     // }
+     
+    
 
     /*Torneo.findAll({
       include:[{

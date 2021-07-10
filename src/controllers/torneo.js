@@ -243,14 +243,27 @@ module.exports = {
   */
   getRondaByTorneoId: async (req, res) => {
     const { rondaId } = req.params;
+    
     try {
+      if(req.params.torneoId == 'posicion'){
+        try{
+          //RondaId en realidad es el id del torneo, solo que se cruzan las rutas
+          const torneo = await Torneo.findByPk(rondaId,
+          {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
+          })
+          res.render('posiciones',{lequipo: torneo.Equipos, rpta: torneo})
+        }catch(error){
+          res.status(500).send(error)
+    
+        }
+      }else{
       const ronda = await Ronda.findByPk(rondaId, { include: 'partidas' });
       if (ronda) {
         return res.render('ronda-partidas', { ronda });
       } else {
         return res.send('404');
       }
-    } catch(err) {
+    }}catch(err) {
       return res.send('Error');
     }
   },
@@ -318,6 +331,8 @@ module.exports = {
               ronda_id: rondas[rondaNum-1].id,
               equipo_A: torneo.Equipos[i].nombre,
               equipo_B: torneo.Equipos[j].nombre,
+              resultado_A: parseInt(Math.random()*(3 - 2)+2),
+              resultado_B: parseInt(Math.random()*(4 - 2)+2)
             });
             rondaNum++;
           }
@@ -327,6 +342,18 @@ module.exports = {
     } catch(err) {
       console.log(err);
       return res.status(500).send(err);
+    }
+  },
+  getPosiciones: async (req, res )=>{
+    try{
+      var id= req.params.id;
+      const torneo = await Torneo.findByPk(id,
+      {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
+      })
+      res.render('posiciones',{lequipos: torneo.Equipos, rpta: torneo})
+    }catch(error){
+      res.status(500).send(error)
+
     }
   },
 }
