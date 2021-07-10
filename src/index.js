@@ -47,6 +47,7 @@ app.listen(PORT, async () => {
   // true significa que se eliminarán las tablas y se volverán a crear cada que se inicie la app
   try {
     await db.sync({ force: false });
+    require('./mongo/db')();
     //require('../seed')
     console.log('DB connectado');
   } catch(err) {
