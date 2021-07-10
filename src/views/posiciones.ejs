@@ -18,7 +18,7 @@
                 <% for(let i = 0; i< lequipo.length; i++){ %>
                 <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
                     <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" > <%= String.fromCharCode(num+1) %> <%= lequipo[i].nombre %></td>
-                    
+                <% for(let j=0; j< lequipo.length; j++){ %>
                     <td class="border-4 border-opacity-100 border-indigo-300"> [------]</td>    
                                         
                     <td class="border-4 border-opacity-100 border-indigo-300"> <%= "a" %>  </td>
@@ -27,6 +27,7 @@
                     
                                
                     <td class="border-4 border-opacity-100 border-indigo-300"> <%= contador %> </td>
+                <% } %>
                 </tr>
                 <% num= num+1 %>
                 <%}%> 
