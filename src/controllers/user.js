@@ -41,6 +41,8 @@ module.exports = {
           req.session.userId = usr.id;
           req.session.rol = usr.rol;
 
+          if (usr.rol == 'admin')
+            return res.redirect('/user');
           return res.redirect('/torneos');
         }
         // No es valido
