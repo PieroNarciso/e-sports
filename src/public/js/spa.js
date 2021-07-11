@@ -90,7 +90,7 @@ const Posiciones={
                     </template>
                     <td class="border-4 border-opacity-100 border-indigo-300">{{contador}}</td>
                     </tr>
-                    {{resetearcontador()}}
+                    {{setearcontador()}}
             </template>
             </tbody>
         </table>
@@ -137,8 +137,8 @@ const Posiciones={
          return resultado
 
     },
-    resetearcontador(){
-      this.contador = 0
+    setearcontador(){
+      this.contador = 15
     },
     aumentarcontador(nombre1,nombre2){
       let puntuacion = this.buscarpartida(nombre1,nombre2)
