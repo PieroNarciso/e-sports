@@ -9,6 +9,11 @@ const main = () => {
         require('./equipos')()
           .then(() => {
             require('./torneos')()
+              .then(() => {
+                db.close().then(() => {
+                  process.exit();
+                });
+              });
           });
       })
   });
