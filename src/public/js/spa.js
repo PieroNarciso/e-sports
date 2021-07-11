@@ -79,17 +79,18 @@ const Posiciones={
             <tbody class="bg-blue-600">
             <template v-for="equipo in lequipo">
                     <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
-                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" >{{equipo.nombre}}</td>
+                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" >{{"  "}}{{equipo.nombre}}</td>
                     <template v-for="equipo2 in lequipo">
                       <template v-if="equipo.nombre == equipo2.nombre">
                             <td class="border-4 border-opacity-100 border-indigo-300"> [------]  </td>
                       </template>
                       <template v-else>
-                                  <td class="border-4 border-opacity-100 border-indigo-300">{{buscarpartida(equipo.nombre,equipo2.nombre)}}</td>
+                                <td class="border-4 border-opacity-100 border-indigo-300">{{puntaje= buscarpartida(equipo.nombre,equipo2.nombre)}}</td>
                       </template>     
                     </template>
                     <td class="border-4 border-opacity-100 border-indigo-300">{{contador}}</td>
                     </tr>
+                    {{setearcontador()}}
             </template>
             </tbody>
         </table>
@@ -102,7 +103,9 @@ const Posiciones={
       torneo: [],
       lequipo:[],
       num:64,
-      contador:0
+      contador:0,
+      puntaje:0,
+      resultado:0
       }
     },
   mounted()
@@ -119,9 +122,9 @@ const Posiciones={
       })
   },
   methods:{
-    buscarpartida(nombre1,nombre2){ 
-         let resultado 
-         this.torneo.rondas.forEach( ronda => {
+    buscarpartida(nombre1,nombre2){  
+      let resultado    
+      this.torneo.rondas.forEach( ronda => {
             ronda.partidas.forEach(partida =>{ 
                   if(partida.equipo_B == nombre1 && partida.equipo_A == nombre2) {
                           resultado= partida.resultado_A 
@@ -131,10 +134,15 @@ const Posiciones={
 
                  })  
          })
-         return resultado 
- 
+         return resultado
+
     },
-    procesadonum(){
+    setearcontador(){
+      this.contador = 15
+    },
+    aumentarcontador(nombre1,nombre2){
+      let puntuacion = this.buscarpartida(nombre1,nombre2)
+      this.contador += puntuacion
     }
 
   },

@@ -11,20 +11,20 @@
         <div class="mb-3">
             <label htmlFor="text">Nombre</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text" value="<%= u.nombre_completo %>">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text" value="<%= u.nombre_completo %>" required>
             </div>
         
         </div>
         <div class="mb-3">
             <label>Correo Electronico</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email"value="<%= u.correo %>">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email"value="<%= u.correo %>" required>
             </div>
         </div>
         <div class="mb-3">
             <label>Nueva Contraseña</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="contrasena" name="contrasena"type="password">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="contrasena" name="contrasena"type="password" required>
             </div>
         </div>
         <div class="hidden">
