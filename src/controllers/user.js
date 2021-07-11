@@ -22,8 +22,11 @@ module.exports = {
    * Renderiza la pantalla del `Login` para diferentes usuarios
    * `admin | org | lider`
    */
-  getLoginUser: (_, res) => {
-    res.render('login', { msg: '' });
+  getLoginUser: (req, res) => {
+    if (req.session.userId || req.session.rol) {
+      return res.redirect('/');
+    }
+    return res.render('login', { msg: '' });
   },
 
   /**
@@ -98,6 +101,10 @@ module.exports = {
   //Get de la visa Registro
   registroUser: (req, res) => {
     const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
+    // Si esta logueado redireccionar
+    if (req.session.rol || req.session.userId) {
+      return res.redirect('/');
+    }
     res.render('registro', { estado: estado });
   },
 
