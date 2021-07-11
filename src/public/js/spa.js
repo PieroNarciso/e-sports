@@ -1,3 +1,4 @@
+
 const app = Vue.createApp({});
 
 const Home = {
@@ -10,7 +11,8 @@ const Home = {
         </div>
         <!-- boton -->
         <div class="col-span-1 row-span-3 self-center">
-          <router-link v-bind:to="'/posiciones/?id='+torneo.id" id="botona" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Ver</router-link>
+                <a href="#" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Fixture</a>
+                <router-link v-bind:to="'/posiciones/?id='+torneo.id" id="botona" class="rounded-lg border-1 border-black w-16 h-8 block text-center pt-1">Ver</router-link> 
         </div>
         <div class="px-4 w-full h-auto col-span-3">
           <p>{{torneo.descripcion}}</p>
@@ -65,36 +67,78 @@ const Posiciones={
         <div class="grid items-center justify-center">
         <table class="table-fixed bg-blue-400 border-4 border-opacity-100 border-indigo-300"> 
             <thead class="bg-blue-400 border-4 border-opacity-100 border-indigo-300"> 
-                <tr>
+            <tr>
                         <th class="w-1/4 bg-blue-400 border-4 border-opacity-100 border-indigo-300">Equipos</th>
-                        <th v-for="equipo in Equipos" class="border-4 border-opacity-100 border-indigo-300">{{equipo.nombre}}</th> 
+                        <template v-for="equipo in lequipo"> 
+                        <th class="border-4 border-opacity-100 border-indigo-300">{{equipo.nombre}}</th> 
+                        </template>
                         <th> Total de Puntos </th>
-                        
+                    
                 </tr>
             </thead>
             <tbody class="bg-blue-600">
-                 <!-- Primer for de equipos sirve para setear las filas -->
-                <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
-                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" ></td>
-                    <!-- Segundo For sirve para setear las columnas -->
-                            <!-- veo si el equipo de la fila al equipo de la columna  -->
+            <template v-for="equipo in lequipo">
+                    <tr class="flex-row justify-items-center mt-3 border-4 border-opacity-100 border-indigo-300">
+                    <td class="w-1/4 border-4 border-opacity-100 border-indigo-300" >{{equipo.nombre}}</td>
+                    <template v-for="equipo2 in lequipo">
+                      <template v-if="equipo.nombre == equipo2.nombre">
                             <td class="border-4 border-opacity-100 border-indigo-300"> [------]  </td>
-                            <!-- aca deberia ir el puntaje -->
-                             <td class="border-4 border-opacity-100 border-indigo-300"> </td>
-                    <td class="border-4 border-opacity-100 border-indigo-300"></td>
-                </tr>
+                      </template>
+                      <template v-else>
+                                  <td class="border-4 border-opacity-100 border-indigo-300">{{buscarpartida(equipo.nombre,equipo2.nombre)}}</td>
+                      </template>     
+                    </template>
+                    <td class="border-4 border-opacity-100 border-indigo-300">{{contador}}</td>
+                    </tr>
+            </template>
             </tbody>
         </table>
         </div>
         </div>
     </div>
 </div>
-  `,
+  `,data()
+    {return{
+      torneo: [],
+      lequipo:[],
+      num:64,
+      contador:0
+      }
+    },
   mounted()
   {
       console.log(this.$route.query.id)
-      
+      fetch('/user/api/posiciones/'+this.$route.query.id)
+      .then(rpta=> rpta.json())
+      .then(rpta =>{
+        console.log(rpta.equipos)
+        this.lequipo = rpta.equipos
+        this.torneo = rpta.torneo 
+      }).catch(erro =>{
+        console.log(erro)
+      })
   },
+  methods:{
+    buscarpartida(nombre1,nombre2){ 
+         let resultado 
+         this.torneo.rondas.forEach( ronda => {
+            ronda.partidas.forEach(partida =>{ 
+                  if(partida.equipo_B == nombre1 && partida.equipo_A == nombre2) {
+                          resultado= partida.resultado_A 
+                  }else{                 
+                          resultado= partida.resultado_B
+                  }
+
+                 })  
+         })
+         return resultado 
+ 
+    },
+    procesadonum(){
+    }
+
+  },
+
 }
 const Rondas = {
   template: `Rondas`

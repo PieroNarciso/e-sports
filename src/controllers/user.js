@@ -344,4 +344,11 @@ module.exports = {
       console.log(error)
     })
   },
+  fetchPosiciones:(req,res)=>{
+    var id=req.params.id;
+    Torneo.findByPk(id,{include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]})
+    .then(rpta=>{
+      res.send({equipos: rpta.Equipos,torneo: rpta})
+    })
+  }
 };
