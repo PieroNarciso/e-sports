@@ -93,6 +93,7 @@ const Posiciones={
   mounted()
   {
       console.log(this.$route.query.id)
+      
   },
 }
 const Rondas = {
