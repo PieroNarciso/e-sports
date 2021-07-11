@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', getTorneos);
 
-router.post('/eliminar', eliminar);
+router.post('/eliminar', authOrganizador, eliminar);
 /**
  * Renderiza la tabla de posiciones al darle click a Ver
  */
