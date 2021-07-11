@@ -16,15 +16,15 @@ rutas.use( express.urlencoded({extended : true}))
 rutas.use( express.json() )
 rutas.use( par.array() )
 
-/* Pagina de inicio*/
-var LT = []
-rutas.get('/', (req,res) =>{
-
-
+rutas.post( '/create', (req,res) => {
+    return usuario.create(
+        {
+            nombres : req.body.nombres,
+            correo_electrico : req.body.correo_electronico,
+            rol : req.body.rol
+        }
+    )
+    .then ( usuario => res.status(200).send(usuario) )
+    .catch( error => res.status(400).send(error) )
 })
-
-/* Consulta*/
-
-/* Insert*/
-
-modules.exports = rutas
+module.exports =rutas
