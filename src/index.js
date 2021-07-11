@@ -36,7 +36,8 @@ app.set('layout extractScripts', true);
 
 
 // Middlewares
-app.use(require('./middlewares/locals.js').roleRequestMiddleware);
+app.use(require('./middlewares/locals').roleRequestMiddleware);
+app.use(require('./middlewares/locals').emailjsKeysMiddleware);
 
 
 // Routes middlewares

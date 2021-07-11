@@ -1,7 +1,10 @@
 
 <div class=" flex items-center justify-center">
     <div class="bg-white p-10 rounded-lg w-2/3">
-        <form method="POST" name="formulario" action="/user/registro">         
+        <form method="POST" id="formulario" action="/user/registro">         
+          <input type="hidden" name="service_id" value="<%= EMAIL_SERVICE_ID%>">
+          <input type="hidden" name="template_id" value="<%= EMAIL_TEMPLATE_ID%>">
+          <input type="hidden" name="user_id" value="<%= EMAIL_USER_ID%>">
         <div class="mb-3">
             <label htmlFor="text">Nombre</label>
             <div>
@@ -46,4 +49,13 @@
         </form>
    </div>
 </div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+<% if (EMAIL_USER_ID) { %>
+<script type="text/javascript">
+   (function(){
+      const user_id = document.querySelector('input[name=user_id]').value;
+       emailjs.init(user_id);
+   })();
+</script>
+<% } %>
 <script src="/js/registro.js"></script>
