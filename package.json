@@ -36,12 +36,13 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.2",
+    "mongoose": "^5.13.2",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.4",
     "postcss": "^8.3.5",
+    "postcss-cli": "^8.3.1",
     "sequelize": "^6.6.2",
-    "tailwindcss": "^2.1.4",
-    "postcss-cli": "^8.3.1"
+    "tailwindcss": "^2.1.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.7",

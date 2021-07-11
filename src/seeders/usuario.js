@@ -1,11 +1,14 @@
 const { Usuario } = require('../models');
+const { User } = require('../mongo');
 const bcrypt = require('bcrypt');
 
 const { SALT_ROUNDS } = require('../config/env');
 
 
 module.exports = async () => {
-  await Usuario.bulkCreate([
+  await require('../mongo/db')();
+  const users = 
+    [
     {
       nombre_completo: 'Pepe Gonzales',
       correo: 'ppelcrack@gmail.com',
@@ -30,5 +33,13 @@ module.exports = async () => {
       password: bcrypt.hashSync('anunez', SALT_ROUNDS),
       rol: 'org',
     },
-  ]);
+  ]
+  await User.deleteMany();
+  for (let user of users) {
+    await User.create({
+      email: user.correo,
+      password: user.password,
+    });
+  }
+  await Usuario.bulkCreate(users);
 };
