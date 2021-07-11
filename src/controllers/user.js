@@ -1,12 +1,8 @@
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-<<<<<<< HEAD
 const { Usuario, Equipo, Torneo, Ronda, Partida , torneo_equipo} = require('../models');
-=======
-const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
 const { User } = require('../mongo');
->>>>>>> main
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
@@ -318,7 +314,6 @@ module.exports = {
 
   //Posiciones
   PosicionesUser: (req, res) => {
-<<<<<<< HEAD
     var id= req.params.id;
     Torneo.findByPk(id,
       {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
@@ -328,18 +323,6 @@ module.exports = {
     })  
     .catch(error =>{
       console.log(error)
-=======
-    var id = req.params.id;
-    res.render('posiciones');
-    /*
-    torneo_equipo.findAll({
-      where:{
-        torneo_id: id
-      },
-      include:[{
-        
-      }]
->>>>>>> main
     })
   },
 };
