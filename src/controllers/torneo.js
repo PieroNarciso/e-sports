@@ -245,30 +245,13 @@ module.exports = {
     const { rondaId } = req.params;
     
     try {
-      if(req.params.torneoId == 'posiciones'){
-        try{
-          //RondaId en realidad es el id del torneo, solo que se cruzan las rutas
-          const torneo = await Torneo.findByPk(rondaId,
-          {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
-          })
-          res.render('posiciones',{lequipo: torneo.Equipos, rpta: torneo})
-        }catch(error){
-          res.status(500).send(error)
-
-        }
-      }if(req.params.torneoId == 'botones'){
-        var id= rondaId
-        res.render('botones',{id: id});
-      }
-      else
-      {      
       const ronda = await Ronda.findByPk(rondaId, { include: 'partidas' });
       if (ronda) {
         return res.render('ronda-partidas', { ronda });
       } else {
         return res.send('404');
       }
-    }}catch(err) {
+    } catch(err) {
       return res.send('Error');
     }
   },
