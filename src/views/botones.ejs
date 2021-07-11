@@ -1,5 +1,6 @@
 <div class="h-screen flex items-center justify-center bg-gray-400">
     <div class="bg-white p-10 rounded-lg w-2/3">
+        <% if (globalRol == "lider"){ %>
         <form method="GET" name="formulario" action="">         
         <div class="mb-3 mt-5">
                 <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Fixture" type="submit"> Fixture </button>
@@ -10,5 +11,28 @@
                 <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Posiciones" type="submit"> Posiciones </button>
             </div>
         </form>
+        <% } %>
+        <% if (globalRol == "org") {%>
+                <form method="GET" name="formulario" action="#">         
+                    <div class="mb-3 mt-5">
+                            <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="" type="submit"> Ver Equipo </button>
+                    </div>
+                </form>
+                <form method="GET" name="formulario" action="#">
+                        <div class="mb-3 mt-5">
+                            <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Ver" type="submit"> Ver Fixture </button>
+                        </div>
+                </form>
+                <form method="GET" name="formulario" action="/torneos/botones/posiciones/<%= id %>">
+                    <div class="mb-3 mt-5">
+                        <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Ver" type="submit"> Ver Tabla de posiciones </button>
+                    </div>
+                </form>
+                <form method="GET" name="formulario" action="/torneos">
+                <div class="mb-3 mt-5">
+                    <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Ver" type="submit"> Regresar </button>
+                </div>
+                </form>
+        <% } %>
    </div>
 </div>
