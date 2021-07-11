@@ -35,7 +35,7 @@ const sequelize = require('../db');
       },
       rol: {
         type: DataTypes.ENUM('admin', 'org', 'lider'),
-        allowNull: false,
+        defaultValue: 'lider',
       }, // admin 0, org 1, lider 2
     },
     {
