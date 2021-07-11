@@ -11,8 +11,10 @@ const {
   SECRET_KEY = 'secret',
   SALT_ROUNDS = 10,
   DATABASE_URL,
+  EMAIL_SERVICE_ID,
+  EMAIL_TEMPLATE_ID,
+  EMAIL_USER_ID,
 } = process.env;
-
 
 module.exports = {
   PORT,
@@ -25,4 +27,7 @@ module.exports = {
   SECRET_KEY,
   SALT_ROUNDS,
   DATABASE_URL,
+  EMAIL_SERVICE_ID,
+  EMAIL_TEMPLATE_ID,
+  EMAIL_USER_ID,
 }

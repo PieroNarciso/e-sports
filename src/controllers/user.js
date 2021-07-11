@@ -111,11 +111,11 @@ module.exports = {
   registroPostUser: async (req, res) => {
     const { correo, contrasena, nombre, equipo } = req.body;
     try {
-      const userVerificar = await Usuario.findOne({ correo: correo });
-      const equipoVerificar = await Equipo.findOne({ nombre: equipo });
+      const userVerificar = await Usuario.findOne({ where: { correo } });
+      const equipoVerificar = await Equipo.findOne({ where: { nombre: equipo } });
       // Verifica que usuarios ni equipos ya exista en la BD
       if (userVerificar || equipoVerificar) {
-        return res.render('registro', { estado: true });
+        return res.status(400).render('registro', { estado: false });
       }
       // Hash del password
       const password = await bcrypt.hash(contrasena, SALT_ROUNDS);
@@ -131,8 +131,9 @@ module.exports = {
         nombre: equipo,
         lista_integrantes: ['Gorila', 'Jirafa', 'Leon', 'Cobra'],
       });
-      return res.status('/login');
+      return res.status(201).redirect('/login');
     } catch (err) {
+      console.log(err);
       return res.status(500).send(err);
     }
   },
@@ -358,4 +359,11 @@ module.exports = {
         console.log(error);
       });
   },
+  fetchPosiciones:(req,res)=>{
+    var id=req.params.id;
+    Torneo.findByPk(id,{include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]})
+    .then(rpta=>{
+      res.send({equipos: rpta.Equipos,torneo: rpta})
+    })
+  }
 };
