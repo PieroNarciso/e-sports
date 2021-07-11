@@ -65,7 +65,7 @@ module.exports = {
   * @param {import('express').NextFunction} next
   */
   authOrganizador: (req, res, next) => {
-    if (req.session.rol !== 'organizador') {
+    if (req.session.rol !== 'org') {
       res.status(401).redirect('/login');
     } else {
       next();
