@@ -341,8 +341,47 @@ module.exports = {
       res.render('posiciones',{lequipo: torneo.Equipos, rpta: torneo})
     }catch(error){
       res.status(500).send(error)
-
     }
   },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Recibe en params `torneoId`
+  */
+  editarTorneo: async (req, res) => {
+    try {
+      const torneo = await Torneo.findByPk(req.params.torneoId, {
+        include: {
+          model: Equipo,
+        }
+      });
+      torneo.Equipos = torneo.Equipos.filter(equipo => {
+        equipo.torneo_equipo.estado == 'activo'
+      })
+      return res.render('editar-torneo', { torneo });
+    } catch(err) {
+      return res.status(500).send(err);
+    }
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Recibe en params `torneoId`
+  */
+  postEditarTorneo: async (req, res) => {
+    try {
+      await Torneo.update(
+        {...req.body},
+        { where: { id: req.params.torneoId } }
+      );
+      return res.redirect('/torneos');
+    } catch(err) {
+      return res.status(500).send(err);
+    }
+  }
 
 }
