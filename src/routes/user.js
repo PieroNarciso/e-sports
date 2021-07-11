@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const {authParticipanteLider} = require("../middlewares/auth")
+const { authParticipanteLider, authAdmin } = require("../middlewares/auth")
 const {
   registroUser,
   registroPostUser,
@@ -19,7 +19,7 @@ const {
 const router = Router();
 
 
-router.get('/', getUsuarios);
+router.get('/', authAdmin, getUsuarios);
 
 /* Permite registrar al participante lider*/
 router.get('/registro', registroUser);
