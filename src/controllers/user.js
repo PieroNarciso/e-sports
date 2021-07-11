@@ -335,8 +335,8 @@ module.exports = {
 
   //Botones
   BotonesUser: (req, res) => {
-    var id = req.params.id;
-    res.render('botones', { id: id });
+    const torneoId = req.params.torneoId;
+    res.render('botones', { torneoId });
   },
 
   //Posiciones
