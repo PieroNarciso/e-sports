@@ -37,9 +37,6 @@ module.exports = {
    * @param {import('express').Response} res
   */
   
-// http://localhost:3000/torneos?p=1&cbAbierto=true&cbEnCurso=true&cbCerrado=true&cbInscrito=true&cbNoInscrito=true
-
-
   getTorneos: async (req, res) => {
     try {
       // PARA EL SPA
@@ -47,7 +44,7 @@ module.exports = {
         const torneosSPA = await Torneo.findAll({
           include: Equipo,
           where: {
-            estado: 'abierto'
+            estado: 'en curso'
           }
         })
         const inscritosSPA = []
@@ -218,6 +215,21 @@ module.exports = {
     } catch (err) {
       console.log(err)
       return res.send('Error');
+    }
+  },
+
+  /**
+    * @param {import('express').Request} req
+    * @param {import('express').Response} res
+    */
+  eliminar: async (req, res) => {
+    try {
+      const t = await Torneo.findByPk(req.body.identif)
+      t.destroy();
+      res.redirect('/torneos')
+    } catch {
+      console.log(err);
+      res.status(500).send(err);
     }
   },
 

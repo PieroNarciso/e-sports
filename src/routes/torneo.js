@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { getTorneos, getTorneoById, getRondaByTorneoId, changeTorneoToEnCurso, inscribirEquipo,getPosiciones } = require('../controllers/torneo');
+const { eliminar, getTorneos, getTorneoById, getRondaByTorneoId, changeTorneoToEnCurso, inscribirEquipo,getPosiciones } = require('../controllers/torneo');
 const { BotonesUser} = require('../controllers/user')
 const { authOrganizador, authParticipanteLider } = require('../middlewares/auth');
 
@@ -8,6 +8,8 @@ const router = Router();
 
 
 router.get('/', getTorneos);
+
+router.post('/eliminar', eliminar);
 /**
  * Renderiza la tabla de posiciones al darle click a Ver
  */
