@@ -37,9 +37,6 @@ module.exports = {
    * @param {import('express').Response} res
   */
   
-// http://localhost:3000/torneos?p=1&cbAbierto=true&cbEnCurso=true&cbCerrado=true&cbInscrito=true&cbNoInscrito=true
-
-
   getTorneos: async (req, res) => {
     try {
       // PARA EL SPA
@@ -47,7 +44,7 @@ module.exports = {
         const torneosSPA = await Torneo.findAll({
           include: Equipo,
           where: {
-            estado: 'abierto'
+            estado: 'en curso'
           }
         })
         const inscritosSPA = []
@@ -82,7 +79,8 @@ module.exports = {
         Torneo.findAll({
           include: {
             model: Equipo
-          }
+          },
+          order: [['id','ASC']]
         }).then((torneos) => {
           var x = []
           torneos.forEach(function (t) {
@@ -132,7 +130,8 @@ module.exports = {
                     include: Equipo,
                     where: {
                       estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
-                    }
+                    },
+                    order: [['id', 'ASC']]
                   }).then((torneos) => {
                     renderizar(req, torneos, res)
                   })
@@ -158,7 +157,8 @@ module.exports = {
                           include: Equipo,
                           where: {
                             [Op.not]: { id: ids },
-                          }
+                          },
+                          order: [['id', 'ASC']]
                         }).then((torneos2) => {
                           renderizar(req, torneos2, res)
                         })
@@ -172,7 +172,9 @@ module.exports = {
               }
               // SIN FILTROS
               else {
-                Torneo.findAll()
+                Torneo.findAll({
+                  order: [['id', 'ASC']]
+                })
                   .then((torneos) => {
                     renderizar(req, torneos, res)
                   })
@@ -186,7 +188,8 @@ module.exports = {
             Torneo.findAll({
               where: {
                 organizador_id: id
-              }
+              },
+              order: [['id', 'ASC']]
             }).then((torneos) => {
               torneos.forEach(function (t) {
                 ids.push(t.id)
@@ -194,7 +197,9 @@ module.exports = {
             }).then(() => {
               // si el campo de texto está vacío o no se aplicó el filtro:
               if ((req.query.nomb == '') || (req.query.nomb == null)) {
-                Torneo.findAll().then((torneos) => {
+                Torneo.findAll({
+                  order: [['id', 'ASC']]
+                }).then((torneos) => {
                   renderizar(req, torneos, res)
                 })
               }
@@ -205,7 +210,8 @@ module.exports = {
                     nombre: {
                       [Op.substring]: req.query.nomb
                     }
-                  }
+                  },
+                  order: [['id', 'ASC']]
                 }).then((torneos) => {
                   renderizar(req, torneos, res)
                 })
@@ -218,6 +224,21 @@ module.exports = {
     } catch (err) {
       console.log(err)
       return res.send('Error');
+    }
+  },
+
+  /**
+    * @param {import('express').Request} req
+    * @param {import('express').Response} res
+    */
+  eliminar: async (req, res) => {
+    try {
+      const t = await Torneo.findByPk(req.body.identif)
+      await t.destroy();
+      res.redirect('/torneos')
+    } catch {
+      console.log(err);
+      res.status(500).send(err);
     }
   },
 
@@ -243,6 +264,7 @@ module.exports = {
   */
   getRondaByTorneoId: async (req, res) => {
     const { rondaId } = req.params;
+    
     try {
       const ronda = await Ronda.findByPk(rondaId, { include: 'partidas' });
       if (ronda) {
@@ -295,6 +317,9 @@ module.exports = {
         }
       });
 
+      // Cambiar estado
+      await torneo.update({ estado: 'en curso' });
+
       if (torneo.Equipos.length < 2) {
         return res.send({ msg: 'Hay menos de 2 equipos' });
       }
@@ -318,6 +343,8 @@ module.exports = {
               ronda_id: rondas[rondaNum-1].id,
               equipo_A: torneo.Equipos[i].nombre,
               equipo_B: torneo.Equipos[j].nombre,
+              resultado_A: parseInt(Math.random()*(5 - 3)+3),
+              resultado_B: parseInt(Math.random()*(2 - 1)+1)
             });
             rondaNum++;
           }
@@ -329,4 +356,56 @@ module.exports = {
       return res.status(500).send(err);
     }
   },
+  getPosiciones: async (req, res )=>{
+    try{
+      var id= req.params.id;
+      const torneo = await Torneo.findByPk(id,
+      {include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]
+      })
+      res.render('posiciones',{lequipo: torneo.Equipos, rpta: torneo})
+    }catch(error){
+      res.status(500).send(error)
+    }
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Recibe en params `torneoId`
+  */
+  editarTorneo: async (req, res) => {
+    try {
+      const torneo = await Torneo.findByPk(req.params.torneoId, {
+        include: {
+          model: Equipo,
+        }
+      });
+      torneo.Equipos = torneo.Equipos.filter(equipo => {
+        equipo.torneo_equipo.estado == 'activo'
+      })
+      return res.render('editar-torneo', { torneo });
+    } catch(err) {
+      return res.status(500).send(err);
+    }
+  },
+
+  /**
+  * @param {import('express').Request} req
+  * @param {import('express').Response} res
+  *
+  * Recibe en params `torneoId`
+  */
+  postEditarTorneo: async (req, res) => {
+    try {
+      await Torneo.update(
+        {...req.body},
+        { where: { id: req.params.torneoId } }
+      );
+      return res.redirect('/torneos');
+    } catch(err) {
+      return res.status(500).send(err);
+    }
+  }
+
 }

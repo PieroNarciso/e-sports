@@ -1,46 +1,39 @@
+const formulario = document.querySelector('#formulario');
 
+/**
+  * @param {{ target: HTMLFormElement } & Event} event
+  *
+  * Envia el email al usuario con informacion sobre su cuenta
+  * Luego, envia el formulario al `backend`
+  */
+const sendMail = async (event) => {
+  const service_id = event.target.service_id.value;
+  const template_id = event.target.template_id.value;
+  const user_id = event.target.user_id.value;
+  const nombre = event.target.nombre.value;
+  const correo = event.target.correo.value;
+  const contrasena = event.target.contrasena.value;
 
-var formulario=document.getElementsByName("formulario")[0]
-var formulario2= document.getElementsByName("formulario2")[0]
-var elementos=formulario.elements
-var nombre=false;
-var correo=false;
-
-function validarcomun( e){
-    if(formulario.nombre.value == 0){
-        alert("Completa el campo nombre")
-        e.preventDefault();
+  if (service_id && template_id && user_id) {
+    try {
+    emailjs.init(user_id);
+    await emailjs.send(service_id, template_id,
+      {
+        to_name: nombre,
+        password: contrasena,
+        to_email: correo,
+      },
+    user_id); 
+    } catch(err) {
+      console.log(err);
+    } finally {
+      formulario.submit();
     }
-    if(formulario.correo.value == 0){
-        alert("Pon tu correo")
-        e.preventDefault()
-    }
-    if(formulario.contrasena.value == 0){
-        alert("Añade una contraseña")
-        e.preventDefault()
-    }
-    if(formulario.equipo.value == 0){
-        alert("Completa con tu equipo")
-        e.preventDefault()
-    }
+  }
 }
 
-function validarcomun( e){
-    if(formulario.nombre.value == 0){
-        alert("Completa el campo nombre")
-        e.preventDefault();
-    }
-    if(formulario.integrante.value == 0){
-        alert("Completa con tu equipo")
-        e.preventDefault()
-    }
-}
-validar= function( e ){
-    validarcomun(e);
-}
-validar2=function(e){
-    validarcomun2(e)
-}
 
-formulario.addEventListener("submit",validar);
-formulario2.addEventListener("submit",validar2)
+formulario.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  await sendMail(event);
+});

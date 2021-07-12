@@ -18,7 +18,7 @@ module.exports = {
   */
   authSession: (req, res, next) => {
     if (!req.session.userId || !req.session.rol) {
-      res.status(401).send('Not Login');
+      res.status(401).redirect('/login');
     } else {
       next();
     }
@@ -42,8 +42,9 @@ module.exports = {
   * @param {import('express').NextFunction} next
   */
   authAdmin: (req, res, next) => {
-    if (!req.session.role === 'admin') {
-      res.status(401).send('No es admin, no tiene permisos');
+    console.log(req.session);
+    if (req.session.rol !== 'admin') {
+      res.status(401).redirect('/login');
     } else {
       next();
     }
@@ -64,8 +65,8 @@ module.exports = {
   * @param {import('express').NextFunction} next
   */
   authOrganizador: (req, res, next) => {
-    if (!req.session.role === 'organizador') {
-      res.status(401).send('No es admin, no tiene permisos');
+    if (req.session.rol !== 'org') {
+      res.status(401).redirect('/login');
     } else {
       next();
     }
@@ -89,7 +90,7 @@ module.exports = {
   */
   authParticipanteLider: (req, res, next) => {
     if (req.session.rol !== 'lider') {
-      res.status(401).send('No es participante lider o no está logueado, no tiene permisos');
+      res.status(401).redirect('/login');
     } else {
       next();
     }

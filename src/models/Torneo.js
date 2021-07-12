@@ -4,8 +4,8 @@ const { torneo_equipo } = require('./torneo_equipo');
 
 class Torneo extends Model {
   static associate({ Equipo, Ronda, Usuario }) {
-    this.belongsToMany(Equipo, { through: torneo_equipo });
-    this.hasMany(Ronda, { as: 'rondas', foreignKey: 'torneo_id' });
+    this.belongsToMany(Equipo, { through: torneo_equipo, onDelete: 'CASCADE'  });
+    this.hasMany(Ronda, { as: 'rondas', foreignKey: 'torneo_id', onDelete: 'CASCADE' });
     this.belongsTo(Usuario, {
       as: 'organizador',
       foreignKey: 'organizador_id',

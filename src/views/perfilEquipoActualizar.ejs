@@ -1,4 +1,4 @@
-<div class="h-screen flex items-center justify-center bg-gray-400">
+<div class="flex items-center justify-center ">
     <div class="bg-white p-10 rounded-lg w-2/3">
         <div class="grid justify-items-center">
             <svg class="w-20 h-20" viewBox="0 0 24 24">
@@ -10,14 +10,14 @@
         <div class="mb-3">
             <label>Mi Equipo</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text" value="<%= u.nombre %>">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400"  id="nombre" name="nombre" type="text" value="<%= u.nombre %>"required>
             </div>
         
         </div>
         <div class="mb-3">
             <label>Integrantes</label>
             <div>
-                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="integrantes" name="integrante" type="text" value="<%= u.lista_integrantes %>">
+                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="integrantes" name="integrante" type="text" value="<%= u.lista_integrantes %>" required>
             </div>
         </div>
         <div class="hidden">

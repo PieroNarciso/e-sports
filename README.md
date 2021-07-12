@@ -18,6 +18,9 @@ DB_PASSWORD=<password>
 DB_DATABASE=<database>
 DB_HOST=<host>
 DB_MONGODB_URI=<mongodb-uri>
+EMAIL_SERVICE_ID=<emailjs-service-id | optional>
+EMAIL_TEMPLATE_ID=<emailjs-template-id | optional>
+EMAIL_USER_ID=<emailjs-user-id | optional>
 ```
 
 Compilar tailwindcss y se genera un archivo en el path `./src/public/css/index.css`
@@ -58,9 +61,18 @@ DB_DATABASE=<database>
 DB_HOST=<host>
 DB_MONGODB_URI=<mongodb-uri>
 NODE_ENV=production
+EMAIL_SERVICE_ID=<emailjs-service-id | optional>
+EMAIL_TEMPLATE_ID=<emailjs-template-id | optional>
+EMAIL_USER_ID=<emailjs-user-id | optional>
 ```
 
-Correr el script de producción
+Para incluir los seeders iniciales ejecutar lo siguiente (al inicializar los seeder, se hace `DROP` a las tablas de la `base de datos`)
+
+```bash
+$ npm run seed
+```
+
+Correr el script de producción (compila tailwind e inicializa el servidor)
 
 ```bash
 $ npm run start

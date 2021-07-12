@@ -1,7 +1,13 @@
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
+const {
+  Usuario,
+  Equipo,
+  Torneo,
+  Ronda,
+  Partida,
+} = require('../models');
 const { User } = require('../mongo');
 const models = require('../models');
 const usuario = models.Usuario;
@@ -16,8 +22,11 @@ module.exports = {
    * Renderiza la pantalla del `Login` para diferentes usuarios
    * `admin | org | lider`
    */
-  getLoginUser: (_, res) => {
-    res.render('login', { msg: '' });
+  getLoginUser: (req, res) => {
+    if (req.session.userId || req.session.rol) {
+      return res.redirect('/');
+    }
+    return res.render('login', { msg: '' });
   },
 
   /**
@@ -42,14 +51,15 @@ module.exports = {
           // Se obtiene el mismo usuario en postgres
           // Para obtener el id (que es foreignKey en relaciones
           // con otras tablas, además del rol
-          const user = await Usuario.findOne({ where: {
-            correo: usr.email,
-          }});
+          const user = await Usuario.findOne({
+            where: {
+              correo: usr.email,
+            },
+          });
           req.session.userId = user.id;
           req.session.rol = user.rol;
 
-          if (usr.rol == 'admin')
-            return res.redirect('/user');
+          if (user.rol == 'admin') return res.redirect('/user');
           return res.redirect('/torneos');
         }
         // No es valido
@@ -91,6 +101,10 @@ module.exports = {
   //Get de la visa Registro
   registroUser: (req, res) => {
     const estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
+    // Si esta logueado redireccionar
+    if (req.session.rol || req.session.userId) {
+      return res.redirect('/');
+    }
     res.render('registro', { estado: estado });
   },
 
@@ -104,15 +118,15 @@ module.exports = {
   registroPostUser: async (req, res) => {
     const { correo, contrasena, nombre, equipo } = req.body;
     try {
-      const userVerificar = await Usuario.findOne({ correo : correo });
-      const equipoVerificar = await Equipo.findOne({ nombre: equipo });
+      const userVerificar = await Usuario.findOne({ where: { correo } });
+      const equipoVerificar = await Equipo.findOne({ where: { nombre: equipo } });
       // Verifica que usuarios ni equipos ya exista en la BD
       if (userVerificar || equipoVerificar) {
-        return res.render('registro', { estado: true });
+        return res.status(400).render('registro', { estado: false });
       }
       // Hash del password
       const password = await bcrypt.hash(contrasena, SALT_ROUNDS);
-      await Usuario.create({
+      const user = await Usuario.create({
         nombre_completo: nombre,
         correo,
         password,
@@ -122,10 +136,12 @@ module.exports = {
 
       await Equipo.create({
         nombre: equipo,
-        lista_integrantes: ['Gorila', 'Jirafa', 'Leon', 'Cobra']
+        lider_id: user.id,
+        lista_integrantes: ['Gorila', 'Jirafa', 'Leon', 'Cobra'],
       });
-      return res.status('/login'); 
-    } catch(err) {
+      return res.status(201).redirect('/login');
+    } catch (err) {
+      console.log(err);
       return res.status(500).send(err);
     }
   },
@@ -178,33 +194,60 @@ module.exports = {
               u: usuario_conectado[0],
             });
           } else {
-            bcrypt
-              .hash(req.body.contrasena, SALT_ROUNDS)
-              .then((passHashed) => {
-                req.body.contrasena = passHashed;
-                usuario
-                  .update(
-                    {
-                      nombre_completo: req.body.nombre,
-                      correo: req.body.correo,
-                      password: req.body.contrasena,
-                    },
-                    {
-                      where: {
-                        id: req.session.userId,
+            if (
+              req.body.contrasena == 0 &&
+              req.body.correo != 0 &&
+              req.body.nombre != 0
+            ) {
+              usuario
+                .update(
+                  { nombre_completo: req.body.nombre, correo: req.body.correo },
+                  { where: { id: req.session.userId } }
+                )
+                .then(() => {
+                  res.redirect('/user/perfil');
+                })
+                .catch((error) => {
+                  res.status(500).send(error);
+                });
+              User.updateOne(
+                { email: usuario_conectado.correo },
+                { email: req.body.correo }
+              ).catch((err) => res.status(500).send(err));
+            } else {
+              bcrypt
+                .hash(req.body.contrasena, SALT_ROUNDS)
+                .then((passHashed) => {
+                  req.body.contrasena = passHashed;
+                  usuario
+                    .update(
+                      {
+                        nombre_completo: req.body.nombre,
+                        correo: req.body.correo,
+                        password: req.body.contrasena,
                       },
-                    }
-                  )
-                  .then(() => {
-                    res.redirect('/user/perfil');
-                  })
-                  .catch((error) => {
-                    res.status(500).send(error);
-                  });
-              })
-              .catch((err) => {
-                return res.status(500).send(err);
-              });
+                      {
+                        where: {
+                          id: req.session.userId,
+                        },
+                      }
+                    )
+                    .then(() => {
+                      User.updateOne(
+                        { email: usuario_conectado.correo },
+                        { email: req.body.correo, password: passHashed }
+                      ).then(() => {
+                        return res.redirect('/user/perfil');
+                      });
+                    })
+                    .catch((error) => {
+                      res.status(500).send(error);
+                    });
+                })
+                .catch((err) => {
+                  return res.status(500).send(err);
+                });
+            }
           }
         })
         .catch((error) => {
@@ -300,36 +343,35 @@ module.exports = {
 
   //Botones
   BotonesUser: (req, res) => {
-    var id = req.params.id;
-    res.render('botones', { id: id });
+    const torneoId = req.params.torneoId;
+    res.render('botones', { torneoId });
   },
 
   //Posiciones
   PosicionesUser: (req, res) => {
     var id = req.params.id;
-    res.render('posiciones');
-    /*
-    torneo_equipo.findAll({
-      where:{
-        torneo_id: id
-      },
-      include:[{
-        
-      }]
+    Torneo.findByPk(id, {
+      include: [
+        { model: Equipo },
+        {
+          model: Ronda,
+          as: 'rondas',
+          include: { model: Partida, as: 'partidas' },
+        },
+      ],
     })
-    .then(equipostorneo=>{
-
-    })*/
-    /*Torneo.findByPk(id,
-      {
-        include: [
-          {model: Equipo},
-          {model: Ronda,include: Partida}]
+      .then((rpta) => {
+        res.render('posiciones', { lequipo: rpta.Equipos, rpta: rpta });
       })
-    .then(objeto => {
-      var Lequipos= objeto.Equipo;
-      var lrondas = objeto.Ronda;
-      var lpartidas= objeto.Partida;
-    })*/
+      .catch((error) => {
+        console.log(error);
+      });
   },
+  fetchPosiciones:(req,res)=>{
+    var id=req.params.id;
+    Torneo.findByPk(id,{include: [{ model: Equipo}, {model: Ronda, as: "rondas", include: {model: Partida, as: "partidas"}}]})
+    .then(rpta=>{
+      res.send({equipos: rpta.Equipos,torneo: rpta})
+    })
+  }
 };
