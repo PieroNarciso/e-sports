@@ -378,5 +378,29 @@ module.exports = {
     .then(rpta=>{
       res.send({equipos: rpta.Equipos,torneo: rpta})
     })
+  },
+
+  crearUsuario: (_, res) => {
+    return res.render('AgregarUsAdm');
+  },
+
+  /**
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   *
+   */
+  postCrearUsuario: async (req, res) => {
+    const { correo, nombre, rol, password } = req.body;
+    try {
+      const userExists = await Usuario.findOne({ where: { correo } });
+      if (userExists) {
+        return res.redirect('/user');
+      }
+      const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
+      await Usuario.create({ correo, nombre_completo: nombre, rol, password: hashedPass });
+      return res.redirect('/user');
+    } catch (err) {
+      return res.status(500).send(err);
+    }
   }
 };
