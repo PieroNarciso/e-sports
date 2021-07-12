@@ -94,8 +94,13 @@ module.exports = {
    * Se encarga de renderizar la opcion `usuarios` donde se muestra la lista de
    * usuarios y el boton para crear un usuario nuevo
    */
-  getUsuarios: (_, res) => {
-    res.render('usuarios');
+  getUsuarios: async (_, res) => {
+    try {
+      const users = await Usuario.findAll();
+      return res.render('ListadoUsAdm', { usuario: users });
+    } catch(err) {
+      return res.status(500).send(err);
+    }
   },
 
   //Get de la visa Registro
