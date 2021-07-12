@@ -38,6 +38,9 @@ module.exports = {
   */
   
   getTorneos: async (req, res) => {
+    if (req.session.rol !== 'org' && req.session.rol !== 'lider') {
+      return res.redirect('/');
+    }
     try {
       // PARA EL SPA
       if (req.query.spa == 'true') {

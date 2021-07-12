@@ -9,6 +9,9 @@ module.exports = {
     if (!req.session.rol || req.session.rol.length === 0) {
       return res.render('spa');
     }
+    if (req.session.rol === 'admin') {
+      return res.redirect('/user');
+    }
     return res.redirect('/torneos');
   },
 };
