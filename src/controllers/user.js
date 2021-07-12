@@ -126,7 +126,7 @@ module.exports = {
       }
       // Hash del password
       const password = await bcrypt.hash(contrasena, SALT_ROUNDS);
-      await Usuario.create({
+      const user = await Usuario.create({
         nombre_completo: nombre,
         correo,
         password,
@@ -136,6 +136,7 @@ module.exports = {
 
       await Equipo.create({
         nombre: equipo,
+        lider_id: user.id,
         lista_integrantes: ['Gorila', 'Jirafa', 'Leon', 'Cobra'],
       });
       return res.status(201).redirect('/login');
