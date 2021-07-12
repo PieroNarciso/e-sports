@@ -2,11 +2,11 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 const { Usuario, Equipo, Torneo, Ronda, Partida } = require('../models');
-const { User } = require('../mongo');
 const models = require('../models');
 const usuario = models.Usuario;
 const equipo = models.Equipo;
 const { SESSION_NAME, SALT_ROUNDS } = require('../config/env');
+
 
 module.exports = {
   /**
@@ -22,34 +22,52 @@ module.exports = {
 
   /**
    * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   *
+   * Renderiza la pantalla del `Login` para diferentes usuarios
+   * `admin | org | lider`
+   */
+
+  //administrador
+  getCrearUser: (req, res) => {
+     
+    res.render('ListadoUsAdm');
+  },
+  
+//administtrador
+  crearNuevoUsuario: (req, res) => {
+
+    //administrador
+    User.create({
+
+      nombre_completo: req.body.nombre_completo,
+      correo: req.body.correo,
+      rol : req.body.rol
+      })
+  },
+
+  /**
+   * @param {import('express').Request} req
    * @param {import('express').Response & import('express-session').SessionData} res
    *
    * Verifica la informacion otorgada por el usuario al hacer login
    */
+  
   postLoginUser: async (req, res) => {
     const { email, password } = req.body;
     const msg = 'Email o contraseña incorrecto';
     try {
-      // Se obtiene el usuario desde MongoDB
-      const usr = await User.findOne({
-        email,
+      const usr = await Usuario.findOne({
+        where: { correo: email },
       });
       // Usuario existe
       if (usr) {
         const isValid = await bcrypt.compare(password, usr.password);
         // Es valido, se loguea
         if (isValid) {
-          // Se obtiene el mismo usuario en postgres
-          // Para obtener el id (que es foreignKey en relaciones
-          // con otras tablas, además del rol
-          const user = await Usuario.findOne({ where: {
-            correo: usr.email,
-          }});
-          req.session.userId = user.id;
-          req.session.rol = user.rol;
+          req.session.userId = usr.id;
+          req.session.rol = usr.rol;
 
-          if (usr.rol == 'admin')
-            return res.redirect('/user');
           return res.redirect('/torneos');
         }
         // No es valido
@@ -94,41 +112,70 @@ module.exports = {
     res.render('registro', { estado: estado });
   },
 
-  /**
-   * @param {import('express').Request} req
-   * @param {import('express').Response} res
-   *
-   * Verifica si el correo ya existe o el equipo ya existe
-   * En caso no exista, crea al Usuario y a su equipo
-   */
-  registroPostUser: async (req, res) => {
-    const { correo, contrasena, nombre, equipo } = req.body;
-    try {
-      const userVerificar = await Usuario.findOne({ correo : correo });
-      const equipoVerificar = await Equipo.findOne({ nombre: equipo });
-      // Verifica que usuarios ni equipos ya exista en la BD
-      if (userVerificar || equipoVerificar) {
-        return res.render('registro', { estado: true });
-      }
-      // Hash del password
-      const password = await bcrypt.hash(contrasena, SALT_ROUNDS);
-      await Usuario.create({
-        nombre_completo: nombre,
-        correo,
-        password,
-      });
-      // Mongo db Schema (para el login)
-      await User.create({ email: correo, password });
-
-      await Equipo.create({
-        nombre: equipo,
-        lista_integrantes: ['Gorila', 'Jirafa', 'Leon', 'Cobra']
-      });
-      return res.status('/login'); 
-    } catch(err) {
-      return res.status(500).send(err);
-    }
-  },
+  //Post de la vista Registro
+  registroPostUser: (req, res) => {
+    estado = true; //Si estado == true, no se mostrará el mensaje error en la pagina.
+    usuario
+      .findAll({
+        //Encuentra todos los usuarios, donde el correo del registro sea igual.
+        where: { correo: req.body.correo },
+      })
+      .then((lusur) => {
+        if (lusur.length > 0) {
+          //si el tamaño es mayor que 0 entonces si hay usuario.
+          const estado = false; //ERROR
+          res.render('registro', { estado: estado }); //Se envia para mostrar con el error
+        } else {
+          equipo
+            .findAll({
+              //Encuentra todos los equipos donde el nombre a crear sea el mismo
+              where: {
+                nombre: req.body.equipo,
+              },
+            })
+            .then((lequip) => {
+              if (lequip.length > 0) {
+                //si el tamaño es mayor que 0 entonces si hay equipo.
+                const estado = false; //ERROR
+                res.render('registro', { estado }); //Se envia para mostrar con el error
+              } else {
+                bcrypt
+                  .hash(req.body.contrasena, SALT_ROUNDS)
+                  .then((passHashed) => {
+                    req.body.contrasena = passHashed;
+                    Usuario.create({
+                      //se crea usuario
+                      nombre_completo: req.body.nombre,
+                      correo: req.body.correo,
+                      password: req.body.contrasena,
+                      rol: 'lider',
+                    })
+                      .then((rpta) => {
+                        //se crea equipo
+                        Equipo.create({
+                          nombre: req.body.equipo,
+                          lista_integrantes: ['Gorila', 'leon', 'perro'],
+                          lider_id: rpta.id, //Se le asigna el id del participante lider creado al euqipo
+                        })
+                          .then((rpta) => {
+                            res.redirect('/login'); // Se redirecciona.
+                          })
+                          .catch((error) => {
+                            res.status(500).send(error);
+                          });
+                      })
+                      .catch((error) => {
+                        res.status(500).send(error);
+                      });
+                  })
+                  .catch((err) => {
+                    return res.status(500).send(err);
+                  });
+              }
+            })
+          }
+        }) 
+    },
   //GET DEL PERFIL DEL LIDER
   perfilUser: (req, res) => {
     usuario
@@ -300,13 +347,12 @@ module.exports = {
 
   //Botones
   BotonesUser: (req, res) => {
-    var id = req.params.id;
-    res.render('botones', { id: id });
+    var id=req.params.id;
+    res.render('botones',{id: id});
   },
-
-  //Posiciones
+  //Posiciones 
   PosicionesUser: (req, res) => {
-    var id = req.params.id;
+    var id= req.params.id;
     res.render('posiciones');
     /*
     torneo_equipo.findAll({

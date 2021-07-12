@@ -14,10 +14,15 @@ const {
   PosicionesUser,
   BotonesUser,
   getUsuarios,
+  getCrearUser,
+  crearNuevoUsuario,
   
 } = require('../controllers/user');
 const router = Router();
 
+//adminstrador
+router.get('/crear', getCrearUser)
+router.post('/crear', crearNuevoUsuario)
 
 router.get('/', getUsuarios);
 
