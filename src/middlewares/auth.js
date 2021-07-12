@@ -42,7 +42,6 @@ module.exports = {
   * @param {import('express').NextFunction} next
   */
   authAdmin: (req, res, next) => {
-    console.log(req.session);
     if (req.session.rol !== 'admin') {
       res.status(401).redirect('/login');
     } else {

@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <body class="container mx-auto">
+            <nav class="bg-yellow-300 w-100 text-center">
+                <div>
+                    <br><br><h1 class="text-green-600 text-4xl font-bold text-center md:text-center md:text-5xl">
+                        ADMINISTRADOR</h1>
+                </div>
+            </nav>
+    
+            <br><br><div class="menu flex gap-5 justify-content-between block">
+                <br><br><h2 class="text-2xl text-red-800 font-sans mx-7 md:font-sans md:text-3xl md:mx-10">
+                LISTA DE USUSARIOS</h2>
+            </div>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="">Codigo</th>
+                    <th>Nombre</th>
+                    <th>Correo Electrónico</th>
+                    <th>Rol</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody id="datos">
+
+                <% usuario.forEach(function(elem) { %>
+                    <tr>
+                        <td><%= elem.id %></td>
+                        <td><%= elem.nombre_completo %></td>
+                        <td><%= elem.correo %></td>
+                        <td></td>
+                    </tr>
+                
+
+                        <td>
+                            <form action="/user/crear" method="POST">
+                                <input type="hidden" name="id" value="<%= elem.id %>" />
+                                <input type="submit" value="Editar"
+                                class="bg-red-600 hover:bg-red-400 text-white font-bold py-1 px-2 border-b-4 border-black-700 hover:border-black-500 rounded" />
+                            </form>
+                        </td>
+                <% }) %>
+             </tbody>
+        </table>
+
+        <form action="agregar" style="display:inline">
+            <input type="submit" value="Crear Usuario" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" />
+        </form>
+
+    </body>
+
+
+</html>
