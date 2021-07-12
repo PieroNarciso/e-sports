@@ -1,20 +1,7 @@
-const express = require("express")
-const bodyParser = require("body-parser")
+const { Router } = require("express")
 
-const rutas = express.Router()
+const rutas = Router();
 
-const Sequelize = require('sequelize')
-const models = require('../models')
-const usuario= models.Usuario
-
-//Multer
-const multer = require('multer')
-const par = multer()
-
-//Parsing de los datos
-rutas.use( express.urlencoded({extended : true}))
-rutas.use( express.json() )
-rutas.use( par.array() )
 
 rutas.post( '/create', (req,res) => {
     return usuario.create(
