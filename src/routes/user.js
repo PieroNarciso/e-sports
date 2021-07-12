@@ -1,12 +1,14 @@
 const { Router } = require('express');
 const { authParticipanteLider, authAdmin } = require("../middlewares/auth")
 const {
+  crearUsuario,
   registroUser,
   registroPostUser,
   perfilUser,
   perfilPostUser,
   perfilActualizarPostUser,
   perfilActualizarUser,
+  postCrearUsuario,
   equipoUser,
   equipoPostUser,
   equipoActualizarUser,
@@ -25,6 +27,11 @@ router.get('/', authAdmin, getUsuarios);
 router.get('/registro', registroUser);
 router.post('/registro', registroPostUser);
 
+/**
+  * Crear el usuario para el admin
+  */
+router.get('/crear-usuario', authAdmin, crearUsuario);
+router.post('/crear-usuario', authAdmin, postCrearUsuario);
 
 /* Permite ver el perfil del participante lider*/
 router.get('/perfil', authParticipanteLider, perfilUser);

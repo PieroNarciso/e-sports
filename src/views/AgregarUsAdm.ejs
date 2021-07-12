@@ -1,57 +1,57 @@
+<div class="container mx-auto">
 
-    <head>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" href="/src/public/css/tailwind.css">
-        <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
-    </head>
-    <div class="container mx-auto">
-        <nav class="bg-yellow-300 w-100 text-center">
+  <br><br><div class="menu flex gap-5 justify-content-between block">
+    <br><br><h2 class="text-2xl text-red-800 font-sans mx-7 md:font-sans md:text-3xl md:mx-10">
+      CREAR USUARIO</h2>
+  </div>
+  <div>
+    <img class=" mx-auto w-1/4 md:w-1/5"src="/img/usuario.png">
+  </div>
+
+  <form  action="/user/crear-usuario" method="POST">
+    <div class="p-10">
+      <div class="">
+        <form>
+          <div class="mb-4 font-mono">
+            <label htmlFor="text">Nombre Completo</label>
             <div>
-                <br><br><h1 class="text-green-600 text-4xl font-bold text-center md:text-center md:text-5xl">
-                    ADMINISTRADOR</h1>
+              <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400 text-indigo-700"  id="nombre" name="nombre" type="text" required>
             </div>
-        </nav>
 
-        <br><br><div class="menu flex gap-5 justify-content-between block">
-            <br><br><h2 class="text-2xl text-red-800 font-sans mx-7 md:font-sans md:text-3xl md:mx-10">
-            CREAR USUARIO</h2>
-        </div>
-        <div>
-            <img class=" mx-auto w-1/4 md:w-1/5"src="/src/public/img/usuario.png">
-        </div>
-
-        <form  action="agregar" method="POST">
-            <div class="p-10">
-                <div class="col-md-3">
-                    <form>
-                        <div class="mb-4 font-mono">
-                            <label htmlFor="text">Nombre Completo</label>
-                            <div>
-                                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400 text-indigo-700"  id="nombre" name="nombre" type="text">
-                            </div>
-                        
-                        </div>
-                        <div class="mb-4 font-mono">
-                            <label>Correo Electronico</label>
-                            <div>
-                                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email">
-                            </div>
-                        </div>
-    
-                        <div class="mb-4 font-mono">
-                            <label>Rol</label>
-                            <div>
-                                <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email">
-                            </div>
-                        </div>
-    
-                        <div>
-                            <br><button id="but-agregar" type="button" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Agregar</button>
-                            <button type="reset" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Limpiar</button>
-                        </div>
-                    </form>
-                </div>
+          </div>
+          <div class="mb-4 font-mono">
+            <label>Correo Electronico</label>
+            <div>
+              <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="correo" name="correo" type="email" required>
             </div>
+          </div>
+
+          <div class="mb-4 font-mono">
+            <label>Contraseña</label>
+            <div>
+              <input class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" id="password" name="password" type="password" required>
+            </div>
+          </div>
+
+          <div class="mb-4 font-mono">
+            <label>Rol</label>
+            <div>
+              <select class="rounded border px-2 border-gray-400 w-full focus:outline-none focus:ring focus:ring-gray-400" name="rol" required>
+                <option value="" disabled selected>Seleccionar Rol</option>
+                <option value="org">ORGANIZADOR</option>
+                <option value="admin">ADMIN</option> 
+                <option value="lider">LIDER</option> 
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <br><button id="but-agregar" type="submit" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Agregar</button>
+            <button type="reset" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Limpiar</button>
+          </div>
         </form>
-
+      </div>
     </div>
+  </form>
+
+</div>
