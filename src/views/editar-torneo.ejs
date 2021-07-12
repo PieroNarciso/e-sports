@@ -3,7 +3,7 @@
 -->
 
 <div class="mx-4 sm:mx-10 md:mx-12 lg:mx-32 xl:mx-42 my-3">
-  <% if (torneo.estado === 'abierto' && torneo.Equipos.length >= 2 && torneo.Equipos.length <= 6) { %>
+  <% if (torneo.estado == 'abierto' & torneo.Equipos.length >= 2) { %>
   <div class="mb-4">
     <a class="bg-green-500 text-white rounded hover:bg-green-300 focus:outline-none px-2 py-2 font-medium" href="/torneos/en-curso/<%= torneo.id %>">Cambiar a En Curso</a>
   </div>
