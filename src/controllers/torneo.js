@@ -308,6 +308,9 @@ module.exports = {
         }
       });
 
+      // Cambiar estado
+      await torneo.update({ estado: 'en curso' });
+
       if (torneo.Equipos.length < 2) {
         return res.send({ msg: 'Hay menos de 2 equipos' });
       }
