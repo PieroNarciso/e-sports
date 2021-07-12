@@ -225,7 +225,7 @@ module.exports = {
   eliminar: async (req, res) => {
     try {
       const t = await Torneo.findByPk(req.body.identif)
-      t.destroy();
+      await t.destroy();
       res.redirect('/torneos')
     } catch {
       console.log(err);
