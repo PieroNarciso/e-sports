@@ -26,6 +26,9 @@ const Home = {
         </div>
       </div>
     </div>
+    <div v-else>
+      <h1 class="text-center m-32">No hay torneos en curso :(.</h1>
+    </div>
   `,
   data() {
     return {

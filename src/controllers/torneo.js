@@ -79,7 +79,8 @@ module.exports = {
         Torneo.findAll({
           include: {
             model: Equipo
-          }
+          },
+          order: [['id','ASC']]
         }).then((torneos) => {
           var x = []
           torneos.forEach(function (t) {
@@ -129,7 +130,8 @@ module.exports = {
                     include: Equipo,
                     where: {
                       estado: { [Op.or]: [cbAbierto, cbEnCurso, cbCerrado].filter(e => e != '') }
-                    }
+                    },
+                    order: [['id', 'ASC']]
                   }).then((torneos) => {
                     renderizar(req, torneos, res)
                   })
@@ -155,7 +157,8 @@ module.exports = {
                           include: Equipo,
                           where: {
                             [Op.not]: { id: ids },
-                          }
+                          },
+                          order: [['id', 'ASC']]
                         }).then((torneos2) => {
                           renderizar(req, torneos2, res)
                         })
@@ -169,7 +172,9 @@ module.exports = {
               }
               // SIN FILTROS
               else {
-                Torneo.findAll()
+                Torneo.findAll({
+                  order: [['id', 'ASC']]
+                })
                   .then((torneos) => {
                     renderizar(req, torneos, res)
                   })
@@ -183,7 +188,8 @@ module.exports = {
             Torneo.findAll({
               where: {
                 organizador_id: id
-              }
+              },
+              order: [['id', 'ASC']]
             }).then((torneos) => {
               torneos.forEach(function (t) {
                 ids.push(t.id)
@@ -191,7 +197,9 @@ module.exports = {
             }).then(() => {
               // si el campo de texto está vacío o no se aplicó el filtro:
               if ((req.query.nomb == '') || (req.query.nomb == null)) {
-                Torneo.findAll().then((torneos) => {
+                Torneo.findAll({
+                  order: [['id', 'ASC']]
+                }).then((torneos) => {
                   renderizar(req, torneos, res)
                 })
               }
@@ -202,7 +210,8 @@ module.exports = {
                     nombre: {
                       [Op.substring]: req.query.nomb
                     }
-                  }
+                  },
+                  order: [['id', 'ASC']]
                 }).then((torneos) => {
                   renderizar(req, torneos, res)
                 })
