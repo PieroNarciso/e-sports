@@ -1,0 +1,60 @@
+<!-- Parametros
+  torneo: Torneo
+-->
+
+<div class="mx-4 sm:mx-10 md:mx-12 lg:mx-32 xl:mx-42 my-3">
+  <% if (torneo.estado === 'abierto' && torneo.Equipos.length >= 2 && torneo.Equipos.length <= 6) { %>
+  <div class="mb-4">
+    <a class="bg-green-500 text-white rounded hover:bg-green-300 focus:outline-none px-2 py-2 font-medium" href="/torneos/en-curso/<%= torneo.id %>">Cambiar a En Curso</a>
+  </div>
+  <% } else { %>
+  <div class="mb-4 bg-yellow-500 rounded text-center text-white font-medium w-full px-2 py-1">No suficiente equipos inscritos para llevar en curso</div> 
+  <% } %>
+  <form class="flex flex-col space-y-4" method="POST" action="/torneos/editar/<%= torneo.id %>">
+    <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-6 w-full mb-3">
+      <div class="flex flex-col">
+        <label class="label">Id</label>
+        <input size="2" class="input bg-gray-200 cursor-default" type="number" name="id" value="<%= torneo.id %>" readonly>
+      </div>
+      <div class="flex flex-col">
+        <label class="label">Participantes</label>
+        <input size="5" class="input bg-gray-200 cursor-default" type="number" name="max_participantes" value="<%= torneo.max_participantes %>" readonly>
+      </div>
+      <div class="flex flex-col">
+        <label class="label">Tipo</label>
+        <input class="input bg-gray-200 cursor-default" type="text" name="tipo" value="<%= torneo.tipo %>" readonly>
+      </div>
+    </div>
+
+    <div class="flex flex-col">
+      <label class="label">Nombre</label>
+      <input class="input" type="text" name="nombre" value="<%= torneo.nombre %>" required>
+    </div>
+    <div class="flex flex-col">
+      <label class="label">Descripcion</label>
+      <input class="input" type="text" name="descripcion" value="<%= torneo.descripcion %>" required>
+    </div>
+    <div class="flex flex-col">
+      <label class="label">Partidas Diarios</label>
+      <input class="input" type="number" name="cant_particip_diarios" value="<%= torneo.cant_particip_diarios %>" required>
+    </div>
+
+    <div class="flex flex-wrap space-x-2 md:space-x-6">
+      <div class="flex flex-col flex-shrink">
+        <label class="label">Perdedor</label>
+        <input class="input" size="4" type="number" min="0" name="puntaje_perdedor" value="<%= torneo.puntaje_perdedor %>" required>
+      </div>
+      <div class="inline-flex flex-col w-auto">
+        <label class="label">Perdedor</label>
+        <input class="input" size="4" type="number" min="0" name="puntaje_ganador" value="<%= torneo.puntaje_ganador %>" required>
+      </div>
+      <div class="inline-flex flex-col w-auto">
+        <label class="label">Perdedor</label>
+        <input class="input" size="4" type="number" min="0" name="puntaje_empate" value="<%= torneo.puntaje_empate %>" required>
+      </div>
+    </div>
+    <div class="flex justify-end">
+      <button class="w-auto bg-blue-500 text-white font-medium rounded px-3 py-2 focus:outline-none hover:bg-blue-400" type="submit">Guardar</button>
+    </div>
+  </form>
+</div>
