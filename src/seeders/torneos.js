@@ -68,5 +68,33 @@ module.exports = async () => {
     puntaje_empate: 2,
     organizador_id: 4
   });
+  const torneo5 = await Torneo.create({
+    nombre: 'Torneo 5',
+    fec_inicio: new Date(2021, 06, 18),
+    fec_fin: new Date(2021, 06, 28),
+    max_participantes: 4,
+    descripcion: 'Torneo 4.',
+    estado: 'abierto',
+    cant_particip_diarios: 4,
+    tipo: 'Todos contra todos',
+    puntaje_perdedor: 1,
+    puntaje_ganador: 3,
+    puntaje_empate: 2,
+    organizador_id: 4
+  });
+  const torneo6 = await Torneo.create({
+    nombre: 'Torneo 6',
+    fec_inicio: new Date(2021, 06, 18),
+    fec_fin: new Date(2021, 06, 28),
+    max_participantes: 4,
+    descripcion: 'Torneo 4.',
+    estado: 'abierto',
+    cant_particip_diarios: 4,
+    tipo: 'Todos contra todos',
+    puntaje_perdedor: 1,
+    puntaje_ganador: 3,
+    puntaje_empate: 2,
+    organizador_id: 4
+  });
 
 };

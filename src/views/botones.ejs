@@ -28,6 +28,15 @@
                         <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Ver" type="submit"> Ver Tabla de posiciones </button>
                     </div>
                 </form>
+                <!-- ELIMINAR TORNEO -->
+                <form method="POST" name="formulario" action="/torneos/eliminar/" onsubmit="return confirm('¿Está seguro que desea eliminar este torneo?')">
+                    <div class="mb-3 mt-5">
+                        <input hidden type="text" value="<%=torneoId%>" name="identif">
+                        <button
+                            class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-red-500 hover:bg-red-400 "
+                            id="Ver" type="submit"> Eliminar Torneo </button>
+                    </div>
+                </form>
                 <form method="GET" name="formulario" action="/torneos">
                 <div class="mb-3 mt-5">
                     <button class="rounded border w-full focus:outline-none focus:ring focus:ring-gray-400 px-2 py-3 text-white bg-indigo-500 hover:bg-indigo-400 " id="Ver" type="submit"> Regresar </button>

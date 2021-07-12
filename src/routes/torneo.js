@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const {
+  eliminar,
   getTorneos,
   getTorneoById,
   getRondaByTorneoId,
@@ -19,6 +20,8 @@ const {
 const router = Router();
 
 router.get('/', getTorneos);
+
+router.post('/eliminar', authOrganizador, eliminar);
 /**
  * Renderiza la tabla de posiciones al darle click a Ver
  */

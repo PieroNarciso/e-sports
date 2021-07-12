@@ -116,7 +116,7 @@
           <% } %>
           <% }) %>
           / <%= torneo.max_participantes %></span>
-        <span>Estado: Activo</span>
+        <span>Estado: <%= torneo.estado.toUpperCase() %></span>
         <span>Fecha inicio: <%= torneo.fec_inicio%></span>
         <span>Fecha fin: <%= torneo.fec_fin%></span>
       </div>
@@ -141,11 +141,11 @@
   <div class="flex space-x-2">
     <% for (let i=0; i < cantidadPaginas; i++){%>
       <%if ((i+1)==pagActual) {%>
-        <a class="w-4 h-7 border-2 border-black bg-black text-white" href="/torneos?p=<%=i+1%>">
+        <a class="text-center w-6 h-7 border-2 border-black bg-black text-white" href="/torneos?p=<%=i+1%>">
           <p><%= i+1 %></p>
         </a>
       <%} else {%>
-        <a class="w-4 h-7 border-2 border-black" href="/torneos?p=<%=i+1%>">
+        <a class="text-center w-6 h-7 border-2 border-black" href="/torneos?p=<%=i+1%>">
           <p><%= i+1 %></p>
         </a>
       <%}%>

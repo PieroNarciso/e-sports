@@ -37,9 +37,6 @@ module.exports = {
    * @param {import('express').Response} res
   */
   
-// http://localhost:3000/torneos?p=1&cbAbierto=true&cbEnCurso=true&cbCerrado=true&cbInscrito=true&cbNoInscrito=true
-
-
   getTorneos: async (req, res) => {
     try {
       // PARA EL SPA
@@ -47,7 +44,7 @@ module.exports = {
         const torneosSPA = await Torneo.findAll({
           include: Equipo,
           where: {
-            estado: 'abierto'
+            estado: 'en curso'
           }
         })
         const inscritosSPA = []
@@ -222,6 +219,21 @@ module.exports = {
   },
 
   /**
+    * @param {import('express').Request} req
+    * @param {import('express').Response} res
+    */
+  eliminar: async (req, res) => {
+    try {
+      const t = await Torneo.findByPk(req.body.identif)
+      await t.destroy();
+      res.redirect('/torneos')
+    } catch {
+      console.log(err);
+      res.status(500).send(err);
+    }
+  },
+
+  /**
   * @param {import('express').Request} req
   * @param {import('express').Response} res
   */
@@ -295,6 +307,9 @@ module.exports = {
           }
         }
       });
+
+      // Cambiar estado
+      await torneo.update({ estado: 'en curso' });
 
       if (torneo.Equipos.length < 2) {
         return res.send({ msg: 'Hay menos de 2 equipos' });
