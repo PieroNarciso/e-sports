@@ -41,7 +41,6 @@ module.exports = {
     try {
       // PARA EL SPA
       if (req.query.spa == 'true') {
-        console.log('Hola');
         const torneosSPA = await Torneo.findAll({
           include: Equipo,
           where: {
