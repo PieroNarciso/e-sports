@@ -385,7 +385,7 @@ module.exports = {
         }
       });
       torneo.Equipos = torneo.Equipos.filter(equipo => {
-        equipo.torneo_equipo.estado == 'activo'
+        return equipo.torneo_equipo.estado === 'activo';
       })
       return res.render('editar-torneo', { torneo });
     } catch(err) {
