@@ -38,12 +38,10 @@ module.exports = {
   */
   
   getTorneos: async (req, res) => {
-    if (req.session.rol !== 'org' && req.session.rol !== 'lider') {
-      return res.redirect('/');
-    }
     try {
       // PARA EL SPA
       if (req.query.spa == 'true') {
+        console.log('Hola');
         const torneosSPA = await Torneo.findAll({
           include: Equipo,
           where: {
@@ -73,6 +71,9 @@ module.exports = {
       }
       // PARA MVC
       else {
+        if (req.session.rol !== 'org' && req.session.rol !== 'lider') {
+          return res.redirect('/');
+        }
         id = req.session.userId
         // BUSCAR ROL
         const us = await Usuario.findByPk(id)
