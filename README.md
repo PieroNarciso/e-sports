@@ -107,7 +107,7 @@ $ npm run start
 
 
 ## Ingredientes
-* Piero Narciso
+* Piero Narciso Ancalle
 * Alessandra Nuñez
 * Sebastián Bañón
 * Maricielo Jara
